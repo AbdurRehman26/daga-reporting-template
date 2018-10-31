@@ -1,0 +1,49 @@
+.layout-boxed {
+	background:rgba(236, 238, 243, 1.0);
+}
+
+.layout-boxed .wrapper {
+	max-width: 1280px;
+}
+
+.sidebar-menu>li>a {
+	padding: 32px 5px 12px 15px;
+	display: block;
+}
+
+.main-header{
+	border: 1px solid lightgray;
+}
+
+.main-sidebar{
+	width: 180px;
+	border: 1px solid lightgray;
+}
+
+.content-wrapper{
+	margin-left: 180px;
+}
+
+#donut-chart1, #donut-chart2{
+	width: 500px;
+	height: 250px;
+	float: right;
+}
+
+#gaugechart{
+	width: 500px;
+	height: 170px;
+	float: right;
+}
+
+
+#chartdiv{
+	width: 500px;
+	height: 500px;
+	float: left;
+}
+
+
+.amcharts-chart-div a[href="http://www.amcharts.com"] {
+	display: none !important;
+}
