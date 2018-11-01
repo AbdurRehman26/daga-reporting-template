@@ -14,5 +14,22 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
+
+
+// Route::group([
+//     'middleware' => [
+//         'auth:api',
+//     ],
+//     'as' => 'api.',
+//     'namespace' => 'Api\v1'
+// ], function($api){
+
+//     /*
+//      * Manage Users Routes
+//      */
+//     $api->post('user/create', ['as' => 'user.create', 'uses' => 'UserController@create']);
+
+// });
+Route::get('stats', ['as' => 'stats.interceptions', 'uses' => 'Api\V1\StatsController@getInterceptions']);

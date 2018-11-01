@@ -7,7 +7,9 @@ $(document).ready(function() {
 
 
 
-	require('./dashboard.js');
+	require('./func-dashboard.js');
+	require('./event-dashboard.js');
+	require('./charts.js');
 
 
 

@@ -1,7 +1,70 @@
 
 $(document).ready(function() {
 
-	var chart = AmCharts.makeChart("chartdiv", {
+  generatePieChart();
+  generateBarChart();
+  generateGaugeChart();
+
+
+});
+
+
+
+function generatePieChart(){
+
+
+AmCharts.makeChart("donut-chart1", {
+  "type": "pie",
+  "theme": "light",
+  "innerRadius": "80%",
+  "labelsEnabled": false,
+  "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
+  "dataProvider": [{
+    "country": "Lithuania",
+    "litres": 501.9
+  }, {
+    "country": "Czech Republic",
+    "litres": 301.9
+  }, {
+    "country": "Ireland",
+    "litres": 201.1
+  }, {
+    "country": "Germany",
+    "litres": 165.8
+  }, {
+    "country": "Australia",
+    "litres": 139.9
+  }, {
+    "country": "Austria",
+    "litres": 128.3
+  }],
+  "balloonText": "[[value]]",
+  "valueField": "litres",
+  "titleField": "country",
+  "balloon": {
+    "drop": true,
+    "adjustBorderColor": false,
+    "color": "#FFFFFF",
+    "fontSize": 16
+  },
+  "legend": {
+    "position": "absolute",
+    "maxColumns": 1,
+    "top": 20,
+    "align": "right"
+  },
+  "export": {
+    "enabled": false
+  }
+});
+
+
+}
+
+
+function generateBarChart(){
+  
+var chart = AmCharts.makeChart("chartdiv", {
     "type": "serial",
     "theme": "light",
     "marginRight": 70,
@@ -84,101 +147,10 @@ $(document).ready(function() {
 
   });
 
+}
 
 
-//  Donut Chart 
-
-AmCharts.makeChart("donut-chart2", {
-  "type": "pie",
-  "theme": "light",
-  "innerRadius": "80%",
-  "labelsEnabled": false,
-  "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
-  "dataProvider": [{
-    "country": "Lithuania",
-    "litres": 501.9
-  }, {
-    "country": "Czech Republic",
-    "litres": 301.9
-  }, {
-    "country": "Ireland",
-    "litres": 201.1
-  }, {
-    "country": "Germany",
-    "litres": 165.8
-  }, {
-    "country": "Australia",
-    "litres": 139.9
-  }, {
-    "country": "Austria",
-    "litres": 128.3
-  }],
-  "balloonText": "[[value]]",
-  "valueField": "litres",
-  "titleField": "country",
-  "balloon": {
-    "drop": true,
-    "adjustBorderColor": false,
-    "color": "#FFFFFF",
-    "fontSize": 16
-  },
-  "legend": {
-    "position": "absolute",
-    "maxColumns": 1,
-    "top": 20,
-    "align": "right"
-  },
-  "export": {
-    "enabled": false
-  }
-});
-
-
-AmCharts.makeChart("donut-chart1", {
-  "type": "pie",
-  "theme": "light",
-  "innerRadius": "80%",
-  "labelsEnabled": false,
-  "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
-  "dataProvider": [{
-    "country": "Lithuania",
-    "litres": 501.9
-  }, {
-    "country": "Czech Republic",
-    "litres": 301.9
-  }, {
-    "country": "Ireland",
-    "litres": 201.1
-  }, {
-    "country": "Germany",
-    "litres": 165.8
-  }, {
-    "country": "Australia",
-    "litres": 139.9
-  }, {
-    "country": "Austria",
-    "litres": 128.3
-  }],
-  "balloonText": "[[value]]",
-  "valueField": "litres",
-  "titleField": "country",
-  "balloon": {
-    "drop": true,
-    "adjustBorderColor": false,
-    "color": "#FFFFFF",
-    "fontSize": 16
-  },
-  "legend": {
-    "position": "absolute",
-    "maxColumns": 1,
-    "top": 20,
-    "align": "right"
-  },
-  "export": {
-    "enabled": false
-  }
-});
-
+function generateGaugeChart(){
 
 var gaugeChart = AmCharts.makeChart("gaugechart", {
   "type": "gauge",
@@ -218,4 +190,5 @@ var gaugeChart = AmCharts.makeChart("gaugechart", {
 });
 
 
-});
+  
+}
