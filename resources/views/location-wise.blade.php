@@ -5,7 +5,7 @@
 @section('content')
 
 
-<div class="content-wrapper" style="min-height: 1020px;">
+<div class="dashboard-container-main content-wrapper" style="min-height: 1020px;">
   <div style="padding: 50px 30px; background: rgba(236, 238, 243, 1.0); z-index: 999999; font-size: 16px; font-weight: 600;">
     Over All Summary
   </div>
@@ -96,7 +96,7 @@
 
         <div class="small-box bg-aqua">
           <div class="inner">
-            <h3>150</h3>
+            <h3 class="total-interception-value"></h3>
 
             <p>Total Interceptions</p>
           </div>
@@ -104,7 +104,7 @@
 
         <div class="small-box bg-aqua">
           <div class="inner">
-            <h3>150</h3>
+            <h3 class="total-wet-sampling-value"></h3>
 
             <p>Total WET Sampling</p>
           </div>
@@ -112,7 +112,7 @@
 
         <div class="small-box bg-aqua">
           <div class="inner">
-            <h3>150</h3>
+          <h3 class="total-sales-value"></h3>
 
             <p>Total Sales</p>
           </div>
@@ -120,7 +120,7 @@
 
         <div class="small-box bg-aqua">
           <div class="inner">
-            <h3>150</h3>
+            <h3 class="total-deals-value"></h3
 
             <p>Total Deals Sold</p>
           </div>
@@ -128,8 +128,7 @@
 
         <div class="small-box bg-aqua">
           <div class="inner">
-            <h3>150</h3>
-
+            <h3 class="total-teams-value"></h3>
             <p>Number of teams working</p>
           </div>
         </div>

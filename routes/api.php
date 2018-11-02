@@ -32,4 +32,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     $api->post('user/create', ['as' => 'user.create', 'uses' => 'UserController@create']);
 
 // });
-Route::get('stats', ['as' => 'stats.interceptions', 'uses' => 'Api\V1\StatsController@getInterceptions']);
+Route::get('stats', ['as' => 'stats.interceptions', 'uses' => 'Api\V1\StatsController@getTotalRecords']);

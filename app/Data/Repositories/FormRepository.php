@@ -6,16 +6,16 @@
  * Time: 12:55 PM
  */
 
-namespace SocialWithin\Data\Repositories;
+namespace App\Data\Repositories;
 
 
 use Carbon\Carbon;
-use Cygnis\Data\Contracts\RepositoryContract;
-use Cygnis\Data\Repositories\AbstractRepository;
-use SocialWithin\data\models\AdAccount;
+use Kazmi\Data\Contracts\RepositoryContract;
+use Kazmi\Data\Repositories\AbstractRepository;
+use App\Data\Models\Form;
 use Illuminate\Support\Facades\Cache;
 
-class AdAccountRepository extends AbstractRepository implements RepositoryContract
+class FormRepository extends AbstractRepository implements RepositoryContract
 {
     public $model;
     CONST PAGINATION = true , PER_PAGE = 10;
@@ -31,76 +31,43 @@ class AdAccountRepository extends AbstractRepository implements RepositoryContra
      * @access protected
      *
      **/
-    protected $_cacheKey = 'ad-account-';
-    protected $_cacheTotalKey = 'total-ad-accounts-';
+    protected $_cacheKey = 'form-';
+    protected $_cacheTotalKey = 'total-forms-';
 
-    public function __construct(AdAccount $model)
+    public function __construct(Form $model)
     {
         $this->model = $model;
         $this->builder = $model;
     }
 
-    public function composeInputArray($ad_accounts, $social_account)
+    public function getTotalByCriteria($input)
     {
-        $inputArray = [];
-        foreach ($ad_accounts as $key=>$account) {
-            $account = (array)$account;
-            $account['company_id'] = $social_account->company_id;
-            $account['social_account_id'] = $social_account->id;
-            $account['created_at'] = Carbon::now()->toDateTimeString();
-            $account['updated_at'] = Carbon::now()->toDateTimeString();
-            $account['deleted_at'] = null;
+        $data = [];
 
-            array_push($inputArray , $account);
+        $this->builder = $this->model;
+
+        if(!empty($input['total_interceptions'])){
+            $data['total_interceptions'] = $this->builder->count();
+        }
+        
+        if(!empty($input['total_wet_sampling'])){
+            $data['total_wet_sampling'] = $this->builder->sum('tarang_sampling_quantity');
         }
 
-        return $inputArray ;
-    }
+        if(!empty($input['total_sales'])){
+            $data['total_sales'] = $this->builder->where('sale' , '=' , 'Yes')->count();
+        }
 
+        if(!empty($input['total_deals'])){
+            $data['total_deals'] = $this->builder->sum('quantity');
+        }
 
-    public function findByCriteria($pagination = self::PAGINATION , $per_page = self::PER_PAGE  ,  $criteria)
-    {
-        $this->builder = $this->model->where($criteria);
-        return parent::findByAll($pagination  , $per_page);
-    }
-
-
-    public function findAdAccountWithUserIdAndRole($criteria)
-    {
-        $this->builder = $this->model->join('ad_account_users', function ($join) {
-            $join->on('ad_account_users.ad_account_id', '=', 'ad_accounts.id');
-        })->join('social_accounts' , function ($join){
-            $join->on('social_accounts.id', '=', 'ad_account_users.social_account_id');
-        })
-            ->where('ad_account_users.user_id' , $criteria['user_id'])
-            ->where('ad_account_users.social_account_id' , $criteria['social_account_id'])
-            ->select(['ad_accounts.id' , 'fb_ad_account_status' , 'fb_ad_account_name' , 'fb_ad_account_id'])
-            ->groupBY('ad_accounts.id');
-
-        $data = $this->builder->get();
+        if(!empty($input['total_teams'])){
+            $data['total_teams'] = 6;//$this->builder->groupBy('ba_id')->count();
+        }
 
         return $data;
-
-    }
-
-
-    public function getIdsByCriteria($criteria)
-    {
-        return $this->model->where($criteria)->get()->pluck('id');
-    }
-
-    public function saveSelectedItems($input){
-        $input['id'] = $input['ad_account_id'];
-        if($input['remove_saved_campaigns']){
-            $input['campaign_ids'] = null;
-        }
-        $input['selected_campaign_ids'] = !empty($input['campaign_ids'])?implode(',', $input['campaign_ids']):null;
-        unset($input['ad_account_id']);
-        unset($input['campaign_ids']);
-        unset($input['remove_saved_campaigns']);
-        parent::update($input);
-        Cache::forget($this->_cacheKey.$input['id']);
-
+        
     }
 
 }

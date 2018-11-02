@@ -70,7 +70,7 @@
 "use strict";
 
 
-var bind = __webpack_require__(2);
+var bind = __webpack_require__(3);
 var isBuffer = __webpack_require__(18);
 
 /*global toString:true*/
@@ -397,10 +397,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(3);
+    adapter = __webpack_require__(4);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(3);
+    adapter = __webpack_require__(4);
   }
   return adapter;
 }
@@ -475,6 +475,48 @@ module.exports = defaults;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+//Global
+var app = app || {};
+//Define Module
+app.Config = function () {
+    var basePath = window.location.protocol + '//' + window.location.host;
+    var apiUrl = basePath + '/api/';
+    var appUrl = basePath + '/';
+
+    var token = "";
+    var actionId = void 0;
+    var actionType = "";
+
+    var configObject = {
+        getApiUrl: function getApiUrl() {
+            return apiUrl;
+        },
+
+        getAppUrl: function getAppUrl() {
+            return appUrl;
+        },
+
+        getToken: function getToken() {
+            return token;
+        },
+
+        setToken: function setToken(v) {
+            token = v;
+        },
+        cleanStorage: function cleanStorage(callback) {
+            localStorage.clear();
+            callback();
+        }
+    };
+    return configObject;
+}();
+//Export Module
+module.exports = app;
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -492,7 +534,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -503,7 +545,7 @@ var settle = __webpack_require__(22);
 var buildURL = __webpack_require__(24);
 var parseHeaders = __webpack_require__(25);
 var isURLSameOrigin = __webpack_require__(26);
-var createError = __webpack_require__(4);
+var createError = __webpack_require__(5);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(27);
 
 module.exports = function xhrAdapter(config) {
@@ -679,7 +721,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -704,7 +746,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -716,7 +758,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -740,48 +782,6 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-//Global
-var app = app || {};
-//Define Module
-app.Config = function () {
-    var basePath = window.location.protocol + '//' + window.location.host;
-    var apiUrl = basePath + '/api/';
-    var appUrl = basePath + '/';
-
-    var token = "";
-    var actionId = void 0;
-    var actionType = "";
-
-    var configObject = {
-        getApiUrl: function getApiUrl() {
-            return apiUrl;
-        },
-
-        getAppUrl: function getAppUrl() {
-            return appUrl;
-        },
-
-        getToken: function getToken() {
-            return token;
-        },
-
-        setToken: function setToken(v) {
-            token = v;
-        },
-        cleanStorage: function cleanStorage(callback) {
-            localStorage.clear();
-            callback();
-        }
-    };
-    return configObject;
-}();
-//Export Module
-module.exports = app;
 
 /***/ }),
 /* 8 */
@@ -30804,7 +30804,7 @@ module.exports = __webpack_require__(17);
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(2);
+var bind = __webpack_require__(3);
 var Axios = __webpack_require__(19);
 var defaults = __webpack_require__(1);
 
@@ -30839,9 +30839,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(6);
+axios.Cancel = __webpack_require__(7);
 axios.CancelToken = __webpack_require__(34);
-axios.isCancel = __webpack_require__(5);
+axios.isCancel = __webpack_require__(6);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -31184,7 +31184,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(4);
+var createError = __webpack_require__(5);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -31619,7 +31619,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(31);
-var isCancel = __webpack_require__(5);
+var isCancel = __webpack_require__(6);
 var defaults = __webpack_require__(1);
 var isAbsoluteURL = __webpack_require__(32);
 var combineURLs = __webpack_require__(33);
@@ -31779,7 +31779,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(6);
+var Cancel = __webpack_require__(7);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -31875,7 +31875,7 @@ module.exports = function spread(callback) {
 /***/ (function(module, exports, __webpack_require__) {
 
 //Require Module
-app = __webpack_require__(7);
+app = __webpack_require__(2);
 //Define Module
 app.Dashboard = function () {
     var config = app.Config;
@@ -31883,14 +31883,13 @@ app.Dashboard = function () {
     var routes = app.Routes;
     var template = app.Template;
 
-    function getTotalInterceptions() {
-        var url = dataApiUrl + 'stats?total_interceptions=true';
-
+    function getTotalRecords(query) {
+        var url = dataApiUrl + 'stats?' + query;
         return $.get(url);
     }
 
     return {
-        getTotalInterceptions: getTotalInterceptions
+        getTotalRecords: getTotalRecords
     };
 }();
 
@@ -31901,198 +31900,181 @@ module.exports = app.Dashboard;
 /***/ (function(module, exports, __webpack_require__) {
 
 //Require Module
-app = __webpack_require__(7);
+app = __webpack_require__(2);
 //Define Module
 $(document).ready(function () {
 
-    app.Dashboard.getTotalInterceptions();
+  var query = 'total_interceptions=true&total_wet_sampling=true&total_sales=true&total_deals=true&total_teams=true';
+
+  app.Dashboard.getTotalRecords(query).then(function (response) {
+    $('.total-interception-value').html(response.data.total_interceptions);
+    $('.total-wet-sampling-value').html(response.data.total_wet_sampling);
+    $('.total-sales-value').html(response.data.total_sales);
+    $('.total-deals-value').html(response.data.total_deals);
+    $('.total-teams-value').html(response.data.total_teams);
+
+    app.Chart.generatePieChart();
+    app.Chart.generateBarChart(response.data);
+    app.Chart.generateGaugeChart();
+  });
 });
 
 /***/ }),
 /* 38 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+//Require Module
+app = __webpack_require__(2);
+//Define Module
+app.Chart = function () {
+  var config = app.Config;
+  var dataApiUrl = config.getApiUrl();
+  var routes = app.Routes;
+  var template = app.Template;
 
-$(document).ready(function () {
+  function generatePieChart() {
 
-  generatePieChart();
-  generateBarChart();
-  generateGaugeChart();
-});
-
-function generatePieChart() {
-
-  AmCharts.makeChart("donut-chart1", {
-    "type": "pie",
-    "theme": "light",
-    "innerRadius": "80%",
-    "labelsEnabled": false,
-    "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
-    "dataProvider": [{
-      "country": "Lithuania",
-      "litres": 501.9
-    }, {
-      "country": "Czech Republic",
-      "litres": 301.9
-    }, {
-      "country": "Ireland",
-      "litres": 201.1
-    }, {
-      "country": "Germany",
-      "litres": 165.8
-    }, {
-      "country": "Australia",
-      "litres": 139.9
-    }, {
-      "country": "Austria",
-      "litres": 128.3
-    }],
-    "balloonText": "[[value]]",
-    "valueField": "litres",
-    "titleField": "country",
-    "balloon": {
-      "drop": true,
-      "adjustBorderColor": false,
-      "color": "#FFFFFF",
-      "fontSize": 16
-    },
-    "legend": {
-      "position": "absolute",
-      "maxColumns": 1,
-      "top": 20,
-      "align": "right"
-    },
-    "export": {
-      "enabled": false
-    }
-  });
-}
-
-function generateBarChart() {
-
-  var chart = AmCharts.makeChart("chartdiv", {
-    "type": "serial",
-    "theme": "light",
-    "marginRight": 70,
-    "dataProvider": [{
-      "country": "USA",
-      "visits": 3025,
-      "color": "#FF0F00"
-    }, {
-      "country": "China",
-      "visits": 1882,
-      "color": "#FF6600"
-    }, {
-      "country": "Japan",
-      "visits": 1809,
-      "color": "#FF9E01"
-    }, {
-      "country": "Germany",
-      "visits": 1322,
-      "color": "#FCD202"
-    }, {
-      "country": "UK",
-      "visits": 1122,
-      "color": "#F8FF01"
-    }, {
-      "country": "France",
-      "visits": 1114,
-      "color": "#B0DE09"
-    }, {
-      "country": "India",
-      "visits": 984,
-      "color": "#04D215"
-    }, {
-      "country": "Spain",
-      "visits": 711,
-      "color": "#0D8ECF"
-    }, {
-      "country": "Netherlands",
-      "visits": 665,
-      "color": "#0D52D1"
-    }, {
-      "country": "Russia",
-      "visits": 580,
-      "color": "#2A0CD0"
-    }, {
-      "country": "South Korea",
-      "visits": 443,
-      "color": "#8A0CCF"
-    }, {
-      "country": "Canada",
-      "visits": 441,
-      "color": "#CD0D74"
-    }],
-    "valueAxes": [{
-      "axisAlpha": 0,
-      "position": "left",
-      "title": "Visitors from country"
-    }],
-    "startDuration": 1,
-    "graphs": [{
-      "balloonText": "<b>[[category]]: [[value]]</b>",
-      "fillColorsField": "color",
-      "fillAlphas": 0.9,
-      "lineAlpha": 0.2,
-      "type": "column",
-      "valueField": "visits"
-    }],
-    "chartCursor": {
-      "categoryBalloonEnabled": false,
-      "cursorAlpha": 0,
-      "zoomable": false
-    },
-    "categoryField": "country",
-    "categoryAxis": {
-      "gridPosition": "start",
-      "labelRotation": 45
-    },
-    "export": {
-      "enabled": false
-    }
-
-  });
-}
-
-function generateGaugeChart() {
-
-  var gaugeChart = AmCharts.makeChart("gaugechart", {
-    "type": "gauge",
-    "theme": "light",
-    "axes": [{
-      "axisAlpha": 0,
-      "tickAlpha": 0,
+    AmCharts.makeChart("donut-chart1", {
+      "type": "pie",
+      "theme": "light",
+      "innerRadius": "80%",
       "labelsEnabled": false,
-      "startValue": 0,
-      "endValue": 100,
-      "startAngle": 0,
-      "endAngle": 360,
+      "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
+      "dataProvider": [{
+        "country": "Lithuania",
+        "litres": 501.9
+      }, {
+        "country": "Czech Republic",
+        "litres": 301.9
+      }, {
+        "country": "Ireland",
+        "litres": 201.1
+      }, {
+        "country": "Germany",
+        "litres": 165.8
+      }, {
+        "country": "Australia",
+        "litres": 139.9
+      }, {
+        "country": "Austria",
+        "litres": 128.3
+      }],
+      "balloonText": "[[value]]",
+      "valueField": "litres",
+      "titleField": "country",
+      "balloon": {
+        "drop": true,
+        "adjustBorderColor": false,
+        "color": "#FFFFFF",
+        "fontSize": 16
+      },
       "legend": {
         "position": "absolute",
         "maxColumns": 1,
-        "top": 210,
-        "align": "center"
+        "top": 20,
+        "align": "right"
       },
-      "bands": [{
-        "color": "#eee",
+      "export": {
+        "enabled": false
+      }
+    });
+  }
+
+  function generateBarChart(data) {
+    var dataProvider = [];
+    for (key in data) {
+      dataProvider.push({
+        'country': key,
+        'visits': data[key],
+        'color': '#FF0F00'
+      });
+    }
+
+    var chart = AmCharts.makeChart("chartdiv", {
+      "type": "serial",
+      "theme": "light",
+      "marginRight": 70,
+      "dataProvider": dataProvider,
+      "valueAxes": [{
+        "axisAlpha": 0,
+        "position": "left",
+        "title": "Summary"
+      }],
+      "startDuration": 1,
+      "graphs": [{
+        "balloonText": "<b>[[category]]: [[value]]</b>",
+        "fillColorsField": "color",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "type": "column",
+        "valueField": "visits"
+      }],
+      "chartCursor": {
+        "categoryBalloonEnabled": false,
+        "cursorAlpha": 0,
+        "zoomable": false
+      },
+      "categoryField": "country",
+      "categoryAxis": {
+        "gridPosition": "start",
+        "labelRotation": 45
+      },
+      "export": {
+        "enabled": false
+      }
+
+    });
+  }
+
+  function generateGaugeChart() {
+
+    var gaugeChart = AmCharts.makeChart("gaugechart", {
+      "type": "gauge",
+      "theme": "light",
+      "axes": [{
+        "axisAlpha": 0,
+        "tickAlpha": 0,
+        "labelsEnabled": false,
         "startValue": 0,
         "endValue": 100,
-        "radius": "100%",
-        "innerRadius": "85%"
-      }, {
-        "color": "#84b761",
-        "startValue": 0,
-        "endValue": 80,
-        "radius": "100%",
-        "innerRadius": "85%",
-        "balloonText": "90%"
-      }]
-    }],
-    "export": {
-      "enabled": true
-    }
-  });
-}
+        "startAngle": 0,
+        "endAngle": 360,
+        "legend": {
+          "position": "absolute",
+          "maxColumns": 1,
+          "top": 210,
+          "align": "center"
+        },
+        "bands": [{
+          "color": "#eee",
+          "startValue": 0,
+          "endValue": 100,
+          "radius": "100%",
+          "innerRadius": "85%"
+        }, {
+          "color": "#84b761",
+          "startValue": 0,
+          "endValue": 80,
+          "radius": "100%",
+          "innerRadius": "85%",
+          "balloonText": "90%"
+        }]
+      }],
+      "export": {
+        "enabled": true
+      }
+    });
+  }
+
+  return {
+    generatePieChart: generatePieChart,
+    generateBarChart: generateBarChart,
+    generateGaugeChart: generateGaugeChart
+
+  };
+}();
+
+module.exports = app.Chart;
 
 /***/ }),
 /* 39 */
