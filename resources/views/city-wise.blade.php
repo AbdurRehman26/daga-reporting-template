@@ -1,6 +1,6 @@
 @extends('welcome',
 [ 'hide_header' => false, 'hide_footer' => true, ])
-@section('title', 'Ads')
+@section('title', 'City wise')
 @section('class', 'skin-blue sidebar-mini layout-boxed')
 @section('content')
 

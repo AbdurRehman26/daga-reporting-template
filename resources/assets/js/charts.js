@@ -8,8 +8,29 @@
     const template = app.Template;
 
 
-    function generatePieChart(){
+    function generatePieChart(data){
 
+      var  tarangValue = 0;
+      let totalValue = 0;
+
+      let dataProvider = [];
+
+      for(key in data){
+
+        if(data[key]['previous_usage'] == 'Tarang'){
+          tarangValue = data[key].count;
+        }else{
+          totalValue += data[key].count;
+        }
+
+        dataProvider.push({
+          "previous_usage" : data[key]['previous_usage'],
+          "count" : data[key].count
+        });
+
+      }
+
+      let percentageValue = Math.round((tarangValue/totalValue) * 100);
 
       AmCharts.makeChart("donut-chart1", {
         "type": "pie",
@@ -17,28 +38,21 @@
         "innerRadius": "80%",
         "labelsEnabled": false,
         "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
-        "dataProvider": [{
-          "country": "Lithuania",
-          "litres": 501.9
-        }, {
-          "country": "Czech Republic",
-          "litres": 301.9
-        }, {
-          "country": "Ireland",
-          "litres": 201.1
-        }, {
-          "country": "Germany",
-          "litres": 165.8
-        }, {
-          "country": "Australia",
-          "litres": 139.9
-        }, {
-          "country": "Austria",
-          "litres": 128.3
-        }],
+        "dataProvider": dataProvider,
         "balloonText": "[[value]]",
-        "valueField": "litres",
-        "titleField": "country",
+        "valueField": "count",
+        "titleField": "previous_usage",
+        "allLabels": [{
+          "text": "Tarang",
+          "align": "center",
+          "bold": true,
+          "y": 150
+        }, {
+          "text": percentageValue+"%",
+          "align": "center",
+          "bold": false,
+          "y": 180
+        }],
         "balloon": {
           "drop": true,
           "adjustBorderColor": false,
@@ -47,26 +61,29 @@
         },
         "legend": {
           "position": "absolute",
-          "maxColumns": 1,
+          "maxColumns": 2,
           "top": 20,
           "align": "right"
         },
         "export": {
-          "enabled": false
+          "enabled": true
         }
       });
-
 
     }
 
     function generateBarChart(data){
       let dataProvider = [];
       for(key in data){
-        dataProvider.push({
-          'country' : key,
-          'visits' : data[key],
-          'color' : '#FF0F00'
-        })
+        if(key !== 'total_teams' && key !== 'total_no_response' ){
+
+          dataProvider.push({
+            'country' : key.replace('_' , ' '),
+            'visits' : data[key],
+            'color' : '#FF0F00'
+          })
+          
+        }
       }
 
 
@@ -101,7 +118,7 @@
           "labelRotation": 45
         },
         "export": {
-          "enabled": false
+          "enabled": true
         }
 
       });
@@ -109,44 +126,57 @@
     }
 
 
-    function generateGaugeChart(){
 
-      var gaugeChart = AmCharts.makeChart("gaugechart", {
-        "type": "gauge",
+    function generateGaugeChart(data){
+
+      var  tarangValue = 0;
+      let totalValue = 0;
+
+      let dataProvider = [{
+        'conversion' : 'Tarang',
+        'count' : data.total_wet_sampling
+
+      }];
+
+
+      AmCharts.makeChart("gaugechart", {
+        "type": "pie",
         "theme": "light",
-        "axes": [{
-          "axisAlpha": 0,
-          "tickAlpha": 0,
-          "labelsEnabled": false,
-          "startValue": 0,
-          "endValue": 100,
-          "startAngle": 0,
-          "endAngle": 360,
-          "legend": {
-            "position": "absolute",
-            "maxColumns": 1,
-            "top": 210,
-            "align": "center"
-          },
-          "bands": [{
-            "color": "#eee",
-            "startValue": 0,
-            "endValue": 100,
-            "radius": "100%",
-            "innerRadius": "85%"
-          }, {
-            "color": "#84b761",
-            "startValue": 0,
-            "endValue": 80,
-            "radius": "100%",
-            "innerRadius": "85%",
-            "balloonText": "90%"
-          }]
+        "innerRadius": "80%",
+        "labelsEnabled": false,
+        "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
+        "dataProvider": dataProvider,
+        "balloonText": "[[value]]",
+        "valueField": "count",
+        "titleField": "conversion",
+        "allLabels": [{
+          "text": "conversion",
+          "align": "center",
+          "bold": true,
+          "y": 150
+        }, {
+          "text": data.total_wet_sampling,
+          "align": "center",
+          "bold": false,
+          "y": 180
         }],
+        "balloon": {
+          "drop": true,
+          "adjustBorderColor": false,
+          "color": "#FFFFFF",
+          "fontSize": 16
+        },
+        "legend": {
+          "position": "absolute",
+          "maxColumns": 2,
+          "top": 20,
+          "align": "right"
+        },
         "export": {
           "enabled": true
         }
       });
+
 
     }
 

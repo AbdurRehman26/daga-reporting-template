@@ -18,3 +18,5 @@ Route::get('/team-wise', 'HomeController@teamWise')->name('team.wise');
 Route::get('/city-wise', 'HomeController@cityWise')->name('city.wise');
 
 Route::get('/location-wise', 'HomeController@locationWise')->name('location.wise');
+
+Route::get('/test', 'Api\V1\StatsController@getTotalRecords');

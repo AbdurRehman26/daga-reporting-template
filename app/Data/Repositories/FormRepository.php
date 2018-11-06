@@ -46,12 +46,30 @@ class FormRepository extends AbstractRepository implements RepositoryContract
 
         $this->builder = $this->model;
 
+        if(!empty($input['created_at'])){
+
+            $created_at = Carbon::parse($input['created_at'])->toDateTimeString();    
+            
+            $this->builder = $this->builder->where('created_at' , $created_at);
+
+        }
+
+
+        if(empty($input['created_at'])){
+
+            $created_at = Carbon::parse('29-10-2018')->toDateTimeString();    
+            
+            $this->builder = $this->builder->whereBetween('created_at' , [ $created_at , Carbon::now()->toDateTimeString()]);
+
+        }
+
+
         if(!empty($input['total_interceptions'])){
             $data['total_interceptions'] = $this->builder->count();
         }
         
         if(!empty($input['total_wet_sampling'])){
-            $data['total_wet_sampling'] = $this->builder->sum('tarang_sampling_quantity');
+            $data['total_wet_sampling'] = $this->builder->sum('tarang_sampling_quantity');;
         }
 
         if(!empty($input['total_sales'])){
@@ -63,11 +81,46 @@ class FormRepository extends AbstractRepository implements RepositoryContract
         }
 
         if(!empty($input['total_teams'])){
-            $data['total_teams'] = 6;//$this->builder->groupBy('ba_id')->count();
+            $data['total_teams'] = \App\Data\Models\Team::count();//$this->builder->groupBy('ba_id')->count();
         }
 
-        return $data;
-        
-    }
+            $data['total_no_response'] = $this->builder->where('no_response' , 1)->count();//;
 
-}
+            return $data;
+
+        }
+
+
+
+        public function getBrandUsage($input)
+        {
+            $data = [];
+
+            $this->builder = $this->model;
+
+            if(!empty($input['created_at'])){
+
+                $created_at = Carbon::parse($input['created_at'])->toDateTimeString();    
+                
+                $this->builder = $this->builder->where('created_at' , $created_at);
+
+            }
+
+
+            if(empty($input['created_at'])){
+
+                $created_at = Carbon::parse('29-10-2018')->toDateTimeString();    
+                
+                $this->builder = $this->builder->whereBetween('created_at' , [ $created_at , Carbon::now()->toDateTimeString()]);
+
+            }
+
+
+            $data = $this->builder->where('previous_usage' , '<>' , "")->where('previous_usage' , '<>', 'none')->
+            groupBy('previous_usage')->select('previous_usage' , \DB::raw('count(id) as count'))->get();
+
+            return $data;
+
+        }
+
+    }

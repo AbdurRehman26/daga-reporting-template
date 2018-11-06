@@ -9,6 +9,7 @@ app.Config = (function () {
     let token = "";
     let actionId;
     let actionType = "";
+    let googleApiKey  = 'AIzaSyDdcUDKZOfYStkCC6AOz0utjI11D9LUgjM';
 
     let configObject = {
         getApiUrl: () => apiUrl,
@@ -16,6 +17,9 @@ app.Config = (function () {
         getAppUrl: () => appUrl,
 
         getToken: () => token,
+        
+        getGoogleAPIKey: () => googleApiKey,
+
 
         setToken: v => {
             token = v;

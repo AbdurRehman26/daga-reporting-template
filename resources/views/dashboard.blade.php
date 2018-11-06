@@ -1,6 +1,6 @@
 @extends('welcome',
 [ 'hide_header' => false, 'hide_footer' => true, ])
-@section('title', 'Ads')
+@section('title', 'Summary')
 @section('class', 'skin-blue sidebar-mini layout-boxed')
 @section('content')
 
@@ -14,11 +14,11 @@
     <div class="row col-md-12">
       <div class="col-md-6 form-group">
         <label>Select date:</label>
-        <input type="date" class="form-control">
+        <input min="2018-10-29" id="filter-date" type="date" class="form-control">
       </div>
       <div class="col-md-2 form-group">
         <label></label>
-        <button type="button" class="btn btn-success form-control">Apply</button>
+        <button id="apply-search-btn" type="button" class="btn btn-success form-control">Apply</button>
       </div>
 
     </div>
@@ -30,8 +30,8 @@
   <section class="content">
     <div class="row">
 
-      <div class="col-md-9">  
-        <div class="col-md-6">
+      <div class="col-md-12">  
+        <div class="col-md-7">
           <!-- AREA CHART -->
           <div class="box box-primary">
             <div class="box-header with-border">
@@ -49,7 +49,7 @@
           <!-- /.box -->
         </div>
         <!-- /.col (LEFT) -->
-        <div class="col-md-6">
+        <div class="col-md-5">
           <!-- LINE CHART -->
           <div class="box box-primary">
             <div class="box-header with-border">
@@ -60,28 +60,8 @@
             <div class="box-body">
 
               <div id="gaugechart"></div> 
-
             </div>
-            <!-- /.box-body -->
-          </div>
 
-          <!-- /.box -->
-        </div>
-
-        
-        <div class="col-md-12">
-          <!-- LINE CHART -->
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Overall Activity Summary:</h3>
-              <div class="box-tools pull-right">
-              </div>
-            </div>
-            <div class="box-body">
-
-              <div id="chartdiv"></div>
-
-            </div>
             <!-- /.box-body -->
           </div>
 
@@ -91,6 +71,26 @@
 
       </div>
       <!-- /.col (RIGHT) -->
+
+
+      <div class="col-md-9">
+        <!-- LINE CHART -->
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Overall Activity Summary:</h3>
+            <div class="box-tools pull-right">
+            </div>
+          </div>
+          <div class="box-body">
+
+            <div id="chartdiv"></div>
+
+          </div>
+          <!-- /.box-body -->
+        </div>
+
+        <!-- /.box -->
+      </div>
 
       <div class="col-md-3">
 
@@ -112,7 +112,7 @@
 
         <div class="small-box bg-aqua">
           <div class="inner">
-          <h3 class="total-sales-value"></h3>
+            <h3 class="total-sales-value"></h3>
 
             <p>Total Sales</p>
           </div>
@@ -122,29 +122,38 @@
           <div class="inner">
             <h3 class="total-deals-value"></h3
 
-            <p>Total Deals Sold</p>
+              <p>Total Deals Sold</p>
+            </div>
           </div>
-        </div>
 
-        <div class="small-box bg-aqua">
-          <div class="inner">
-            <h3 class="total-teams-value"></h3>
-            <p>Number of teams working</p>
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3 class="total-no-response-value"></h3>
+              <p>No Response</p>
+            </div>
           </div>
+
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3 class="total-teams-value"></h3>
+              <p>Number of teams working</p>
+            </div>
+          </div>
+
+
+
         </div>
 
       </div>
+      <!-- /.row -->
 
-    </div>
-    <!-- /.row -->
-
-  </section>
-  <!-- /.content -->
-</div>
+    </section>
+    <!-- /.content -->
+  </div>
 
 
 
 
 
 
-@endsection
+  @endsection

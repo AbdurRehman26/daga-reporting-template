@@ -23,12 +23,28 @@ class StatsController extends Controller
 
     public function getTotalRecords(Request $request)
     {
+
+        $input = $request->only(
+            'total_interceptions', 'total_wet_sampling', 'created_at',
+            'total_sales', 'total_deals', 'total_teams'
+        );
+
+        $data = $this->_repository->getTotalByCriteria($input);
+        return response()->json(['success' => true, 'data' => $data], 200);
+    }   
+
+    public function getBrandUsage(Request $request)
+    {
+
     	$input = $request->only(
     		'total_interceptions', 'total_wet_sampling',
     		'total_sales', 'total_deals', 'total_teams'
     	);
 
-    	$data = $this->_repository->getTotalByCriteria($input);
+    	$data = $this->_repository->getBrandUsage($input);
     	return response()->json(['success' => true, 'data' => $data], 200);
     }	
+
+
+    
 }
