@@ -33,4 +33,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // });
 Route::get('stats', ['as' => 'stats.interceptions', 'uses' => 'Api\V1\StatsController@getTotalRecords']);
+
 Route::get('stats-brand-usage', ['as' => 'stats.brand.usage', 'uses' => 'Api\V1\StatsController@getBrandUsage']);
+
+Route::get('daily-target', ['as' => 'target.daily', 'uses' => 'Api\V1\StatsController@dailyTargets']);
+
+Route::get('team', ['as' => 'team.index', 'uses' => 'Api\V1\StatsController@getTeams']);
+
+Route::get('location-values', ['as' => 'location.values', 'uses' => 'Api\V1\StatsController@getLocationValues']);
+

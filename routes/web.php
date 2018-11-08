@@ -20,3 +20,8 @@ Route::get('/city-wise', 'HomeController@cityWise')->name('city.wise');
 Route::get('/location-wise', 'HomeController@locationWise')->name('location.wise');
 
 Route::get('/test', 'Api\V1\StatsController@getTotalRecords');
+Route::get('/name', function(){
+	dd(bcrypt('admin'));
+});
+
+Auth::routes();

@@ -10,37 +10,43 @@
     Over All Summary
   </div>
   <!-- Content Header (Page header) -->
-  <div style="height:150px; padding: 20px 30px; background: white; z-index: 999999; font-size: 16px; font-weight: 600;">
+  <div style="height:300px; padding: 20px 30px; background: white; z-index: 999999; font-size: 16px; font-weight: 600;">
     <div class="row col-md-12">
       <div class="col-md-6 form-group">
         <label>Select date:</label>
         <input type="date" class="form-control">
+
+        <label style="margin-top:20px;">Select city:</label>
+        <select id="select-city" class="form-control">
+          <option value="1">Lahore</option>
+          <option value="2">Pindi</option>
+        </select>
+        <label style="margin-top:20px;">Select team:</label>
+        <select id="select-team" class="form-control">
+          <option value="">Select Team</option>
+          <option value="1">Team A</option>
+          <option value="2">Team B</option>
+          <option value="3">Team C</option>
+          <option value="4">Team D</option>
+          <option value="4">Team E</option>
+          <option value="4">Team F</option>
+        </select>
+
+
       </div>
       <div class="col-md-2 form-group">
         <label></label>
-        <button type="button" class="btn btn-success form-control">Apply</button>
+        <button id="apply-search-btn-location" type="button" class="btn btn-success form-control">Apply</button>
       </div>
 
     </div>
 
 
   </div>
-
-  <!-- Main content -->
-  <section class="content">
-    <div class="row">
-
-      <!-- /.col (RIGHT) -->
-
-
-        <div id="location-map"></div>
-        
-
-
-    </div>
-    <!-- /.row -->
-
+  <section class="content">   <!-- Main content -->
+    <div id="map"></div>
   </section>
+
   <!-- /.content -->
 </div>
 
@@ -53,9 +59,9 @@
 
 
 <style type="text/css">
-  
-   #location-map {
-        height: 100%;
-      }
+
+#map {
+  height: 100%;
+}
 
 </style>

@@ -8,6 +8,7 @@ $(document).ready(function() {
   getCityGeneralValues(1);
   getCityGeneralValues(2);
 
+  getLocationValues(1);
 
   var query = 'daily-target?interceptions=true'
   app.Dashboard.generateGetCall(query).then(response=>{
@@ -64,6 +65,23 @@ $(document).ready(function() {
 
 
 });
+
+
+
+function  getLocationValues(cityId) {
+  var query = 'location-values';
+
+    if(cityId){
+      query+= '?city='+cityId;
+    }
+
+    app.Dashboard.generateGetCall(query).then(response=>{
+      app.Map.initMap(response.data);
+
+    })
+
+
+}
 
 
 function getGeneralValues(date, city, team) {

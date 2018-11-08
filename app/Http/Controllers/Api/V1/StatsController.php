@@ -26,7 +26,7 @@ class StatsController extends Controller
 
         $input = $request->only(
             'total_interceptions', 'total_wet_sampling', 'created_at',
-            'total_sales', 'total_deals', 'total_teams'
+            'total_sales', 'total_deals', 'total_teams' , 'city', 'team'
         );
 
         $data = $this->_repository->getTotalByCriteria($input);
@@ -37,13 +37,45 @@ class StatsController extends Controller
     {
 
     	$input = $request->only(
-    		'total_interceptions', 'total_wet_sampling',
-    		'total_sales', 'total_deals', 'total_teams'
+            'total_interceptions', 'total_wet_sampling', 'created_at',
+            'total_sales', 'total_deals', 'total_teams' , 'city', 'team'
     	);
 
     	$data = $this->_repository->getBrandUsage($input);
     	return response()->json(['success' => true, 'data' => $data], 200);
     }	
+
+
+    public function getTeams()
+    {
+        $data = \App\Data\Models\Team::all();
+        return response()->json(['success' => true, 'data' => $data], 200);
+
+    }
+
+
+    public function dailyTargets(Request $request)
+    {
+        $input = $request->only(
+            'quantity', 'total_sampling_quantity', 'interceptions'
+        );
+
+        $data = $this->_repository->dailyTargets($input);
+        return response()->json(['success' => true, 'data' => $data], 200);
+
+    }
+
+    public function getLocationValues(Request $request)
+    {
+        $input = $request->only(
+            'city'
+        );
+
+        $data = $this->_repository->getLocationValues($input);
+        return response()->json(['success' => true, 'data' => $data], 200);
+
+    }
+
 
 
     

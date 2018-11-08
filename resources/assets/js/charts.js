@@ -29,9 +29,6 @@
         });
 
       }
-      console.log('total value :' , totalValue)
-      console.log('tarang value :' , tarangValue)
-
 
       var percentageValue = Math.round((tarangValue/totalValue) * 100);
 
@@ -293,7 +290,7 @@
     }
 
     function generateLineChart(data, chartId) {
-      console.log(data , chartId , data);
+      
       let dataProvider = [];
       for(key in data){
         dataProvider.push({

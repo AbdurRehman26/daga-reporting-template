@@ -46,6 +46,26 @@ class FormRepository extends AbstractRepository implements RepositoryContract
 
         $this->builder = $this->model;
 
+        if(!empty($input['team'])){
+            $teamMembers = \App\Data\Models\TeamMember::where('team' , $input['team'])->pluck('name')->toArray();
+
+            $this->builder = $this->builder->whereIn('ba_id', $teamMembers);
+
+
+        }   
+
+
+        if(!empty($input['city'])){
+
+            $teamMembers = \App\Data\Models\TeamMember::where('city' , $input['city'])->pluck('name')->toArray();
+
+            $this->builder = $this->builder->whereIn('ba_id', $teamMembers);
+
+
+        }
+
+
+
         if(!empty($input['created_at'])){
 
             $created_at = Carbon::parse($input['created_at'])->toDateTimeString();    
@@ -106,6 +126,25 @@ class FormRepository extends AbstractRepository implements RepositoryContract
 
             }
 
+            if(!empty($input['team'])){
+                $teamMembers = \App\Data\Models\TeamMember::where('team' , $input['team'])->pluck('name')->toArray();
+
+                $this->builder = $this->builder->whereIn('ba_id', $teamMembers);
+
+
+            }
+
+
+
+            if(!empty($input['city'])){
+
+                $teamMembers = \App\Data\Models\TeamMember::where('city' , $input['city'])->pluck('name')->toArray();
+
+                $this->builder = $this->builder->whereIn('ba_id', $teamMembers);
+
+
+            }
+
 
             if(empty($input['created_at'])){
 
@@ -122,5 +161,59 @@ class FormRepository extends AbstractRepository implements RepositoryContract
             return $data;
 
         }
+
+
+        public function dailyTargets($input)
+        {
+            $data = [];
+
+            $this->builder = $this->model;
+            if(!empty($input['quantity'])){
+
+                $data = $this->builder->groupBy('created_at_date')->select(\DB::raw('date(created_at) as created_at_date') , \DB::raw('sum(quantity) as count'))->get()->toArray();
+            }
+
+            if(!empty($input['total_sampling_quantity'])){
+
+                $data = $this->builder->groupBy('created_at_date')->select(\DB::raw('date(created_at) as created_at_date') , \DB::raw('sum(tarang_sampling_quantity) as count'))->get()->toArray();
+            }
+
+            if(!empty($input['interceptions'])){
+
+                $data = $this->builder->groupBy('created_at_date')->select(\DB::raw('date(created_at) as created_at_date') , \DB::raw('count(id) as count'))->get()->toArray();
+            }
+
+            return $data;
+
+        }
+
+        public function getLocationValues($input)
+        {
+            $this->builder = $this->model;
+            $data = [];
+
+            if(!empty($input['city'])){
+
+                $teamMembers = \App\Data\Models\TeamMember::where('city' , $input['city'])->pluck('name')->toArray();
+
+                $this->builder = $this->builder->whereIn('ba_id', $teamMembers);
+
+            }
+
+            if(empty($input['created_at'])){
+
+                $created_at = Carbon::parse('29-10-2018')->toDateTimeString();    
+
+                $this->builder = $this->builder->whereBetween('created_at' , [ $created_at , Carbon::now()->toDateTimeString()]);
+
+            }
+
+
+            $data = $this->builder->get();
+
+            return $data;
+
+        }
+
 
     }

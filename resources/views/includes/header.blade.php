@@ -14,24 +14,10 @@
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         
-        <li>
-          <a href="{{ route('logout') }}"
-          onclick="event.preventDefault();
-          document.getElementById('logout-form').submit();">
-          Logout
-        </a>
-
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-          {{ csrf_field() }}
-        </form>
-      </li>
-
-
-
-      <li class="dropdown user user-menu">
-        <img src="https://www.ialm.academy/upload/user-dummy.png" class="user-image" alt="User Image">
-      </li>
-    </ul>
-  </div>
-</nav>
+        <li class="dropdown user user-menu">
+          <img src="https://www.ialm.academy/upload/user-dummy.png" class="user-image" alt="User Image">
+        </li>
+      </ul>
+    </div>
+  </nav>
 </header>

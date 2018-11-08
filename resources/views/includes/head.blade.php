@@ -8,10 +8,9 @@
     <link href="{{url(mix('css/app.css'))}}" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{{asset('images/favicon.png')}}" /> 
     <!-- map key -->
-
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdcUDKZOfYStkCC6AOz0utjI11D9LUgjM"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdcUDKZOfYStkCC6AOz0utjI11D9LUgjM&callback=initMap"
     async defer></script>
+
 
     <script src="{{url(mix('js/admin-app.js'))}}"></script>
 
