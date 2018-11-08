@@ -15,7 +15,13 @@ app.Dashboard = (() => {
 
 
     function getBrandUsage(query){
-        let url = dataApiUrl  + 'stats-brand-usage';
+        let url = dataApiUrl  + 'stats-brand-usage?'+ query;
+        return $.get(url);
+    }
+
+
+    function generateGetCall(query){
+        let url = dataApiUrl  + query;
         return $.get(url);
     }
 
@@ -23,6 +29,7 @@ app.Dashboard = (() => {
     return {
         getTotalRecords: getTotalRecords,
         getBrandUsage: getBrandUsage,
+        generateGetCall : generateGetCall
     }
 })();
 

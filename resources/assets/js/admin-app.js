@@ -1,7 +1,7 @@
 
 //Base Framework
 require('./bootstrap');
-
+require('amcharts3');
 
 $(document).ready(function() {
 

@@ -35,14 +35,41 @@
     height: 318px;
 }
 
+#chartdiv , #chartdiv-lahore, #chartdiv-pindi{
+	width: 800px;
+	height: 500px;
+	float: left;
+}
 
-#chartdiv{
+#line-chart1 , #line-chart2{
 	width: 500px;
 	height: 500px;
 	float: left;
 }
 
+ #line-chart3{
+	width: 800px;
+	height: 500px;
+	float: left;
+
+ }
+
 
 .amcharts-chart-div a[href="http://www.amcharts.com"] {
 	display: none !important;
+}
+
+
+
+#donut-chart1 .amcharts-legend-value{
+	display: none;
+}
+
+.navbar-nav>.user-menu .user-image {
+    float: left;
+    width: 56px;
+    height: 52px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-top: -2px;
 }
