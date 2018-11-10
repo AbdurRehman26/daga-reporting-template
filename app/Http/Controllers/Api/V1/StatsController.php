@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Api\V1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Data\Repositories\FormRepository;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class StatsController extends Controller
 {
@@ -26,7 +30,8 @@ class StatsController extends Controller
 
         $input = $request->only(
             'total_interceptions', 'total_wet_sampling', 'created_at',
-            'total_sales', 'total_deals', 'total_teams' , 'city', 'team'
+            'total_sales', 'total_deals', 'total_teams' , 'city', 'team',
+            'activity'
         );
 
         $data = $this->_repository->getTotalByCriteria($input);
@@ -38,17 +43,18 @@ class StatsController extends Controller
 
     	$input = $request->only(
             'total_interceptions', 'total_wet_sampling', 'created_at',
-            'total_sales', 'total_deals', 'total_teams' , 'city', 'team'
-    	);
+            'total_sales', 'total_deals', 'total_teams' , 'city', 'team',
+            'activity'
+        );
 
     	$data = $this->_repository->getBrandUsage($input);
     	return response()->json(['success' => true, 'data' => $data], 200);
     }	
 
 
-    public function getTeams()
+    public function getTeamMembers()
     {
-        $data = \App\Data\Models\Team::all();
+        $data = \App\Data\Models\TeamMember::all();
         return response()->json(['success' => true, 'data' => $data], 200);
 
     }
@@ -57,7 +63,8 @@ class StatsController extends Controller
     public function dailyTargets(Request $request)
     {
         $input = $request->only(
-            'quantity', 'total_sampling_quantity', 'interceptions'
+            'quantity', 'total_sampling_quantity', 'interceptions',
+            'activity'
         );
 
         $data = $this->_repository->dailyTargets($input);
@@ -68,7 +75,8 @@ class StatsController extends Controller
     public function getLocationValues(Request $request)
     {
         $input = $request->only(
-            'city'
+            'city', 'created_at' , 'ba_id',
+            'activity'
         );
 
         $data = $this->_repository->getLocationValues($input);
@@ -77,6 +85,58 @@ class StatsController extends Controller
     }
 
 
+    public function downloadSummary(Request $request)
+    {
+        $input = $request->only(
+            'total_interceptions', 'total_wet_sampling', 'created_at',
+            'total_sales', 'total_deals', 'total_teams' , 'city', 'team',
+            'activity'
+        );
+
+        if($input['activity'] == 1){
+            $input['activity'] = 'activity_1-';
+        }else{
+
+            $input['activity'] = 'activity_2-';
+        }
+
+        $data = $this->_repository->getTotalByCriteria($input);
+        
+        return Excel::download(new CollectionExport($data) , 'summary.csv');
+
+
+    }
 
     
+}
+
+
+class CollectionExport implements FromCollection, WithHeadings
+{
+    use Exportable;
+    public $data;
+
+    public function __construct($data){
+        $this->data = $data;
+    }
+
+
+    public function collection()
+    {
+        $data = $this->data;
+        return collect([$data]);
+    }
+
+    public function headings(): array
+    {
+        return [
+            'Total Interceptions',
+            'Total Wet Sampling',
+            'Total Deals',
+            'Total Teams',
+            'Total No Response',
+            'Total Sales',
+        ];
+    }
+
 }

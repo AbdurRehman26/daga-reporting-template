@@ -38,7 +38,7 @@ Route::get('stats-brand-usage', ['as' => 'stats.brand.usage', 'uses' => 'Api\V1\
 
 Route::get('daily-target', ['as' => 'target.daily', 'uses' => 'Api\V1\StatsController@dailyTargets']);
 
-Route::get('team', ['as' => 'team.index', 'uses' => 'Api\V1\StatsController@getTeams']);
+Route::get('team-member', ['as' => 'team.index', 'uses' => 'Api\V1\StatsController@getTeamMembers']);
 
 Route::get('location-values', ['as' => 'location.values', 'uses' => 'Api\V1\StatsController@getLocationValues']);
 

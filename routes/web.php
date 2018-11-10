@@ -19,6 +19,11 @@ Route::get('/city-wise', 'HomeController@cityWise')->name('city.wise');
 
 Route::get('/location-wise', 'HomeController@locationWise')->name('location.wise');
 
+Route::get('/download/summary', 'Api\V1\StatsController@downloadSummary')->name('download.summary');
+
+
+
+
 Route::get('/test', 'Api\V1\StatsController@getTotalRecords');
 Route::get('/name', function(){
 	dd(bcrypt('admin'));

@@ -8,7 +8,7 @@
     const template = app.Template;
 
 
-    function generatePieChart(data){
+    function generatePieChart(data, activity){
 
       var  tarangValue = 0;
       let totalValue = 0;
@@ -32,7 +32,7 @@
 
       var percentageValue = Math.round((tarangValue/totalValue) * 100);
 
-      AmCharts.makeChart("donut-chart1", {
+      AmCharts.makeChart(activity+"donut-chart1", {
         "type": "pie",
         "theme": "light",
         "labelsEnabled": false,
@@ -64,16 +64,26 @@
           "align": "right"
         },
         "export": {
-          "enabled": true
-        }
-      });
+          "enabled": true,
+          "menu": [{
+            "format": "PNG",
+            "class": "export-main",
+            "multiplier": 2,
+            "content": [ "Saved from:", window.location.href, {
+              "image": "reference",
+        "fit": [ 523.28, 769.89 ] // fit image to A4
+      } ]
+    }]
+  }
+});
 
     }
 
-    function generateBarChart(data){
+    function generateBarChart(data, activity){
+
       let dataProvider = [];
       for(key in data){
-        if(key !== 'total_teams' && key !== 'total_no_response' ){
+        if(key !== 'total_teams'){
 
           var color = app.Chart.getColorValue(key);
 
@@ -88,7 +98,7 @@
 
 
 
-      var chart = AmCharts.makeChart("chartdiv", {
+      var chart = AmCharts.makeChart(activity+"chartdiv", {
         "type": "serial",
         "theme": "light",
         "marginRight": 70,
@@ -118,16 +128,26 @@
           "labelRotation": 45
         },
         "export": {
-          "enabled": true
-        }
+          "enabled": true,
+          "menu": [{
+            "format": "PNG",
+            "class": "export-main",
+            "multiplier": 2,
+            "content": [ "Saved from:", window.location.href, {
+              "image": "reference",
+        "fit": [ 523.28, 769.89 ] // fit image to A4
+      } ]
+    }]
+  }
 
-      });
+
+});
 
     }
 
 
 
-    function generateGaugeChart(data){
+    function generateGaugeChart(data, activity){
 
       var  tarangValue = 0;
       let totalValue = 0;
@@ -139,7 +159,7 @@
       }];
 
 
-      AmCharts.makeChart("gaugechart", {
+      AmCharts.makeChart(activity+"gaugechart", {
         "type": "pie",
         "theme": "light",
         "innerRadius": "80%",
@@ -173,17 +193,27 @@
           "align": "right"
         },
         "export": {
-          "enabled": true
-        }
-      });
+          "enabled": true,
+          "menu": [{
+            "format": "PNG",
+            "class": "export-main",
+            "multiplier": 2,
+            "content": [ "Saved from:", window.location.href, {
+              "image": "reference",
+        "fit": [ 523.28, 769.89 ] // fit image to A4
+      } ]
+    }]
+  }
+
+});
 
 
     }
 
-    function generateLahoreBarChart(data){
+    function generateLahoreBarChart(data, activity){
       let dataProvider = [];
       for(key in data){
-        if(key !== 'total_teams' && key !== 'total_no_response' ){
+        if(key !== 'total_teams' ){
           var color = app.Chart.getColorValue(key);
 
 
@@ -198,7 +228,7 @@
 
 
 
-      var chart = AmCharts.makeChart("chartdiv-lahore", {
+      var chart = AmCharts.makeChart(activity+"chartdiv-lahore", {
         "type": "serial",
         "theme": "light",
         "marginRight": 70,
@@ -228,17 +258,26 @@
           "labelRotation": 45
         },
         "export": {
-          "enabled": true
-        }
+          "enabled": true,
+          "menu": [{
+            "format": "PNG",
+            "class": "export-main",
+            "multiplier": 2,
+            "content": [ "Saved from:", window.location.href, {
+              "image": "reference",
+        "fit": [ 523.28, 769.89 ] // fit image to A4
+      } ]
+    }]
+  }
 
-      });
+});
 
     }
 
-    function generatePindiBarChart (data){
+    function generatePindiBarChart (data, activity){
       let dataProvider = [];
       for(key in data){
-        if(key !== 'total_teams' && key !== 'total_no_response' ){
+        if(key !== 'total_teams' ){
           var color = app.Chart.getColorValue(key);
 
           dataProvider.push({
@@ -252,7 +291,7 @@
 
 
 
-      var chart = AmCharts.makeChart("chartdiv-pindi", {
+      var chart = AmCharts.makeChart(activity+"chartdiv-pindi", {
         "type": "serial",
         "theme": "light",
         "marginRight": 70,
@@ -282,22 +321,28 @@
           "labelRotation": 45
         },
         "export": {
-          "enabled": true
-        }
+          "enabled": true,
+          "menu": [{
+            "format": "PNG",
+            "class": "export-main",
+            "multiplier": 2,
+            "content": [ "Saved from:", window.location.href, {
+              "image": "reference",
+        "fit": [ 523.28, 769.89 ] // fit image to A4
+      } ]
+    }]
+  }
 
-      });
+});
 
     }
 
-    function generateLineChart(data, chartId) {
-      
-      let dataProvider = [];
-      for(key in data){
-        dataProvider.push({
-          'year' : data[key].created_at_date,
-          'value' : parseInt(data[key].count)
-        })
-      }
+    function generateLineChart(data, chartId, activity) {
+
+      var accumulatedValue = 0;
+      var accumulatedTarget = 0;
+
+      let targetDataProvider = []
 
       var thresholdValue = 0;
 
@@ -316,98 +361,146 @@
 
 
 
-      var chart = AmCharts.makeChart(chartId, {
+      let dataProvider = [];
+
+      var startDate = data[0].created_at_date;
+      var endDate = data[data.length-1].created_at_date;
+
+
+      console.log('start date' + startDate ,'end date' + endDate);
+
+      for(key in data){
+        accumulatedValue += parseInt(data[key].count);
+
+        dataProvider.push({
+          'date' : data[key].created_at_date,
+          'value' : accumulatedValue
+        });
+
+        accumulatedTarget += thresholdValue;
+
+      } 
+
+
+
+      targetDataProvider = [{
+        "finalDate": "2018-10-11",
+        "finalValue": 19,
+        "initialDate": "2018-10-02",
+        "initialValue": 10,
+        "lineColor": "#CC0000"
+      }]
+
+
+
+      var chart = AmCharts.makeChart(activity+chartId, {
         "type": "serial",
         "theme": "light",
-        "marginTop":0,
-        "marginRight": 80,
+        "marginRight":80,
+        "autoMarginOffset":20,
+        "dataDateFormat": "YYYY-MM-DD HH:NN",
         "dataProvider": dataProvider,
         "valueAxes": [{
           "axisAlpha": 0,
+          "guides": [{
+            "fillAlpha": 0.1,
+            "fillColor": "#888888",
+            "lineAlpha": 0,
+            "toValue": 16,
+            "value": 10
+          }],
           "position": "left",
-          "maximum" : thresholdValue
+          "tickLength": 0
         }],
         "graphs": [{
-          "id":"g1",
-          "balloonText": "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
+          "balloonText": "[[category]]<br><b><span style='font-size:14px;'>value:[[value]]</span></b>",
           "bullet": "round",
-          "bulletSize": 8,
-          "lineColor": "#d1655d",
-          "lineThickness": 2,
-          "negativeLineColor": "#637bb6",
-          "type": "smoothedLine",
+          "dashLength": 3,
+          "colorField":"color",
           "valueField": "value"
         }],
+        "trendLines": [{
+          "finalDate": startDate+" 12",
+          "finalValue": thresholdValue,
+          "initialDate": endDate+" 12",
+          "initialValue": accumulatedTarget,
+          "lineColor": "#CC0000"
+        }],
         "chartScrollbar": {
-          "graph":"g1",
-          "gridAlpha":0,
-          "color":"#888888",
-          "scrollbarHeight":55,
-          "backgroundAlpha":0,
-          "selectedBackgroundAlpha":0.1,
-          "selectedBackgroundColor":"#888888",
-          "graphFillAlpha":0,
-          "autoGridCount":true,
-          "selectedGraphFillAlpha":0,
-          "graphLineAlpha":0.2,
-          "graphLineColor":"#c2c2c2",
-          "selectedGraphLineColor":"#888888",
-          "selectedGraphLineAlpha":1
-
+          "scrollbarHeight":2,
+          "offset":-1,
+          "backgroundAlpha":0.1,
+          "backgroundColor":"#888888",
+          "selectedBackgroundColor":"#67b7dc",
+          "selectedBackgroundAlpha":1
         },
         "chartCursor": {
-          "categoryBalloonDateFormat": "YYMD",
-          "cursorAlpha": 0,
-          "valueLineEnabled":true,
+          "fullWidth":true,
+          "valueLineEabled":true,
           "valueLineBalloonEnabled":true,
           "valueLineAlpha":0.5,
-          "fullWidth":true
+          "cursorAlpha":0
         },
-        "categoryField": "year",
+        "categoryField": "date",
         "categoryAxis": {
           "parseDates": true,
+          "axisAlpha": 0,
+          "gridAlpha": 0.1,
           "minorGridAlpha": 0.1,
           "minorGridEnabled": true
         },
         "export": {
-          "enabled": true
-        }
-      });
 
-}
+          "enabled": true,
+          "menu": [{
+            "format": "PNG",
+            "class": "export-main",
+            "multiplier": 2,
+            "content": [ "Saved from:", window.location.href, {
+              "image": "reference",
+        "fit": [ 523.28, 769.89 ] // fit image to A4
+      } ]
+    }]
 
-
-function getColorValue(key) {
-  if(key == 'total_interceptions'){
-    return '#EB1C24';
   }
-  if(key == 'total_wet_sampling'){
-    return '#FDBB13';
-  }
-  if(key == 'total_sales'){
-    return '#762B8F';
-  }
-
-  if(key == 'total_deals'){
-    return '#A6CE39';
-  }
-
-  return '#EB1C24';
-
-}
+});
 
 
 
-return {
-  generatePieChart: generatePieChart,
-  generateBarChart: generateBarChart,
-  generateLahoreBarChart: generateLahoreBarChart,
-  generatePindiBarChart: generatePindiBarChart,
-  generateGaugeChart: generateGaugeChart,
-  getColorValue : getColorValue,
-  generateLineChart : generateLineChart
+    }
 
-}
-})();
 
-module.exports = app.Chart;
+    function getColorValue(key) {
+      if(key == 'total_interceptions'){
+        return '#EB1C24';
+      }
+      if(key == 'total_wet_sampling'){
+        return '#FDBB13';
+      }
+      if(key == 'total_sales'){
+        return '#762B8F';
+      }
+
+      if(key == 'total_deals'){
+        return '#A6CE39';
+      }
+
+      return '#EB1C24';
+
+    }
+
+
+
+    return {
+      generatePieChart: generatePieChart,
+      generateBarChart: generateBarChart,
+      generateLahoreBarChart: generateLahoreBarChart,
+      generatePindiBarChart: generatePindiBarChart,
+      generateGaugeChart: generateGaugeChart,
+      getColorValue : getColorValue,
+      generateLineChart : generateLineChart
+
+    }
+  })();
+
+  module.exports = app.Chart;

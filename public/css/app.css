@@ -194,35 +194,35 @@
 	margin-left: 180px;
 }
 
-#donut-chart1, #donut-chart2{
+.donut-charts , #donut-chart1, #donut-chart2{
 	width: 880px;
 	height: 380px;
 	float: right;
 }
 
-#gaugechart{
-    width: 355px;
-    height: 318px;
+.gauge-charts{
+	width: 355px;
+	height: 318px;
 }
 
-#chartdiv , #chartdiv-lahore, #chartdiv-pindi{
+.chartdiv , .chartdiv-lahore, .chartdiv-pindi{
 	width: 800px;
 	height: 500px;
 	float: left;
 }
 
-#line-chart1 , #line-chart2{
+.line-chart{
 	width: 500px;
 	height: 500px;
 	float: left;
 }
 
- #line-chart3{
+.line-chart-big{
 	width: 800px;
 	height: 500px;
 	float: left;
 
- }
+}
 
 
 .amcharts-chart-div a[href="http://www.amcharts.com"] {
@@ -231,17 +231,51 @@
 
 
 
-#donut-chart1 .amcharts-legend-value{
+
+#donut-chart1 .amcharts-legend-value, .donut-charts .amcharts-legend-value{
 	display: none;
 }
 
 .navbar-nav>.user-menu .user-image {
-    float: left;
-    width: 56px;
-    height: 52px;
-    border-radius: 50%;
-    margin-right: 10px;
-    margin-top: -2px;
+	float: left;
+	width: 56px;
+	height: 52px;
+	border-radius: 50%;
+	margin-right: 10px;
+	margin-top: -2px;
+}
+
+.amcharts-main-div {
+	position: initial;
+}
+
+
+.amcharts-export-menu ul {
+	position: absolute;
+	right: 26px;
+	top: -60px;
+}
+
+.amcharts-export-menu ul li a{
+	width: 200px !important;
+	background: indianred !important;
+	border-radius: 8px !important;
+	content: "This text replaces the original.";
+}
+
+
+.amcharts-export-menu .export-main>a, .amcharts-export-menu .export-drawing>a, .amcharts-export-menu .export-delayed-capturing>a {
+	text-indent: 0 !important;
+	text-align: center !important;
+	margin-left: 76px !important;
+	font-weight: bold !important;
+	content: "DOwnload" !important;
+
+}
+
+
+.apply-city-search-button{
+	margin-top: 4px;
 }@charset "UTF-8";
 
 /*!
