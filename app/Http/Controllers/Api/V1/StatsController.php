@@ -76,7 +76,7 @@ class StatsController extends Controller
     {
         $input = $request->only(
             'city', 'created_at' , 'ba_id',
-            'activity'
+            'activity', 'team'
         );
 
         $data = $this->_repository->getLocationValues($input);
@@ -93,15 +93,10 @@ class StatsController extends Controller
             'activity'
         );
 
-        if($input['activity'] == 1){
-            $input['activity'] = 'activity_1-';
-        }else{
-
-            $input['activity'] = 'activity_2-';
-        }
-
         $data = $this->_repository->getTotalByCriteria($input);
         
+        unset($data['conversion_value'] , $data['conversion']);
+
         return Excel::download(new CollectionExport($data) , 'summary.csv');
 
 
@@ -130,12 +125,12 @@ class CollectionExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
+            'Total No Response',
+            'Total Sales',
             'Total Interceptions',
             'Total Wet Sampling',
             'Total Deals',
             'Total Teams',
-            'Total No Response',
-            'Total Sales',
         ];
     }
 

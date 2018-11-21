@@ -34,9 +34,9 @@
               <div class="col-md-6 form-group">
 
                 <label>Select date:</label>
-                <input id="filter-date" type="date" class="form-control">
+                <input type="date" class="filter-date form-control">
                 <label style="margin-top:20px;">Select city:</label>
-                <select id="select-city" class="form-control">
+                <select class="select-city form-control">
                   <option value="">Select City</option>
                   <option value="1">Lahore</option>
                   <option value="2">Rawalpindi</option>
@@ -73,7 +73,7 @@
                 <!-- AREA CHART -->
                 <div class="box box-primary">
                   <div class="box-header with-border">
-                    <h3 class="box-title">Previous Brand Usage :</h3>
+                    <h3 class="box-title">Current Brand Usage :</h3>
                     <div class="box-tools pull-right">
                     </div>
                   </div>
@@ -98,6 +98,8 @@
                   <div class="box-body">
 
                     <div class="gauge-charts" id="activity_1-gaugechart"></div> 
+                    Non-Product users, who have sampled hot TEA made by Product
+
                   </div>
 
                   <!-- /.box-body -->
@@ -209,10 +211,10 @@
             <div class="row col-md-12">
               <div class="col-md-6 form-group">
                 <label>Select date:</label>
-                <input id="filter-date" type="date" class="form-control">
+                <input type="date" class="filter-date form-control">
 
                 <label style="margin-top:20px;">Select city:</label>
-                <select id="select-city" class="form-control">
+                <select class="select-city form-control">
                   <option value="">Select City</option>
                   <option value="1">Lahore</option>
                   <option value="2">Rawalpindi</option>
@@ -242,7 +244,7 @@
                 <!-- AREA CHART -->
                 <div class="box box-primary">
                   <div class="box-header with-border">
-                    <h3 class="box-title">Previous Brand Usage :</h3>
+                    <h3 class="box-title">Current Brand Usage :</h3>
                     <div class="box-tools pull-right">
                     </div>
                   </div>
@@ -267,6 +269,8 @@
                   <div class="box-body">
 
                     <div class="gauge-charts" id="activity_2-gaugechart"></div> 
+                    Non-Product users, who have sampled hot TEA made by Product
+
                   </div>
 
                   <!-- /.box-body -->

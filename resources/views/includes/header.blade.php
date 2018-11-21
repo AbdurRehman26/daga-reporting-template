@@ -15,7 +15,7 @@
       <ul class="nav navbar-nav">
         
         <li class="dropdown user user-menu">
-          <img src="https://www.ialm.academy/upload/user-dummy.png" class="user-image" alt="User Image">
+          <!-- <img src="https://www.ialm.academy/upload/user-dummy.png" class="user-image" alt="User Image"> -->
         </li>
       </ul>
     </div>

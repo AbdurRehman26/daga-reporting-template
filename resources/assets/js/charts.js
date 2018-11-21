@@ -68,7 +68,10 @@
           "menu": [{
             "format": "PNG",
             "class": "export-main",
+            "label": "Download",
             "multiplier": 2,
+            'text' : "Download",
+            'label' : "Download",
             "content": [ "Saved from:", window.location.href, {
               "image": "reference",
         "fit": [ 523.28, 769.89 ] // fit image to A4
@@ -83,7 +86,7 @@
 
       let dataProvider = [];
       for(key in data){
-        if(key !== 'total_teams'){
+        if(key !== 'total_teams' && key !== 'conversion_value' && key !== 'conversion'){
 
           var color = app.Chart.getColorValue(key);
 
@@ -132,6 +135,8 @@
           "menu": [{
             "format": "PNG",
             "class": "export-main",
+            "label": "Download",
+            "label": "Download",
             "multiplier": 2,
             "content": [ "Saved from:", window.location.href, {
               "image": "reference",
@@ -154,7 +159,14 @@
 
       let dataProvider = [{
         'conversion' : 'Tarang',
-        'count' : data.total_wet_sampling
+        'count' : Math.round(data.conversion_value),
+        "innerRadius": "65%"
+
+      },
+      {
+        'conversion' : 'Tarang2',
+        'count' : 100 - Math.round(data.conversion_value),
+        "innerRadius": "65%"
 
       }];
 
@@ -162,23 +174,24 @@
       AmCharts.makeChart(activity+"gaugechart", {
         "type": "pie",
         "theme": "light",
-        "innerRadius": "80%",
+        "innerRadius": "60%",
         "labelsEnabled": false,
-        "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
         "dataProvider": dataProvider,
         "balloonText": "[[value]]",
         "valueField": "count",
-        "titleField": "conversion",
+        "titleField": "",
+        "fontSize" : 18,
         "allLabels": [{
           "text": "conversion",
           "align": "center",
           "bold": true,
-          "y": 150
+          "y": 140
         }, {
-          "text": data.total_wet_sampling,
+          "text": Math.round(data.conversion_value)+" %",
           "align": "center",
-          "bold": false,
-          "y": 180
+          "bold": true,
+          "y": 160,
+          "radius": "20%",
         }],
         "balloon": {
           "drop": true,
@@ -186,17 +199,13 @@
           "color": "#FFFFFF",
           "fontSize": 16
         },
-        "legend": {
-          "position": "absolute",
-          "maxColumns": 2,
-          "top": 20,
-          "align": "right"
-        },
+        "legend": {},
         "export": {
           "enabled": true,
           "menu": [{
             "format": "PNG",
             "class": "export-main",
+            "label": "Download",
             "multiplier": 2,
             "content": [ "Saved from:", window.location.href, {
               "image": "reference",
@@ -213,7 +222,7 @@
     function generateLahoreBarChart(data, activity){
       let dataProvider = [];
       for(key in data){
-        if(key !== 'total_teams' ){
+        if(key !== 'total_teams' && key !== 'conversion_value' && key !== 'conversion'){
           var color = app.Chart.getColorValue(key);
 
 
@@ -262,6 +271,7 @@
           "menu": [{
             "format": "PNG",
             "class": "export-main",
+            "label": "Download",
             "multiplier": 2,
             "content": [ "Saved from:", window.location.href, {
               "image": "reference",
@@ -277,7 +287,7 @@
     function generatePindiBarChart (data, activity){
       let dataProvider = [];
       for(key in data){
-        if(key !== 'total_teams' ){
+        if(key !== 'total_teams'  && key !== 'conversion_value' && key !== 'conversion'){
           var color = app.Chart.getColorValue(key);
 
           dataProvider.push({
@@ -325,6 +335,7 @@
           "menu": [{
             "format": "PNG",
             "class": "export-main",
+            "label": "Download",
             "multiplier": 2,
             "content": [ "Saved from:", window.location.href, {
               "image": "reference",
@@ -371,101 +382,290 @@
 
       for(key in data){
         accumulatedValue += parseInt(data[key].count);
-
-        dataProvider.push({
-          'date' : data[key].created_at_date,
-          'value' : accumulatedValue
-        });
-
         accumulatedTarget += thresholdValue;
+
+        if(data[key].created_at_date != '0000-00-00'){
+          dataProvider.push({
+            'date' : data[key].created_at_date,
+            'value' : accumulatedValue,
+            'target' : accumulatedTarget,
+
+          });
+
+        }
+
 
       } 
 
 
+      if(chartId == 'line-chart1'){
+        $('.daily-interception-target-value').html(accumulatedValue+'/'+accumulatedTarget);
 
-      targetDataProvider = [{
-        "finalDate": "2018-10-11",
-        "finalValue": 19,
-        "initialDate": "2018-10-02",
-        "initialValue": 10,
-        "lineColor": "#CC0000"
-      }]
+
+        let dataProvider = [{
+          'conversion' : 'Tarang',
+          'count' : Math.round((accumulatedValue/accumulatedTarget) * 100),
+          "innerRadius": "65%"
+
+        },
+        {
+          'conversion' : '',
+          'count' : 100 - (Math.round((accumulatedValue/accumulatedTarget) * 100)),
+          "innerRadius": "65%"
+
+        }];
+
+
+        AmCharts.makeChart(activity+"gaugechart-daily-interception", {
+          "type": "pie",
+          "theme": "light",
+          "innerRadius": "60%",
+          "labelsEnabled": false,
+          "dataProvider": dataProvider,
+          "balloonText": "[[value]]",
+          "valueField": "count",
+          "fontSize": 30,
+          "titleField": "",
+          "allLabels": [{
+            "text": "",
+            "align": "center",
+            "bold": true,
+            "y": 150
+          }, {
+            "text": Math.round((accumulatedValue/accumulatedTarget) * 100)+" %",
+            "align": "center",
+            "bold": true,
+            "y": 130,
+            "radius": "20%",
+          }],
+          "balloon": {
+            "drop": true,
+            "adjustBorderColor": false,
+            "color": "#FFFFFF",
+            "fontSize": 16
+          },
+          "legend": {},
+          "export": {
+            "enabled": true,
+            "menu": [{
+              "format": "PNG",
+              "class": "export-main",
+              "label": "Download",
+              "multiplier": 2,
+              "content": [ "Saved from:", window.location.href, {
+                "image": "reference",
+        "fit": [ 523.28, 769.89 ] // fit image to A4
+      } ]
+    }]
+  }
+
+});
+
+
+
+
+      }
+
+      if(chartId == 'line-chart2'){
+        $('.daily-sale-target-value').html(accumulatedValue+'/'+accumulatedTarget);
+
+
+        let dataProvider = [{
+          'conversion' : 'Tarang',
+          'count' : Math.round((accumulatedValue/accumulatedTarget) * 100),
+          "innerRadius": "65%"
+
+        },
+        {
+          'conversion' : 'Tarang',
+          'count' : 100 - (Math.round((accumulatedValue/accumulatedTarget) * 100)),
+          "innerRadius": "65%"
+
+        }];
+
+
+        AmCharts.makeChart(activity+"gaugechart-daily-sale", {
+          "type": "pie",
+          "theme": "light",
+          "innerRadius": "60%",
+          "labelsEnabled": false,
+          "dataProvider": dataProvider,
+          "balloonText": "[[value]]",
+          "valueField": "count",
+          "titleField": "",
+          "fontSize" : 30,
+          "allLabels": [{
+            "text": "",
+            "align": "center",
+            "bold": true,
+            "y": 50
+          }, {
+            "text": Math.round((accumulatedValue/accumulatedTarget) * 100)+" %",
+            "align": "center",
+            "bold": true,
+            "y":130,
+            "radius": "20%",
+          }],
+          "balloon": {
+            "drop": true,
+            "adjustBorderColor": false,
+            "color": "#FFFFFF",
+            "fontSize": 16
+          },
+          "legend": {},
+          "export": {
+            "enabled": true,
+            "menu": [{
+              "format": "PNG",
+              "class": "export-main",
+              "label": "Download",
+              "multiplier": 2,
+              "content": [ "Saved from:", window.location.href, {
+                "image": "reference",
+        "fit": [ 523.28, 769.89 ] // fit image to A4
+      } ]
+    }]
+  }
+
+});
+
+
+
+      }
+
+      if(chartId == 'line-chart3'){
+        $('.daily-wet-sampling-target-value').html(accumulatedValue+'/'+accumulatedTarget);
+
+
+        let dataProvider = [{
+          'conversion' : 'Tarang',
+          'count' : Math.round((accumulatedValue/accumulatedTarget) * 100),
+          "innerRadius": "65%"
+
+        },
+        {
+          'conversion' : 'Tarang',
+          'count' : 100 - (Math.round((accumulatedValue/accumulatedTarget) * 100)),
+          "innerRadius": "65%"
+
+        }];
+
+
+        AmCharts.makeChart(activity+"gaugechart-daily-wet-sampling", {
+          "type": "pie",
+          "theme": "light",
+          "innerRadius": "60%",
+          "labelsEnabled": false,
+          "dataProvider": dataProvider,
+          "balloonText": "[[value]]",
+          "valueField": "count",
+          "titleField": "",
+          "fontSize" : 30,
+          "allLabels": [{
+            "text": "",
+            "align": "center",
+            "bold": true,
+            "y": 50
+          }, {
+            "text": Math.round((accumulatedValue/accumulatedTarget) * 100)+" %",
+            "align": "center",
+            "bold": true,
+            "fontSize": 56,
+            "y": 130,
+            "radius": "20%",
+          }],
+          "balloon": {
+            "drop": true,
+            "adjustBorderColor": false,
+            "color": "#FFFFFF",
+            "fontSize": 56
+          },
+          "legend": {},
+          "export": {
+            "enabled": true,
+            "menu": [{
+              "format": "PNG",
+              "class": "export-main",
+              "label": "Download",
+              "multiplier": 2,
+              "content": [ "Saved from:", window.location.href, {
+                "image": "reference",
+        "fit": [ 523.28, 769.89 ] // fit image to A4
+      } ]
+    }]
+  }
+
+});
+
+
+
+      }
+
+
+
+
+      console.log(activity+chartId , dataProvider , 6543456543);      
 
 
 
       var chart = AmCharts.makeChart(activity+chartId, {
         "type": "serial",
         "theme": "light",
-        "marginRight":80,
-        "autoMarginOffset":20,
-        "dataDateFormat": "YYYY-MM-DD HH:NN",
-        "dataProvider": dataProvider,
-        "valueAxes": [{
-          "axisAlpha": 0,
-          "guides": [{
-            "fillAlpha": 0.1,
-            "fillColor": "#888888",
-            "lineAlpha": 0,
-            "toValue": 16,
-            "value": 10
-          }],
-          "position": "left",
-          "tickLength": 0
-        }],
-        "graphs": [{
-          "balloonText": "[[category]]<br><b><span style='font-size:14px;'>value:[[value]]</span></b>",
-          "bullet": "round",
-          "dashLength": 3,
-          "colorField":"color",
-          "valueField": "value"
-        }],
-        "trendLines": [{
-          "finalDate": startDate+" 12",
-          "finalValue": thresholdValue,
-          "initialDate": endDate+" 12",
-          "initialValue": accumulatedTarget,
-          "lineColor": "#CC0000"
-        }],
-        "chartScrollbar": {
-          "scrollbarHeight":2,
-          "offset":-1,
-          "backgroundAlpha":0.1,
-          "backgroundColor":"#888888",
-          "selectedBackgroundColor":"#67b7dc",
-          "selectedBackgroundAlpha":1
-        },
-        "chartCursor": {
-          "fullWidth":true,
-          "valueLineEabled":true,
-          "valueLineBalloonEnabled":true,
-          "valueLineAlpha":0.5,
-          "cursorAlpha":0
-        },
-        "categoryField": "date",
-        "categoryAxis": {
-          "parseDates": true,
-          "axisAlpha": 0,
-          "gridAlpha": 0.1,
-          "minorGridAlpha": 0.1,
-          "minorGridEnabled": true
-        },
-        "export": {
+        "legend": {
+          "horizontalGap": 10,
+          "markerSize": 10,
+          "data": [{
+           "title": "Target",
+           "color": "#EB1C24"
+         }, {
+           "title": "Achieved",
+           "color": "#FDBB13"
+         }]
+       },
 
-          "enabled": true,
-          "menu": [{
-            "format": "PNG",
-            "class": "export-main",
-            "multiplier": 2,
-            "content": [ "Saved from:", window.location.href, {
-              "image": "reference",
-        "fit": [ 523.28, 769.89 ] // fit image to A4
+       "dataProvider": dataProvider,
+       "valueAxes": [{
+    // stackType control the stacking behaviour of the graphs
+    // https://docs.amcharts.com/3/javascriptcharts/ValueAxis#stackType
+    "stackType": "none",
+    "position": "left"
+  }],
+  "graphs": [{
+    "title": "Target",
+    "valueField": "target",
+    "fillAlphas": 0.6,
+    "fillColors" : "#EB1C24",
+  }, {
+    "title": "Achieved",
+    "valueField": "value",
+    "fillAlphas": 0.6,
+    "fillColors" : "#FDBB13",
+  }],
+  "chartScrollbar": {},
+  "chartCursor": {},
+  "categoryField": "date",
+  "categoryAxis": {
+    "parseDates": true,
+    "minorGridEnabled": true
+  },
+  "export": {
+
+    "enabled": true,
+    "menu": [{
+      "format": "PNG",
+      "class": "export-main",
+      "label": "Download",
+      "multiplier": 2,
+      "content": [ "Saved from:", window.location.href, {
+        "image": "reference",
+        "fit": [ 523.28, 769.89 ] ,
+
       } ]
     }]
 
   }
+
 });
-
-
 
     }
 

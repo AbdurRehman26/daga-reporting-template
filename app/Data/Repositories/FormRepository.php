@@ -46,6 +46,33 @@ class FormRepository extends AbstractRepository implements RepositoryContract
 
         $this->builder = $this->model;
 
+
+        if(!empty($input['created_at'])){
+
+            $input['created_at'] = Date($input['created_at']);    
+            
+            $this->builder = $this->builder->where('created_at' , $input['created_at']);
+
+        }
+
+        if(empty($input['created_at'])){
+            if($input['activity'] == 'activity_1-'){
+
+                $input['created_at'] = Date('2018-10-28');    
+                
+                $this->builder = $this->builder->whereDate('created_at' , '<' , $input['created_at']);
+            }else{
+
+                $input['created_at'] = Date('2018-10-28');
+                
+                $this->builder = $this->builder->whereDate('created_at' , '>', $input['created_at']);
+
+            }
+
+        }
+
+
+
         if(!empty($input['team'])){
             $teamMembers = \App\Data\Models\TeamMember::where('team' , $input['team'])->pluck('name')->toArray();
 
@@ -65,44 +92,54 @@ class FormRepository extends AbstractRepository implements RepositoryContract
 
 
 
-        if(!empty($input['created_at'])){
 
-            $created_at = Carbon::parse($input['created_at'])->toDateTimeString();    
-            
-            $this->builder = $this->builder->where('created_at' , $created_at);
+
+
+        $notTarangBuilder = clone $this->builder;
+        $tarangBuilder = clone $this->builder;
+        $yesBuilder = clone $this->builder;
+        $samplingBuilder = clone $this->builder;
+        $whereNoResponse = clone $this->builder;
+        $whereDeals = clone $this->builder;
+        $whereDealsSold = clone $this->builder;
+
+        $whereInterception = clone $this->builder;
+        $whereSampling = clone $this->builder;
+
+
+
+
+
+        $notTarang = $notTarangBuilder->where('previous_usage' , '<>' , 'Tarang')->count();
+        $tarang = $tarangBuilder->where('previous_usage' , '=' , 'Tarang')->count();
+
+        $yesWetSampling = $yesBuilder->where('tarang_sampling' , '=' , 'Yes')->count();
+        $tarangSampling = $samplingBuilder->where('previous_usage' , '=' , 'Tarang')->where('tarang_sampling' , '=' , 'Yes')->count();
+
+        $data['conversion_value'] = 0;
+        $data['conversion'] = 0;
+
+        if($notTarang - $tarang){
+            $data['conversion_value'] = (($yesWetSampling) / ($notTarang - $tarang)) * 100 ; 
+            $data['conversion'] =  (($yesWetSampling) / ($notTarang - $tarang)) ; 
 
         }
 
 
-        if(empty($input['created_at'])){
-            if($input['activity'] == 'activity_1-'){
 
-                $created_at = Carbon::parse('28-10-2018')->toDateTimeString();    
-
-                $this->builder = $this->builder->where('created_at' , '<' , $created_at);
-            }else{
-
-                $created_at = Carbon::parse('28-10-2018')->toDateTimeString();    
-
-                $this->builder = $this->builder->whereBetween('created_at' , [ $created_at , Carbon::now()->toDateTimeString()]);
-
-            }
-
-        }
-
-        $data['total_interceptions'] = $this->builder->count();
+        $data['total_no_response'] = $whereNoResponse->where('no_response' , '=' ,  1)->count();//;
         
-        $data['total_wet_sampling'] = $this->builder->sum('tarang_sampling_quantity');;
+        $data['total_sales'] = $whereDeals->where('sale' , '=', 'Yes')->count();
+
+        $data['total_interceptions'] = $whereInterception->where('no_response' , '=' ,  0)->count();
+
+        $data['total_wet_sampling'] = $whereSampling->sum('tarang_sampling_quantity');;
 
 
-        $data['total_deals'] = $this->builder->sum('quantity');
+        $data['total_deals'] = $whereDealsSold->sum('quantity');
 
         $data['total_teams'] = \App\Data\Models\Team::count();//
 
-        $data['total_no_response'] = $this->builder->where('no_response' , '=' ,  1)->count();//;
-        
-
-        $data['total_sales'] = $this->builder->where('sale' , '=' , 'Yes')->count();
 
 
         return $data;
@@ -119,9 +156,9 @@ class FormRepository extends AbstractRepository implements RepositoryContract
 
         if(!empty($input['created_at'])){
 
-            $created_at = Carbon::parse($input['created_at'])->toDateTimeString();    
+            $created_at = Date($input['created_at']);    
 
-            $this->builder = $this->builder->where('created_at' , $created_at);
+            $this->builder = $this->builder->whereDate('created_at' , $created_at);
 
         }
 
@@ -145,22 +182,25 @@ class FormRepository extends AbstractRepository implements RepositoryContract
         }
 
 
-        if(empty($input['created_at'])){
 
+        if(empty($input['created_at'])){
             if($input['activity'] == 'activity_1-'){
 
-                $created_at = Carbon::parse('28-10-2018')->toDateTimeString();    
+                $created_at = Date('2018-10-28');    
 
-                $this->builder = $this->builder->whereBetween('created_at' , [ $created_at , Carbon::now()->toDateTimeString()]);
+                $this->builder = $this->builder->whereDate('created_at' , '<' , $created_at);
             }else{
 
-                $created_at = Carbon::parse('28-10-2018')->toDateTimeString();    
+                $created_at = Date('2018-10-28');    
 
-                $this->builder = $this->builder->whereBetween('created_at' , [ $created_at , Carbon::now()->toDateTimeString()]);
+
+                $this->builder = $this->builder->whereDate('created_at' , '>' ,  $created_at);
 
             }
 
         }
+
+
 
 
 
@@ -180,24 +220,22 @@ class FormRepository extends AbstractRepository implements RepositoryContract
 
 
 
+        if(empty($input['created_at'])){
+            if($input['activity'] == 'activity_1-'){
 
-        if($input['activity'] == 'activity_1-'){
+                $created_at = Date('2018-10-28');    
 
-            $created_at = Carbon::parse('28-10-2018')->toDateTimeString();    
+                $this->builder = $this->builder->whereDate('created_at' , '<' , $created_at);
+            }else{
 
-            $this->builder = $this->builder->whereBetween('created_at' , [ $created_at , Carbon::now()->toDateTimeString()]);
-        }else{
+                $created_at = Date('2018-10-28');    
 
-            $created_at = Carbon::parse('28-10-2018')->toDateTimeString();    
+                $this->builder = $this->builder->whereDate('created_at' , '>' ,  $created_at);
 
-            $this->builder = $this->builder->whereBetween('created_at' , [ $created_at , Carbon::now()->toDateTimeString()]);
+
+            }
 
         }
-
-
-
-
-
 
 
         if(!empty($input['quantity'])){
@@ -233,30 +271,38 @@ class FormRepository extends AbstractRepository implements RepositoryContract
 
         }
 
-        if(!empty($input['ba_id'])){
 
-            $this->builder = $this->builder->where('forms.ba_id' ,  $input['ba_id']);
 
-        }
+        if(!empty($input['team'])){
+            $teamMembers = \App\Data\Models\TeamMember::where('team' , $input['team'])->pluck('name')->toArray();
+
+            $this->builder = $this->builder->whereIn('ba_id', $teamMembers);
+
+
+        }   
+
 
 
 
         if(empty($input['created_at'])){
-
             if($input['activity'] == 'activity_1-'){
 
-                $created_at = Carbon::parse('28-10-2018')->toDateTimeString();    
+                $created_at = Date('2018-10-28');    
 
-                $this->builder = $this->builder->whereBetween('created_at' , [ $created_at , Carbon::now()->toDateTimeString()]);
+
+                $this->builder = $this->builder->whereDate('created_at' , '<' ,  $created_at);
+
             }else{
 
-                $created_at = Carbon::parse('28-10-2018')->toDateTimeString();    
+                $created_at = Date('2018-10-28');    
 
-                $this->builder = $this->builder->whereBetween('created_at' , [ $created_at , Carbon::now()->toDateTimeString()]);
+
+                $this->builder = $this->builder->whereDate('created_at' , '>' ,  $created_at);
 
             }
 
         }
+
 
 
 

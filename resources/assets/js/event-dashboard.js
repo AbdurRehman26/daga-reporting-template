@@ -4,26 +4,10 @@ app = require('./config');
 $(document).ready(function() {
 
 
-
-
   var activity = 'activity_2-';
 
   initApplication(activity);
 
-    /// ACtivity 2 
-
-
-
-
-    $('#apply-search-btn').click(function(e){
-      e.preventDefault();
-
-      var dateValue = $('.tab-pane.active #filter-date').val();
-
-      getGeneralValues(dateValue);
-
-
-    });
 
 
     $('.apply-city-search-button').click(function(e){
@@ -31,8 +15,8 @@ $(document).ready(function() {
 
 
 
-      var cityValue = $('.tab-pane.active #select-city').val();
-      var dateValue = $('.tab-pane.active #filter-date').val();
+      var cityValue = $('.tab-pane.active .select-city').val();
+      var dateValue = $('.tab-pane.active .filter-date').val();
 
 
       getGeneralValues(dateValue , cityValue);
@@ -43,8 +27,8 @@ $(document).ready(function() {
     $('.apply-search-btn-team').click(function(e){
       e.preventDefault();
 
-      var cityValue = $('.tab-pane.active #select-city').val();
-      var teamValue = $('.tab-pane.active #select-team').val();
+      var cityValue = $('.tab-pane.active .select-city').val();
+      var teamValue = $('.tab-pane.active .select-team').val();
 
       getGeneralValues(false , cityValue, teamValue);
 
@@ -52,12 +36,12 @@ $(document).ready(function() {
     });
 
 
-    $('#apply-search-btn-location').click(function(e){
+    $(document).on('click' , '#apply-search-btn-location' , function(e){
       e.preventDefault();
 
-      var dateValue = $('.tab-pane.active #filter-date').val();
-      var cityId = $('.tab-pane.active #select-city').val();
-      var teamMember = $('.tab-pane.active #select-team-member').val();
+      var dateValue = $('.tab-pane.active .filter-date').val();
+      var cityId = $('.tab-pane.active .select-city').val();
+      var teamMember = $('.tab-pane.active .select-team').val();
 
 
       getLocationValues(cityId, dateValue, teamMember);
@@ -70,7 +54,7 @@ $(document).ready(function() {
     app.Dashboard.generateGetCall(query).then(response=>{
       var data = response.data;
       for(key in data){
-        var selectBox = '<select id="select-team-member" class="form-control"><option value="">Select Team</option>';
+        var selectBox = '<select id="select-team-member" class="select-team-member form-control"><option value="">Select Team</option>';
 
         for(key in data){
           selectBox += '<option value="'+data[key].name+'">'+data[key].name+'</option>'
@@ -95,6 +79,8 @@ $(document).ready(function() {
       initApplication(activity);
 
 
+
+
     });
 
     $('#activity_2_download_summary-tab').click(function(){
@@ -109,7 +95,56 @@ $(document).ready(function() {
     });
 
 
+    teamSelectionMethods();
+
+
   });
+
+
+function teamSelectionMethods(){
+
+    $(document).on('change' , '.tab-pane.active .select-city' , function(){
+      console.log($(this).val() , 11111);
+      if($(this).val()){
+
+
+        $('.select-team-box').show();
+
+        if($(this).val() == 1){
+
+          $('.lahore-team').show();
+          $('.pind-team').hide();
+
+        }else{
+
+          $('.pind-team').show();
+          $('.lahore-team').hide();
+
+        }
+
+
+
+
+      }else{
+        $('.select-team-box').hide();
+        $('.select-team-box-class').each(function(){
+          $(this).val('');
+        });
+      }
+
+
+      $('.select-team-box-class').each(function(){
+        $(this).val('');
+      });
+
+
+    });
+
+
+
+
+
+}
 
 
 function initApplication(activity) {
@@ -144,6 +179,7 @@ function initApplication(activity) {
 
 
 
+  teamSelectionMethods();
 
 
 
@@ -154,15 +190,16 @@ function initApplication(activity) {
 
 
 function  getLocationValues(cityId, dateValue, teamMember , activity) {
+  console.log(activity , 111);
 
   if(!activity){
-    activity = $('.tab-pane.activity').attr('id');
+    activity = $('.tab-pane.active').attr('id');
   }
 
-  var query = 'location-values';
+  var query = 'location-values?time=1';
 
   if(cityId){
-    query+= '?city='+cityId;
+    query+= '&city='+cityId;
   }
 
   if(dateValue){
@@ -170,7 +207,7 @@ function  getLocationValues(cityId, dateValue, teamMember , activity) {
   }
 
   if(teamMember){
-    query += '&ba_id='+teamMember;
+    query += '&team='+teamMember;
   }
 
   if(activity){
@@ -191,6 +228,8 @@ function getGeneralValues(date, city, team, activity) {
   if(!activity){
 
     activity = $('.tab-pane.active').attr('id');
+    activity += '-';
+
   }
 
   var query = 'total_interceptions=true&total_wet_sampling=true&total_sales=true&total_deals=true&total_teams=true';
@@ -212,6 +251,16 @@ function getGeneralValues(date, city, team, activity) {
     query += '&activity='+activity;
   }
 
+  var downloadButton = 'download/summary?'
+  
+  if(activity == 'activity_2-'){
+    $('#activity_2_download_summary').attr('href' , downloadButton+query);
+  }else{
+    $('#activity_1_download_summary').attr('href' , downloadButton+query);
+  }
+
+
+
   app.Dashboard.getTotalRecords(query).then(response=>{
     $('.tab-pane.active .total-interception-value').html(response.data.total_interceptions);
     $('.tab-pane.active .total-wet-sampling-value').html(response.data.total_wet_sampling);
@@ -221,6 +270,8 @@ function getGeneralValues(date, city, team, activity) {
     $('.tab-pane.active .total-no-response-value').html(response.data.total_no_response);
 
     app.Chart.generateBarChart(response.data, activity);
+    
+
     app.Chart.generateGaugeChart(response.data, activity);
 
   });

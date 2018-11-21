@@ -46,72 +46,6 @@
     </ul>
     <div class="tab-content">
       <div class="tab-pane" id="activity_1">
-        <div class="row">
-
-          <div class="row col-md-12">  
-            <div class="col-md-6">
-              <!-- AREA CHART -->
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Daily interceptions :</h3>
-                  <div class="box-tools pull-right">
-                  </div>
-                </div>
-                <div class="box-body">
-
-                  <div class="line-chart" id="activity_1-line-chart1"></div> 
-
-                </div>
-                <!-- /.box-body -->
-              </div>
-              <!-- /.box -->
-            </div>
-            <!-- /.col (LEFT) -->
-            <div class="col-md-6">
-              <!-- LINE CHART -->
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Daily sale targets: </h3>
-                  <div class="box-tools pull-right">
-                  </div>
-                </div>
-                <div class="box-body">
-
-                  <div class="line-chart" id="activity_1-line-chart2"></div> 
-                </div>
-
-                <!-- /.box-body -->
-              </div>
-
-              <!-- /.box -->
-            </div>
-
-
-          </div>
-          <div class="row col-md-12">  
-            <div class="col-md-12">
-              <!-- AREA CHART -->
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Daily wet sampling :</h3>
-                  <div class="box-tools pull-right">
-                  </div>
-                </div>
-                <div class="box-body">
-
-                  <div class="line-chart-big" id="activity_1-line-chart3"></div> 
-
-                </div>
-                <!-- /.box-body -->
-              </div>
-              <!-- /.box -->
-            </div>
-
-
-          </div>
-          <!-- /.col (RIGHT) -->
-
-        </div>
 
 
         <div class="row">
@@ -178,12 +112,222 @@
 
           </div>
 
+
+          <div class="col-md-12 row">
+
+            <div class="col-md-4">
+
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily interceptions: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="small-box bg-aqua">
+                    <div class="inner">
+                      <h3 class="daily-interception-target-value"></h3>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+            </div>
+
+            <div class="col-md-4">
+
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily sales: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="small-box bg-aqua">
+                    <div class="inner">
+                      <h3 class="daily-sale-target-value"></h3>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+            </div>
+
+            <div class="col-md-4">
+
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily wet sampling: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="small-box bg-aqua">
+                    <div class="inner">
+                      <h3 class="daily-wet-sampling-target-value"></h3>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+            </div>
+
+          </div>
+
+
+
+          <div class="col-md-12 row">
+
+            <div class="col-md-4">
+
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily interceptions: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="gauge-charts" id="activity_1-gaugechart-daily-interception"></div> 
+
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+
+
+            </div>
+
+            <div class="col-md-4">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily sales: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="gauge-charts" id="activity_1-gaugechart-daily-sale"></div> 
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+
+            </div>
+
+            <div class="col-md-4">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily wet sampling: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="gauge-charts" id="activity_1-gaugechart-daily-wet-sampling"></div> 
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="row">
+
+            <div class="row col-md-12">  
+              <div class="col-md-6">
+                <!-- AREA CHART -->
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Daily interceptions :</h3>
+                    <div class="box-tools pull-right">
+                    </div>
+                  </div>
+                  <div class="box-body">
+
+                    <div class="line-chart" id="activity_1-line-chart1"></div> 
+
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+              </div>
+              <!-- /.col (LEFT) -->
+              <div class="col-md-6">
+                <!-- LINE CHART -->
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Daily sale: </h3>
+                    <div class="box-tools pull-right">
+                    </div>
+                  </div>
+                  <div class="box-body">
+
+                    <div class="line-chart" id="activity_1-line-chart2"></div> 
+                  </div>
+
+                  <!-- /.box-body -->
+                </div>
+
+                <!-- /.box -->
+              </div>
+
+
+            </div>
+            <div class="row col-md-12">  
+              <div class="col-md-12">
+                <!-- AREA CHART -->
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Daily wet sampling :</h3>
+                    <div class="box-tools pull-right">
+                    </div>
+                  </div>
+                  <div class="box-body">
+
+                    <div class="line-chart-big" id="activity_1-line-chart3"></div> 
+
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+              </div>
+
+
+            </div>
+            <!-- /.col (RIGHT) -->
+
+          </div>
+
+
+
+
+
+
+
+
+
           <div class="row col-md-12">  
             <div class="col-md-7">
               <!-- AREA CHART -->
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Previous Brand Usage :</h3>
+                  <h3 class="box-title">Current Brand Usage :</h3>
                   <div class="box-tools pull-right">
                   </div>
                 </div>
@@ -208,6 +352,8 @@
                 <div class="box-body">
 
                   <div class="gauge-charts" id="activity_1-gaugechart"></div> 
+                  Non-Product users, who have sampled hot TEA made by Product
+
                 </div>
 
                 <!-- /.box-body -->
@@ -221,6 +367,7 @@
           <!-- /.col (RIGHT) -->
 
         </div>
+
         <!-- /.row -->
 
         <div class="row"> 
@@ -289,76 +436,10 @@
 
 
       </div>
-      <!-- /.tab-pane -->
-      <div class="tab-pane  active" id="activity_2">
+      
 
 
-        <div class="row">
-
-          <div class="row col-md-12">  
-            <div class="col-md-6">
-              <!-- AREA CHART -->
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Daily interceptions :</h3>
-                  <div class="box-tools pull-right">
-                  </div>
-                </div>
-                <div class="box-body">
-
-                  <div class="line-chart" id="activity_2-line-chart1"></div> 
-
-                </div>
-                <!-- /.box-body -->
-              </div>
-              <!-- /.box -->
-            </div>
-            <!-- /.col (LEFT) -->
-            <div class="col-md-6">
-              <!-- LINE CHART -->
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Daily sale targets: </h3>
-                  <div class="box-tools pull-right">
-                  </div>
-                </div>
-                <div class="box-body">
-
-                  <div class="line-chart" id="activity_2-line-chart2"></div> 
-                </div>
-
-                <!-- /.box-body -->
-              </div>
-
-              <!-- /.box -->
-            </div>
-
-
-          </div>
-          <div class="row col-md-12">  
-            <div class="col-md-12">
-              <!-- AREA CHART -->
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Daily wet sampling :</h3>
-                  <div class="box-tools pull-right">
-                  </div>
-                </div>
-                <div class="box-body">
-
-                  <div class="line-chart-big" id="activity_2-line-chart3"></div> 
-
-                </div>
-                <!-- /.box-body -->
-              </div>
-              <!-- /.box -->
-            </div>
-
-
-          </div>
-          <!-- /.col (RIGHT) -->
-
-        </div>
+      <div class="tab-pane active" id="activity_2">
 
 
         <div class="row">
@@ -425,18 +506,227 @@
 
           </div>
 
-          <div class="row col-md-12">  
-            <div class="col-md-7">
-              <!-- AREA CHART -->
+
+          <div class="col-md-12 row">
+
+            <div class="col-md-4">
+
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Previous Brand Usage :</h3>
+                  <h3 class="box-title">Daily interceptions: </h3>
                   <div class="box-tools pull-right">
                   </div>
                 </div>
                 <div class="box-body">
 
-                  <div class="donut-charts" id="activity_2-donut-chart1"></div> 
+                  <div class="small-box bg-aqua">
+                    <div class="inner">
+                      <h3 class="daily-interception-target-value"></h3>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+            </div>
+
+            <div class="col-md-4">
+
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily sales: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="small-box bg-aqua">
+                    <div class="inner">
+                      <h3 class="daily-sale-target-value"></h3>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+            </div>
+
+            <div class="col-md-4">
+
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily wet sampling: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="small-box bg-aqua">
+                    <div class="inner">
+                      <h3 class="daily-wet-sampling-target-value"></h3>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+            </div>
+
+          </div>
+
+
+
+          <div class="col-md-12 row">
+
+            <div class="col-md-4">
+
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily interceptions: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="gauge-charts active" id="activity_2-gaugechart-daily-interception"></div> 
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+
+
+            </div>
+
+            <div class="col-md-4">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily sales: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="gauge-charts active" id="activity_2-gaugechart-daily-sale"></div> 
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+
+            </div>
+
+            <div class="col-md-4">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Daily wet sampling: </h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="gauge-charts active" id="activity_2-gaugechart-daily-wet-sampling"></div> 
+                </div>
+
+                <!-- /.box-body -->
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="row">
+
+            <div class="row col-md-12">  
+              <div class="col-md-6">
+                <!-- AREA CHART -->
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Daily interceptions :</h3>
+                    <div class="box-tools pull-right">
+                    </div>
+                  </div>
+                  <div class="box-body">
+
+                    <div class="line-chart active" id="activity_2-line-chart1"></div> 
+
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+              </div>
+              <!-- /.col (LEFT) -->
+              <div class="col-md-6">
+                <!-- LINE CHART -->
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Daily sale: </h3>
+                    <div class="box-tools pull-right">
+                    </div>
+                  </div>
+                  <div class="box-body">
+
+                    <div class="line-chart active" id="activity_2-line-chart2"></div> 
+                  </div>
+
+                  <!-- /.box-body -->
+                </div>
+
+                <!-- /.box -->
+              </div>
+
+
+            </div>
+            <div class="row col-md-12">  
+              <div class="col-md-12">
+                <!-- AREA CHART -->
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Daily wet sampling :</h3>
+                    <div class="box-tools pull-right">
+                    </div>
+                  </div>
+                  <div class="box-body">
+
+                    <div class="line-chart-big active" id="activity_2-line-chart3"></div> 
+
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+              </div>
+
+
+            </div>
+            <!-- /.col (RIGHT) -->
+
+          </div>
+
+
+
+
+
+
+
+
+
+          <div class="row col-md-12">  
+            <div class="col-md-7">
+              <!-- AREA CHART -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Current Brand Usage :</h3>
+                  <div class="box-tools pull-right">
+                  </div>
+                </div>
+                <div class="box-body">
+
+                  <div class="donut-charts active" id="activity_2-donut-chart1"></div> 
 
                 </div>
                 <!-- /.box-body -->
@@ -452,9 +742,11 @@
                   <div class="box-tools pull-right">
                   </div>
                 </div>
-                <div class="box-body">
 
-                  <div class="gauge-charts" id="activity_2-gaugechart"></div> 
+                <div class="box-body">
+                  <div class="gauge-charts active" id="activity_2-gaugechart"></div> 
+                  Non-Product users, who have sampled hot TEA made by Product
+
                 </div>
 
                 <!-- /.box-body -->
@@ -468,6 +760,7 @@
           <!-- /.col (RIGHT) -->
 
         </div>
+
         <!-- /.row -->
 
         <div class="row"> 
@@ -481,7 +774,7 @@
               </div>
               <div class="box-body">
 
-                <div class="chartdiv" id="activity_2-chartdiv"></div>
+                <div class="chartdiv active" id="activity_2-chartdiv"></div>
 
               </div>
               <!-- /.box-body -->
@@ -503,7 +796,7 @@
               </div>
               <div class="box-body">
 
-                <div class="chartdiv-lahore" id="activity_2-chartdiv-lahore"></div>
+                <div class="chartdiv-lahore active" id="activity_2-chartdiv-lahore"></div>
 
               </div>
               <!-- /.box-body -->
@@ -524,7 +817,7 @@
               </div>
               <div class="box-body">
 
-                <div class="chartdiv-pindi" id="activity_2-chartdiv-pindi"></div>
+                <div class="chartdiv-pindi active" id="activity_2-chartdiv-pindi"></div>
 
               </div>
               <!-- /.box-body -->
@@ -536,6 +829,9 @@
 
 
       </div>
+      
+
+      <!-- /.tab-pane -->
       <!-- /.tab-pane -->
       <!-- /.tab-pane -->
     </div>

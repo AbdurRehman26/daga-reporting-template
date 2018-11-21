@@ -31107,22 +31107,11 @@ $(document).ready(function () {
 
   initApplication(activity);
 
-  /// ACtivity 2 
-
-
-  $('#apply-search-btn').click(function (e) {
-    e.preventDefault();
-
-    var dateValue = $('.tab-pane.active #filter-date').val();
-
-    getGeneralValues(dateValue);
-  });
-
   $('.apply-city-search-button').click(function (e) {
     e.preventDefault();
 
-    var cityValue = $('.tab-pane.active #select-city').val();
-    var dateValue = $('.tab-pane.active #filter-date').val();
+    var cityValue = $('.tab-pane.active .select-city').val();
+    var dateValue = $('.tab-pane.active .filter-date').val();
 
     getGeneralValues(dateValue, cityValue);
   });
@@ -31130,18 +31119,18 @@ $(document).ready(function () {
   $('.apply-search-btn-team').click(function (e) {
     e.preventDefault();
 
-    var cityValue = $('.tab-pane.active #select-city').val();
-    var teamValue = $('.tab-pane.active #select-team').val();
+    var cityValue = $('.tab-pane.active .select-city').val();
+    var teamValue = $('.tab-pane.active .select-team').val();
 
     getGeneralValues(false, cityValue, teamValue);
   });
 
-  $('#apply-search-btn-location').click(function (e) {
+  $(document).on('click', '#apply-search-btn-location', function (e) {
     e.preventDefault();
 
-    var dateValue = $('.tab-pane.active #filter-date').val();
-    var cityId = $('.tab-pane.active #select-city').val();
-    var teamMember = $('.tab-pane.active #select-team-member').val();
+    var dateValue = $('.tab-pane.active .filter-date').val();
+    var cityId = $('.tab-pane.active .select-city').val();
+    var teamMember = $('.tab-pane.active .select-team').val();
 
     getLocationValues(cityId, dateValue, teamMember);
   });
@@ -31150,7 +31139,7 @@ $(document).ready(function () {
   app.Dashboard.generateGetCall(query).then(function (response) {
     var data = response.data;
     for (key in data) {
-      var selectBox = '<select id="select-team-member" class="form-control"><option value="">Select Team</option>';
+      var selectBox = '<select id="select-team-member" class="select-team-member form-control"><option value="">Select Team</option>';
 
       for (key in data) {
         selectBox += '<option value="' + data[key].name + '">' + data[key].name + '</option>';
@@ -31179,7 +31168,39 @@ $(document).ready(function () {
 
     initApplication(activity);
   });
+
+  teamSelectionMethods();
 });
+
+function teamSelectionMethods() {
+
+  $(document).on('change', '.tab-pane.active .select-city', function () {
+    console.log($(this).val(), 11111);
+    if ($(this).val()) {
+
+      $('.select-team-box').show();
+
+      if ($(this).val() == 1) {
+
+        $('.lahore-team').show();
+        $('.pind-team').hide();
+      } else {
+
+        $('.pind-team').show();
+        $('.lahore-team').hide();
+      }
+    } else {
+      $('.select-team-box').hide();
+      $('.select-team-box-class').each(function () {
+        $(this).val('');
+      });
+    }
+
+    $('.select-team-box-class').each(function () {
+      $(this).val('');
+    });
+  });
+}
 
 function initApplication(activity) {
 
@@ -31208,18 +31229,21 @@ function initApplication(activity) {
   app.Dashboard.generateGetCall(query).then(function (response) {
     app.Chart.generateLineChart(response.data, 'line-chart3', activity);
   });
+
+  teamSelectionMethods();
 }
 
 function getLocationValues(cityId, dateValue, teamMember, activity) {
+  console.log(activity, 111);
 
   if (!activity) {
-    activity = $('.tab-pane.activity').attr('id');
+    activity = $('.tab-pane.active').attr('id');
   }
 
-  var query = 'location-values';
+  var query = 'location-values?time=1';
 
   if (cityId) {
-    query += '?city=' + cityId;
+    query += '&city=' + cityId;
   }
 
   if (dateValue) {
@@ -31227,7 +31251,7 @@ function getLocationValues(cityId, dateValue, teamMember, activity) {
   }
 
   if (teamMember) {
-    query += '&ba_id=' + teamMember;
+    query += '&team=' + teamMember;
   }
 
   if (activity) {
@@ -31244,6 +31268,7 @@ function getGeneralValues(date, city, team, activity) {
   if (!activity) {
 
     activity = $('.tab-pane.active').attr('id');
+    activity += '-';
   }
 
   var query = 'total_interceptions=true&total_wet_sampling=true&total_sales=true&total_deals=true&total_teams=true';
@@ -31264,6 +31289,14 @@ function getGeneralValues(date, city, team, activity) {
     query += '&activity=' + activity;
   }
 
+  var downloadButton = 'download/summary?';
+
+  if (activity == 'activity_2-') {
+    $('#activity_2_download_summary').attr('href', downloadButton + query);
+  } else {
+    $('#activity_1_download_summary').attr('href', downloadButton + query);
+  }
+
   app.Dashboard.getTotalRecords(query).then(function (response) {
     $('.tab-pane.active .total-interception-value').html(response.data.total_interceptions);
     $('.tab-pane.active .total-wet-sampling-value').html(response.data.total_wet_sampling);
@@ -31273,6 +31306,7 @@ function getGeneralValues(date, city, team, activity) {
     $('.tab-pane.active .total-no-response-value').html(response.data.total_no_response);
 
     app.Chart.generateBarChart(response.data, activity);
+
     app.Chart.generateGaugeChart(response.data, activity);
   });
 
@@ -31315,6 +31349,8 @@ function getCityGeneralValues(city, activity) {
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //Require Module
 app = __webpack_require__(0);
 //Define Module
@@ -31325,6 +31361,7 @@ app.Chart = function () {
   var template = app.Template;
 
   function generatePieChart(data, activity) {
+    var _ref;
 
     var tarangValue = 0;
     var totalValue = 0;
@@ -31380,24 +31417,26 @@ app.Chart = function () {
       },
       "export": {
         "enabled": true,
-        "menu": [{
+        "menu": [(_ref = {
           "format": "PNG",
           "class": "export-main",
+          "label": "Download",
           "multiplier": 2,
-          "content": ["Saved from:", window.location.href, {
-            "image": "reference",
-            "fit": [523.28, 769.89] // fit image to A4
-          }]
-        }]
+          'text': "Download"
+        }, _defineProperty(_ref, 'label', "Download"), _defineProperty(_ref, "content", ["Saved from:", window.location.href, {
+          "image": "reference",
+          "fit": [523.28, 769.89] // fit image to A4
+        }]), _ref)]
       }
     });
   }
 
   function generateBarChart(data, activity) {
+    var _ref2;
 
     var dataProvider = [];
     for (key in data) {
-      if (key !== 'total_teams') {
+      if (key !== 'total_teams' && key !== 'conversion_value' && key !== 'conversion') {
 
         var color = app.Chart.getColorValue(key);
 
@@ -31440,15 +31479,14 @@ app.Chart = function () {
       },
       "export": {
         "enabled": true,
-        "menu": [{
+        "menu": [(_ref2 = {
           "format": "PNG",
           "class": "export-main",
-          "multiplier": 2,
-          "content": ["Saved from:", window.location.href, {
-            "image": "reference",
-            "fit": [523.28, 769.89] // fit image to A4
-          }]
-        }]
+          "label": "Download"
+        }, _defineProperty(_ref2, 'label', "Download"), _defineProperty(_ref2, "multiplier", 2), _defineProperty(_ref2, "content", ["Saved from:", window.location.href, {
+          "image": "reference",
+          "fit": [523.28, 769.89] // fit image to A4
+        }]), _ref2)]
       }
 
     });
@@ -31461,30 +31499,37 @@ app.Chart = function () {
 
     var dataProvider = [{
       'conversion': 'Tarang',
-      'count': data.total_wet_sampling
+      'count': Math.round(data.conversion_value),
+      "innerRadius": "65%"
+
+    }, {
+      'conversion': 'Tarang2',
+      'count': 100 - Math.round(data.conversion_value),
+      "innerRadius": "65%"
 
     }];
 
     AmCharts.makeChart(activity + "gaugechart", {
       "type": "pie",
       "theme": "light",
-      "innerRadius": "80%",
+      "innerRadius": "60%",
       "labelsEnabled": false,
-      "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
       "dataProvider": dataProvider,
       "balloonText": "[[value]]",
       "valueField": "count",
-      "titleField": "conversion",
+      "titleField": "",
+      "fontSize": 18,
       "allLabels": [{
         "text": "conversion",
         "align": "center",
         "bold": true,
-        "y": 150
+        "y": 140
       }, {
-        "text": data.total_wet_sampling,
+        "text": Math.round(data.conversion_value) + " %",
         "align": "center",
-        "bold": false,
-        "y": 180
+        "bold": true,
+        "y": 160,
+        "radius": "20%"
       }],
       "balloon": {
         "drop": true,
@@ -31492,17 +31537,13 @@ app.Chart = function () {
         "color": "#FFFFFF",
         "fontSize": 16
       },
-      "legend": {
-        "position": "absolute",
-        "maxColumns": 2,
-        "top": 20,
-        "align": "right"
-      },
+      "legend": {},
       "export": {
         "enabled": true,
         "menu": [{
           "format": "PNG",
           "class": "export-main",
+          "label": "Download",
           "multiplier": 2,
           "content": ["Saved from:", window.location.href, {
             "image": "reference",
@@ -31517,7 +31558,7 @@ app.Chart = function () {
   function generateLahoreBarChart(data, activity) {
     var dataProvider = [];
     for (key in data) {
-      if (key !== 'total_teams') {
+      if (key !== 'total_teams' && key !== 'conversion_value' && key !== 'conversion') {
         var color = app.Chart.getColorValue(key);
 
         dataProvider.push({
@@ -31562,6 +31603,7 @@ app.Chart = function () {
         "menu": [{
           "format": "PNG",
           "class": "export-main",
+          "label": "Download",
           "multiplier": 2,
           "content": ["Saved from:", window.location.href, {
             "image": "reference",
@@ -31576,7 +31618,7 @@ app.Chart = function () {
   function generatePindiBarChart(data, activity) {
     var dataProvider = [];
     for (key in data) {
-      if (key !== 'total_teams') {
+      if (key !== 'total_teams' && key !== 'conversion_value' && key !== 'conversion') {
         var color = app.Chart.getColorValue(key);
 
         dataProvider.push({
@@ -31621,6 +31663,7 @@ app.Chart = function () {
         "menu": [{
           "format": "PNG",
           "class": "export-main",
+          "label": "Download",
           "multiplier": 2,
           "content": ["Saved from:", window.location.href, {
             "image": "reference",
@@ -31662,77 +31705,242 @@ app.Chart = function () {
 
     for (key in data) {
       accumulatedValue += parseInt(data[key].count);
-
-      dataProvider.push({
-        'date': data[key].created_at_date,
-        'value': accumulatedValue
-      });
-
       accumulatedTarget += thresholdValue;
+
+      if (data[key].created_at_date != '0000-00-00') {
+        dataProvider.push({
+          'date': data[key].created_at_date,
+          'value': accumulatedValue,
+          'target': accumulatedTarget
+
+        });
+      }
     }
 
-    targetDataProvider = [{
-      "finalDate": "2018-10-11",
-      "finalValue": 19,
-      "initialDate": "2018-10-02",
-      "initialValue": 10,
-      "lineColor": "#CC0000"
-    }];
+    if (chartId == 'line-chart1') {
+      $('.daily-interception-target-value').html(accumulatedValue + '/' + accumulatedTarget);
+
+      var _dataProvider = [{
+        'conversion': 'Tarang',
+        'count': Math.round(accumulatedValue / accumulatedTarget * 100),
+        "innerRadius": "65%"
+
+      }, {
+        'conversion': '',
+        'count': 100 - Math.round(accumulatedValue / accumulatedTarget * 100),
+        "innerRadius": "65%"
+
+      }];
+
+      AmCharts.makeChart(activity + "gaugechart-daily-interception", {
+        "type": "pie",
+        "theme": "light",
+        "innerRadius": "60%",
+        "labelsEnabled": false,
+        "dataProvider": _dataProvider,
+        "balloonText": "[[value]]",
+        "valueField": "count",
+        "fontSize": 30,
+        "titleField": "",
+        "allLabels": [{
+          "text": "",
+          "align": "center",
+          "bold": true,
+          "y": 150
+        }, {
+          "text": Math.round(accumulatedValue / accumulatedTarget * 100) + " %",
+          "align": "center",
+          "bold": true,
+          "y": 130,
+          "radius": "20%"
+        }],
+        "balloon": {
+          "drop": true,
+          "adjustBorderColor": false,
+          "color": "#FFFFFF",
+          "fontSize": 16
+        },
+        "legend": {},
+        "export": {
+          "enabled": true,
+          "menu": [{
+            "format": "PNG",
+            "class": "export-main",
+            "label": "Download",
+            "multiplier": 2,
+            "content": ["Saved from:", window.location.href, {
+              "image": "reference",
+              "fit": [523.28, 769.89] // fit image to A4
+            }]
+          }]
+        }
+
+      });
+    }
+
+    if (chartId == 'line-chart2') {
+      $('.daily-sale-target-value').html(accumulatedValue + '/' + accumulatedTarget);
+
+      var _dataProvider2 = [{
+        'conversion': 'Tarang',
+        'count': Math.round(accumulatedValue / accumulatedTarget * 100),
+        "innerRadius": "65%"
+
+      }, {
+        'conversion': 'Tarang',
+        'count': 100 - Math.round(accumulatedValue / accumulatedTarget * 100),
+        "innerRadius": "65%"
+
+      }];
+
+      AmCharts.makeChart(activity + "gaugechart-daily-sale", {
+        "type": "pie",
+        "theme": "light",
+        "innerRadius": "60%",
+        "labelsEnabled": false,
+        "dataProvider": _dataProvider2,
+        "balloonText": "[[value]]",
+        "valueField": "count",
+        "titleField": "",
+        "fontSize": 30,
+        "allLabels": [{
+          "text": "",
+          "align": "center",
+          "bold": true,
+          "y": 50
+        }, {
+          "text": Math.round(accumulatedValue / accumulatedTarget * 100) + " %",
+          "align": "center",
+          "bold": true,
+          "y": 130,
+          "radius": "20%"
+        }],
+        "balloon": {
+          "drop": true,
+          "adjustBorderColor": false,
+          "color": "#FFFFFF",
+          "fontSize": 16
+        },
+        "legend": {},
+        "export": {
+          "enabled": true,
+          "menu": [{
+            "format": "PNG",
+            "class": "export-main",
+            "label": "Download",
+            "multiplier": 2,
+            "content": ["Saved from:", window.location.href, {
+              "image": "reference",
+              "fit": [523.28, 769.89] // fit image to A4
+            }]
+          }]
+        }
+
+      });
+    }
+
+    if (chartId == 'line-chart3') {
+      $('.daily-wet-sampling-target-value').html(accumulatedValue + '/' + accumulatedTarget);
+
+      var _dataProvider3 = [{
+        'conversion': 'Tarang',
+        'count': Math.round(accumulatedValue / accumulatedTarget * 100),
+        "innerRadius": "65%"
+
+      }, {
+        'conversion': 'Tarang',
+        'count': 100 - Math.round(accumulatedValue / accumulatedTarget * 100),
+        "innerRadius": "65%"
+
+      }];
+
+      AmCharts.makeChart(activity + "gaugechart-daily-wet-sampling", {
+        "type": "pie",
+        "theme": "light",
+        "innerRadius": "60%",
+        "labelsEnabled": false,
+        "dataProvider": _dataProvider3,
+        "balloonText": "[[value]]",
+        "valueField": "count",
+        "titleField": "",
+        "fontSize": 30,
+        "allLabels": [{
+          "text": "",
+          "align": "center",
+          "bold": true,
+          "y": 50
+        }, {
+          "text": Math.round(accumulatedValue / accumulatedTarget * 100) + " %",
+          "align": "center",
+          "bold": true,
+          "fontSize": 56,
+          "y": 130,
+          "radius": "20%"
+        }],
+        "balloon": {
+          "drop": true,
+          "adjustBorderColor": false,
+          "color": "#FFFFFF",
+          "fontSize": 56
+        },
+        "legend": {},
+        "export": {
+          "enabled": true,
+          "menu": [{
+            "format": "PNG",
+            "class": "export-main",
+            "label": "Download",
+            "multiplier": 2,
+            "content": ["Saved from:", window.location.href, {
+              "image": "reference",
+              "fit": [523.28, 769.89] // fit image to A4
+            }]
+          }]
+        }
+
+      });
+    }
+
+    console.log(activity + chartId, dataProvider, 6543456543);
 
     var chart = AmCharts.makeChart(activity + chartId, {
       "type": "serial",
       "theme": "light",
-      "marginRight": 80,
-      "autoMarginOffset": 20,
-      "dataDateFormat": "YYYY-MM-DD HH:NN",
+      "legend": {
+        "horizontalGap": 10,
+        "markerSize": 10,
+        "data": [{
+          "title": "Target",
+          "color": "#EB1C24"
+        }, {
+          "title": "Achieved",
+          "color": "#FDBB13"
+        }]
+      },
+
       "dataProvider": dataProvider,
       "valueAxes": [{
-        "axisAlpha": 0,
-        "guides": [{
-          "fillAlpha": 0.1,
-          "fillColor": "#888888",
-          "lineAlpha": 0,
-          "toValue": 16,
-          "value": 10
-        }],
-        "position": "left",
-        "tickLength": 0
+        // stackType control the stacking behaviour of the graphs
+        // https://docs.amcharts.com/3/javascriptcharts/ValueAxis#stackType
+        "stackType": "none",
+        "position": "left"
       }],
       "graphs": [{
-        "balloonText": "[[category]]<br><b><span style='font-size:14px;'>value:[[value]]</span></b>",
-        "bullet": "round",
-        "dashLength": 3,
-        "colorField": "color",
-        "valueField": "value"
+        "title": "Target",
+        "valueField": "target",
+        "fillAlphas": 0.6,
+        "fillColors": "#EB1C24"
+      }, {
+        "title": "Achieved",
+        "valueField": "value",
+        "fillAlphas": 0.6,
+        "fillColors": "#FDBB13"
       }],
-      "trendLines": [{
-        "finalDate": startDate + " 12",
-        "finalValue": thresholdValue,
-        "initialDate": endDate + " 12",
-        "initialValue": accumulatedTarget,
-        "lineColor": "#CC0000"
-      }],
-      "chartScrollbar": {
-        "scrollbarHeight": 2,
-        "offset": -1,
-        "backgroundAlpha": 0.1,
-        "backgroundColor": "#888888",
-        "selectedBackgroundColor": "#67b7dc",
-        "selectedBackgroundAlpha": 1
-      },
-      "chartCursor": {
-        "fullWidth": true,
-        "valueLineEabled": true,
-        "valueLineBalloonEnabled": true,
-        "valueLineAlpha": 0.5,
-        "cursorAlpha": 0
-      },
+      "chartScrollbar": {},
+      "chartCursor": {},
       "categoryField": "date",
       "categoryAxis": {
         "parseDates": true,
-        "axisAlpha": 0,
-        "gridAlpha": 0.1,
-        "minorGridAlpha": 0.1,
         "minorGridEnabled": true
       },
       "export": {
@@ -31741,14 +31949,17 @@ app.Chart = function () {
         "menu": [{
           "format": "PNG",
           "class": "export-main",
+          "label": "Download",
           "multiplier": 2,
           "content": ["Saved from:", window.location.href, {
             "image": "reference",
-            "fit": [523.28, 769.89] // fit image to A4
+            "fit": [523.28, 769.89]
+
           }]
         }]
 
       }
+
     });
   }
 
