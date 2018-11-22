@@ -25,8 +25,8 @@
 
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
-        <li ><a id="activity_1_download_summary-tab"  href="#activity_1" data-toggle="tab" aria-expanded="true">Activity 1</a></li>
-        <li class="active"><a  id="activity_2_download_summary-tab" href="#activity_2" data-toggle="tab" aria-expanded="false">Activity 2</a></li>
+        <li ><a id="activity_1_download_summary-tab"  href="#activity_1" data-toggle="tab" aria-expanded="true">Tarang DDS Karachi</a></li>
+        <li class="active"><a  id="activity_2_download_summary-tab" href="#activity_2" data-toggle="tab" aria-expanded="false">Tarang DDS Punjab</a></li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane" id="activity_1">

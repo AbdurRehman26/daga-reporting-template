@@ -91,24 +91,6 @@ class FormRepository extends AbstractRepository implements RepositoryContract
         }
 
 
-        if(empty($input['city'])){
-
-            if($input['activity'] == 'activity_2-'){
-
-                $teamMembers = \App\Data\Models\TeamMember::whereIn('city' , [1,2])->pluck('name')->toArray();
-
-                $this->builder = $this->builder->whereIn('ba_id', $teamMembers);
-
-            }else{
-
-
-
-            }
-
-
-        }
-
-
 
 
 
@@ -266,31 +248,9 @@ class FormRepository extends AbstractRepository implements RepositoryContract
             $data = $this->builder->groupBy('created_at_date')->select(\DB::raw('date(created_at) as created_at_date') , \DB::raw('sum(tarang_sampling_quantity) as count'))->get()->toArray();
         }
 
-
-
-        if(empty($input['city'])){
-
-            if($input['activity'] == 'activity_2-'){
-
-                $teamMembers = \App\Data\Models\TeamMember::whereIn('city' , [1,2])->pluck('name')->toArray();
-
-                $this->builder = $this->builder->whereIn('ba_id', $teamMembers);
-
-            }else{
-
-
-
-            }
-
-
-        }
-
-
-        
-
         if(!empty($input['interceptions'])){
 
-            $data = $this->builder->where('no_response' , '=' ,  0)->groupBy('created_at_date')->select(\DB::raw('date(created_at) as created_at_date') , \DB::raw('count(id) as count'))->get()->toArray();
+            $data = $this->builder->groupBy('created_at_date')->select(\DB::raw('date(created_at) as created_at_date') , \DB::raw('count(id) as count'))->get()->toArray();
         }
 
         return $data;
