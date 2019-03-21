@@ -31701,9 +31701,40 @@ app.Chart = function () {
     var startDate = data[0].created_at_date;
     var endDate = data[data.length - 1].created_at_date;
 
-    console.log('start date' + startDate, 'end date' + endDate);
-
     for (key in data) {
+
+      if (data[key].created_at_date < '2018-12-14') {
+
+        if (chartId == 'line-chart1') {
+          if (data[key].created_at_date >= '2018-12-05') {
+            thresholdValue = 3744;
+          } else {
+            // interceptions
+            thresholdValue = 5616;
+          }
+        }
+
+        if (chartId == 'line-chart2') {
+
+          if (data[key].created_at_date >= '2018-12-05') {
+            thresholdValue = 1872;
+          } else {
+            // Sales
+            thresholdValue = 2808;
+          }
+        }
+
+        if (chartId == 'line-chart2') {
+
+          if (data[key].created_at_date >= '2018-12-05') {
+            thresholdValue = 2995;
+          } else {
+            // Sales
+            thresholdValue = 4493;
+          }
+        }
+      }
+
       accumulatedValue += parseInt(data[key].count);
       accumulatedTarget += thresholdValue;
 
@@ -31718,7 +31749,15 @@ app.Chart = function () {
     }
 
     if (chartId == 'line-chart1') {
+
       $('.daily-interception-target-value').html(accumulatedValue + '/' + accumulatedTarget);
+
+      if (activity == 'activity_2-') {
+
+        accumulatedTarget = 183456;
+
+        $('.daily-interception-target-value').html(accumulatedValue + '/' + accumulatedTarget);
+      }
 
       var _dataProvider = [{
         'conversion': 'Tarang',
@@ -31779,7 +31818,14 @@ app.Chart = function () {
     }
 
     if (chartId == 'line-chart2') {
+
       $('.daily-sale-target-value').html(accumulatedValue + '/' + accumulatedTarget);
+
+      if (activity == 'activity_2-') {
+
+        accumulatedTarget = 91728;
+        $('.daily-sale-target-value').html(accumulatedValue + '/' + accumulatedTarget);
+      }
 
       var _dataProvider2 = [{
         'conversion': 'Tarang',
@@ -31840,8 +31886,15 @@ app.Chart = function () {
     }
 
     if (chartId == 'line-chart3') {
+
       $('.daily-wet-sampling-target-value').html(accumulatedValue + '/' + accumulatedTarget);
 
+      if (activity == 'activity_2-') {
+
+        accumulatedTarget = 146765;
+
+        $('.daily-wet-sampling-target-value').html(accumulatedValue + '/' + accumulatedTarget);
+      }
       var _dataProvider3 = [{
         'conversion': 'Tarang',
         'count': Math.round(accumulatedValue / accumulatedTarget * 100),
@@ -31900,8 +31953,6 @@ app.Chart = function () {
 
       });
     }
-
-    console.log(activity + chartId, dataProvider, 6543456543);
 
     var chart = AmCharts.makeChart(activity + chartId, {
       "type": "serial",

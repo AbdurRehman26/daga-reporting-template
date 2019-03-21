@@ -50,10 +50,11 @@ class FormRepository extends AbstractRepository implements RepositoryContract
         if(!empty($input['created_at'])){
 
             $input['created_at'] = Date($input['created_at']);    
-            
-            $this->builder = $this->builder->where('created_at' , $input['created_at']);
 
+            $this->builder = $this->builder->whereDate('created_at' , $input['created_at']);
+        
         }
+
 
         if(empty($input['created_at'])){
             if($input['activity'] == 'activity_1-'){
@@ -61,6 +62,7 @@ class FormRepository extends AbstractRepository implements RepositoryContract
                 $input['created_at'] = Date('2018-10-28');    
                 
                 $this->builder = $this->builder->whereDate('created_at' , '<' , $input['created_at']);
+            
             }else{
 
                 $input['created_at'] = Date('2018-10-28');
@@ -109,10 +111,6 @@ class FormRepository extends AbstractRepository implements RepositoryContract
         }
 
 
-
-
-
-
         $notTarangBuilder = clone $this->builder;
         $tarangBuilder = clone $this->builder;
         $yesBuilder = clone $this->builder;
@@ -131,15 +129,15 @@ class FormRepository extends AbstractRepository implements RepositoryContract
         $notTarang = $notTarangBuilder->where('previous_usage' , '<>' , 'Tarang')->count();
         $tarang = $tarangBuilder->where('previous_usage' , '=' , 'Tarang')->count();
 
-        $yesWetSampling = $yesBuilder->where('tarang_sampling' , '=' , 'Yes')->count();
+        $yesWetSampling = $yesBuilder->sum('tarang_sampling_quantity');
         $tarangSampling = $samplingBuilder->where('previous_usage' , '=' , 'Tarang')->where('tarang_sampling' , '=' , 'Yes')->count();
 
         $data['conversion_value'] = 0;
         $data['conversion'] = 0;
 
         if($notTarang - $tarang){
-            $data['conversion_value'] = (($yesWetSampling) / ($notTarang - $tarang)) * 100 ; 
-            $data['conversion'] =  (($yesWetSampling) / ($notTarang - $tarang)) ; 
+            $data['conversion_value'] = (($yesWetSampling) / ($notTarang)) * 100 ; 
+            $data['conversion'] =  (($yesWetSampling) / ($notTarang)) ; 
 
         }
 
@@ -238,36 +236,6 @@ class FormRepository extends AbstractRepository implements RepositoryContract
 
 
 
-        if(empty($input['created_at'])){
-            if($input['activity'] == 'activity_1-'){
-
-                $created_at = Date('2018-10-28');    
-
-                $this->builder = $this->builder->whereDate('created_at' , '<' , $created_at);
-            }else{
-
-                $created_at = Date('2018-10-28');    
-
-                $this->builder = $this->builder->whereDate('created_at' , '>' ,  $created_at);
-
-
-            }
-
-        }
-
-
-        if(!empty($input['quantity'])){
-
-            $data = $this->builder->groupBy('created_at_date')->select(\DB::raw('date(created_at) as created_at_date') , \DB::raw('sum(quantity) as count'))->get()->toArray();
-        }
-
-        if(!empty($input['total_sampling_quantity'])){
-
-            $data = $this->builder->groupBy('created_at_date')->select(\DB::raw('date(created_at) as created_at_date') , \DB::raw('sum(tarang_sampling_quantity) as count'))->get()->toArray();
-        }
-
-
-
         if(empty($input['city'])){
 
             if($input['activity'] == 'activity_2-'){
@@ -284,6 +252,36 @@ class FormRepository extends AbstractRepository implements RepositoryContract
 
 
         }
+
+
+
+        if(empty($input['created_at'])){
+            if($input['activity'] == 'activity_1-'){
+
+                $created_at = Date('2018-10-28');    
+
+                $this->builder = $this->builder->whereDate('created_at' , '<' , $created_at);
+            }else{
+
+                $created_at = Date('2018-10-28');    
+
+                $this->builder = $this->builder->whereDate('created_at' , '>' ,  $created_at);
+
+            }
+
+        }
+
+
+        if(!empty($input['quantity'])){
+
+            $data = $this->builder->groupBy('created_at_date')->select(\DB::raw('date(created_at) as created_at_date') , \DB::raw('sum(quantity) as count'))->get()->toArray();
+        }
+
+        if(!empty($input['total_sampling_quantity'])){
+
+            $data = $this->builder->groupBy('created_at_date')->select(\DB::raw('date(created_at) as created_at_date') , \DB::raw('sum(tarang_sampling_quantity) as count'))->get()->toArray();
+        }
+
 
 
         

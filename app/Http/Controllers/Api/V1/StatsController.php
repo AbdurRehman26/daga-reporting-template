@@ -31,7 +31,7 @@ class StatsController extends Controller
         $input = $request->only(
             'total_interceptions', 'total_wet_sampling', 'created_at',
             'total_sales', 'total_deals', 'total_teams' , 'city', 'team',
-            'activity'
+            'activity', 'created_at'
         );
 
         $data = $this->_repository->getTotalByCriteria($input);
@@ -44,7 +44,7 @@ class StatsController extends Controller
     	$input = $request->only(
             'total_interceptions', 'total_wet_sampling', 'created_at',
             'total_sales', 'total_deals', 'total_teams' , 'city', 'team',
-            'activity'
+            'activity', 'created_at'
         );
 
     	$data = $this->_repository->getBrandUsage($input);
@@ -64,7 +64,7 @@ class StatsController extends Controller
     {
         $input = $request->only(
             'quantity', 'total_sampling_quantity', 'interceptions',
-            'activity'
+            'activity', 'created_at'
         );
 
         $data = $this->_repository->dailyTargets($input);
