@@ -42,3 +42,8 @@ Route::get('team-member', ['as' => 'team.index', 'uses' => 'Api\V1\StatsControll
 
 Route::get('location-values', ['as' => 'location.values', 'uses' => 'Api\V1\StatsController@getLocationValues']);
 
+
+
+Route::get('location-values', ['as' => 'location.values', 'uses' => 'Api\V1\StatsController@getLocationValues']);
+
+
