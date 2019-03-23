@@ -43,7 +43,12 @@ Route::get('team-member', ['as' => 'team.index', 'uses' => 'Api\V1\StatsControll
 Route::get('location-values', ['as' => 'location.values', 'uses' => 'Api\V1\StatsController@getLocationValues']);
 
 
+Route::resource('activity_data', 'Api\V1\ActivityDataController')->except([
+	'edit'
+]);
 
-Route::get('location-values', ['as' => 'location.values', 'uses' => 'Api\V1\StatsController@getLocationValues']);
+Route::resource('attendance', 'Api\V1\AttendanceController')->except([
+	'edit'
+]);
 
 
