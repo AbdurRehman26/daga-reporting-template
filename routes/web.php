@@ -13,7 +13,7 @@
 
 Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 
-Route::get('/download/summary', 'Api\V1\StatsController@downloadSummary')->name('download.summary');
+Route::get('/download', 'Api\V1\ActivityDataController@download')->name('download');
 
 
 

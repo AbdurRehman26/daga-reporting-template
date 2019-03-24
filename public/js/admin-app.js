@@ -30993,11 +30993,6 @@ app.Dashboard = function () {
     var routes = app.Routes;
     var template = app.Template;
 
-    function getTotalRecords(query) {
-        var url = dataApiUrl + 'stats?' + query;
-        return $.get(url);
-    }
-
     function getBrandUsage(query) {
         var url = dataApiUrl + 'stats-brand-usage?' + query;
         return $.get(url);
@@ -31009,7 +31004,6 @@ app.Dashboard = function () {
     }
 
     return {
-        getTotalRecords: getTotalRecords,
         getBrandUsage: getBrandUsage,
         generateGetCall: generateGetCall
     };
@@ -31109,13 +31103,53 @@ $(document).ready(function () {
 function initApplication() {
 
   getGeneralValues();
+
+  getChartsData();
 }
 
 function getGeneralValues() {
 
-  var query = 'total_interceptions=true&total_wet_sampling=true&total_sales=true&total_deals=true&total_teams=true';
+  var query = 'activity_data/total?total_interceptions=true&total_wet_sampling=true&total_sales=true&total_deals=true&total_teams=true';
 
-  app.Dashboard.getTotalRecords(query).then(function (response) {});
+  app.Dashboard.generateGetCall(query).then(function (response) {
+
+    var i = 1;
+    $.each(response, function (key, value) {
+      $('.kpi-widget-' + i).html(value);
+      i++;
+    });
+  });
+}
+
+function getChartsData() {
+
+  var chartsType = [{
+    chartId: '',
+    url: 'activity_data/charts-data'
+  }, {
+    chartId: '',
+    url: 'activity_data/charts-data?lep=1'
+  }, {
+    chartId: '',
+    url: 'activity_data/charts-data?lepp=1'
+  }, {
+    chartId: '',
+    url: 'activity_data/charts-data?tin_pack=1'
+  }, {
+    chartId: '',
+    url: 'activity_data/charts-data?did_not_buy=1'
+  }];
+
+  var query = '';
+
+  $.each(chartsType, function (index, chartType) {
+
+    console.log(chartType, index);
+
+    query = chartType.url;
+
+    app.Dashboard.generateGetCall(query).then(function (response) {});
+  });
 }
 
 /***/ }),

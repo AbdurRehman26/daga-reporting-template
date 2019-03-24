@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Data\Repositories\AttendanceRepository;
+use Illuminate\Http\Request;
 
 class AttendanceController extends ApiResourceController{
 
@@ -28,5 +29,7 @@ if($value == 'update'){}
 public function input($value=''){
 	$input = request()->only('ba_id' , 'ba_name', 'time', 'date', 'location', 'picture');
 	return $input;
+
 }
+
 }

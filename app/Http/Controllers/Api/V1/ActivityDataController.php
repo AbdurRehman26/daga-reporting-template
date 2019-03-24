@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Data\Repositories\ActivityDataRepository;
+use Illuminate\Http\Request;
 
 class ActivityDataController extends ApiResourceController{
 
@@ -30,4 +31,33 @@ class ActivityDataController extends ApiResourceController{
 
 				return $input;
 			}
+
+			public function getTotal(Request $request)
+			{
+				$input = $this->input();
+				$data = $this->_repository->getTotal($input);
+
+				return response()->json($data, 200);
+			}
+
+
+
+			public function getChartsData(Request $request)
+			{
+				$input = $this->input();
+				$data = $this->_repository->getChartsData($input);
+
+				return response()->json($data, 200);
+			}
+
+
+
+			public function download(Request $request)
+			{
+					$input = $this->input();
+					$data = $this->_repository->getChartsData($input);
+					
+					return response()->json($data, 200);
+			}
+
 		}

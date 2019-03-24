@@ -7,13 +7,6 @@ app.Dashboard = (() => {
     const routes = app.Routes;
     const template = app.Template;
 
-
-    function getTotalRecords(query){
-        let url = dataApiUrl  + 'stats?'+query;
-        return $.get(url);
-    }
-
-
     function getBrandUsage(query){
         let url = dataApiUrl  + 'stats-brand-usage?'+ query;
         return $.get(url);
@@ -27,7 +20,6 @@ app.Dashboard = (() => {
 
 
     return {
-        getTotalRecords: getTotalRecords,
         getBrandUsage: getBrandUsage,
         generateGetCall : generateGetCall
     }

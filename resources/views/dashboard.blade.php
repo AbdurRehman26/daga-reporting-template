@@ -9,39 +9,17 @@
   <div style="padding: 30px 30px; background: rgba(236, 238, 243, 1.0); z-index: 999999; font-size: 16px; font-weight: 600;">
     Over All Summary
 
-    <a  id="activity_1_download_summary"  style="display: none;" class="btn btn-success pull-right" href="{{ route('download.summary' , ['activity' => '1']) }}" >Download</a>
-    <a  id="activity_2_download_summary" class="btn btn-success pull-right" href="{{ route('download.summary', ['activity' => '2']) }}" >Download</a>
+    <a  id="activity_2_download_summary" class="btn btn-success pull-right" href="{{ route('download') }}" >Download</a>
 
   </div>
 
-
-  <!-- Content Header (Page header) -->
-  <!-- <div style="height:150px; padding: 20px 30px; background: white; z-index: 999999; font-size: 16px; font-weight: 600;">
-    <div class="row col-md-12">
-      
-      <div class="col-md-6 form-group">
-        <label>Select date:</label>
-        <input min="2018-10-29" id="filter-date" type="date" class="form-control">
-      </div>
-
-      <div class="col-md-2 form-group">
-        <label></label>
-        <button id="apply-search-btn" type="button" class="btn btn-success form-control">Apply</button>
-      </div>
-
-    </div>
-
-
-  </div>
--->
-<!-- Main content -->
 <section class="content">
 
 
 
   <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
-      <li><a id="activity_1_download_summary-tab" class="active"  href="#activity_1" data-toggle="tab" aria-expanded="true">Tarang DDS Karachi</a></li>
+      <li><a id="activity_1_download_summary-tab" class="active"  href="#activity_1" data-toggle="tab" aria-expanded="true"></a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="activity_1">
@@ -54,8 +32,7 @@
             <div class="col-md-3">
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3 class="total-interception-value"></h3>
-
+                  <h3 class="kpi-widget-1"></h3>
                   <p>Total Interceptions</p>
                 </div>
               </div>
@@ -64,7 +41,7 @@
             <div class="col-md-3">
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3 class="total-wet-sampling-value"></h3>
+                  <h3 class="kpi-widget-2"></h3>
 
                   <p>Total NICs</p>
                 </div>
@@ -74,7 +51,7 @@
             <div class="col-md-3">
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3 class="total-sales-value"></h3>
+                  <h3 class="kpi-widget-3"></h3>
 
                   <p>Total Contacts</p>
                 </div>
@@ -84,7 +61,7 @@
             <div class="col-md-3">
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3 class="total-deals-value"></h3>
+                  <h3 class="kpi-widget-4"></h3>
 
                   <p>Total Sales</p>
                 </div>
@@ -94,7 +71,7 @@
             <div class="col-md-3">
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3 class="total-no-response-value"></h3>
+                  <h3 class="kpi-widget-5"></h3>
                   <p>LEP</p>
                 </div>
               </div>
@@ -103,7 +80,7 @@
             <div class="col-md-3">
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3 class="total-teams-value"></h3>
+                  <h3 class="kpi-widget-6"></h3>
                   <p>LEPP</p>
                 </div>
               </div>
@@ -112,7 +89,7 @@
             <div class="col-md-3">
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3 class="total-teams-value"></h3>
+                  <h3 class="kpi-widget-7"></h3>
                   <p>TIN PACK</p>
                 </div>
               </div>
@@ -121,7 +98,7 @@
             <div class="col-md-3">
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3 class="total-teams-value"></h3>
+                  <h3 class="kpi-widget-8"></h3>
                   <p>DID NOT BUY</p>
                 </div>
               </div>
@@ -140,7 +117,7 @@
               </div>
               <div class="box-body">
 
-                <div class="line-chart-big" id="activity_1-line-chart3"></div> 
+                <div class="line-chart-big" id="chart-1"></div> 
 
               </div>
               <!-- /.box-body -->
@@ -167,7 +144,7 @@
               </div>
               <div class="box-body">
 
-                <div class="chartdiv" id="activity_1-chartdiv"></div>
+                <div class="chartdiv" id="chart-2"></div>
 
               </div>
               <!-- /.box-body -->
@@ -189,7 +166,7 @@
               </div>
               <div class="box-body">
 
-                <div class="chartdiv" id="activity_1-chartdiv"></div>
+                <div class="chartdiv" id="chart-3"></div>
 
               </div>
               <!-- /.box-body -->
@@ -211,7 +188,7 @@
               </div>
               <div class="box-body">
 
-                <div class="chartdiv-lahore" id="activity_1-chartdiv-lahore"></div>
+                <div class="chartdiv-lahore" id="chart-4"></div>
 
               </div>
               <!-- /.box-body -->
@@ -232,7 +209,7 @@
               </div>
               <div class="box-body">
 
-                <div class="chartdiv-pindi" id="activity_1-chartdiv-pindi"></div>
+                <div class="chartdiv-pindi" id="chart-5"></div>
 
               </div>
               <!-- /.box-body -->

@@ -41,5 +41,38 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
     }
 
 
+    public function getTotal($input)
+    {
+        $data = [];
+
+
+        $total_interception = $this->model->count();
+        $total_cnic = $this->model->count('cnic');
+        $total_contacts = $this->model->count('customer_number');
+        $total_sales = $this->model->where('sale' , 'yes')->count();
+        $total_lep = $this->model->count('lep');
+        $total_lepp = $this->model->count('lepp');
+        $total_tin_pack = $this->model->count('tin_pack');
+        $total_did_not_buy = $this->model->count('did_not_buy');;
+
+        $data ['total_interception'] = $total_interception;
+        $data ['total_cnic'] = $total_cnic;
+        $data ['total_contacts'] = $total_contacts;
+        $data ['total_sales'] = $total_sales;
+        $data ['total_lep'] = $total_lep;
+        $data ['total_lepp'] = $total_lepp;
+        $data ['total_tin_pack'] = $total_tin_pack;
+        $data ['total_did_not_buy'] = $total_did_not_buy;
+
+        return $data;
+    }
+
+
+    public function getChartsData($input)
+    {
+
+
+    }
+
 
 }
