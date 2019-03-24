@@ -6,28 +6,27 @@ use App\Data\Repositories\AttendanceRepository;
 
 class AttendanceController extends ApiResourceController{
 
-	public $_repository;
+public $_repository;
 
-	public function __construct(AttendanceRepository $repository){
-		$this->_repository = $repository;
-	}
+public function __construct(AttendanceRepository $repository){
+$this->_repository = $repository;
+}
 
-	public function rules($value=''){
-		$rules = [];
+public function rules($value=''){
+$rules = [];
 
-		if($value == 'store'){}
+if($value == 'store'){}
 
-			if($value == 'update'){}
+if($value == 'update'){}
 
-				if($value == 'index'){}
+	if($value == 'index'){}
 
-					return $rules;
+		return $rules;
 
-			}
+}
 
-			public function input($value=''){
-				$input = request()->only('ba_id' , 'ba_name', 'time', 'date', 'location');
-
-				return $input;
-			}
-		}
+public function input($value=''){
+	$input = request()->only('ba_id' , 'ba_name', 'time', 'date', 'location', 'picture');
+	return $input;
+}
+}

@@ -11,32 +11,6 @@
           </span>
         </a>
       </li>
-      <li class="active treeview menu-open">
-        <a href="{{route('city.wise')}}">
-          <i class="fa fa-th"></i> <span>City Wise</span>
-          <span class="pull-right-container">
-          </span>
-        </a>
-      </li>
-      <li class="active treeview menu-open">
-        <a href="{{route('team.wise')}}">
-          <i class="fa fa-th"></i> <span>Team Wise</span>
-          <span class="pull-right-container">
-          </span>
-        </a>
-      </li>
-
-      <li class="active treeview menu-open">
-        <a href="{{route('location.wise')}}">
-          <i class="fa fa-th"></i> <span>Geo Location</span>
-          <span class="pull-right-container">
-          </span>
-        </a>
-      </li>
-      
-      
-      
-
 
 
       <li class="header">Account</li>

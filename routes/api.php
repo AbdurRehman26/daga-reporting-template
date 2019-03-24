@@ -40,6 +40,7 @@ Route::get('daily-target', ['as' => 'target.daily', 'uses' => 'Api\V1\StatsContr
 
 Route::get('team-member', ['as' => 'team.index', 'uses' => 'Api\V1\StatsController@getTeamMembers']);
 
+
 Route::get('location-values', ['as' => 'location.values', 'uses' => 'Api\V1\StatsController@getLocationValues']);
 
 
