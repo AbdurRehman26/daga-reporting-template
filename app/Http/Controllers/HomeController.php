@@ -22,20 +22,12 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function dashboard()
-    {
+    {   
         return view('dashboard');
     }
 
-    public function teamWise()
+    public function agencyPanel()
     {
-        return view('team-wise');
-    }
-    public function cityWise()
-    {
-        return view('city-wise');
-    }
-    public function locationWise()
-    {
-        return view('location-wise');
+        return view('agency-panel');
     }
 }

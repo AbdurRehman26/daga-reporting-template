@@ -30650,6 +30650,8 @@ function initApplication() {
   getGeneralValues();
 
   getChartsData();
+
+  getActivityData();
 }
 
 function getGeneralValues() {
@@ -30697,6 +30699,32 @@ function getChartsData() {
 
       app.Chart.generateBarChart(chartType.chartId, response);
     });
+  });
+}
+
+function getActivityData() {
+
+  var columnDefs = [{ headerName: "Team", field: "team_id" }, { headerName: "BA ID", field: "ba_id" }, { headerName: "Ba Name", field: "ba_name" }, { headerName: "Customer Name", field: "customer_name" }, { headerName: "Customer Number", field: "customer_number" }, { headerName: "CNIC", field: "cnic" }, { headerName: "Sale", field: "sale" }, { headerName: "LEP", field: "lep" }, { headerName: "LEPP", field: "lepp" }, { headerName: "TIN PACK", field: "tin_pack" }, { headerName: "DID NOT BUY", field: "did_not_buy" }, { headerName: "Primary", field: "primary" }, { headerName: "Secondary", field: "secondary" }, { headerName: "Time", field: "time" }, { headerName: "Date", field: "date" }, { headerName: "Location", field: "location" }];
+
+  query = 'activity_data?pagination=true';
+  // specify the data
+  var rowData = [];
+
+  app.Dashboard.generateGetCall(query).then(function (response) {
+
+    rowData = response.data;
+
+    // let the grid know which columns and what data to use
+    var gridOptions = {
+      columnDefs: columnDefs,
+      rowData: rowData
+    };
+
+    // lookup the container we want the Grid to use
+    var eGridDiv = document.querySelector('#myGrid');
+
+    // create the grid passing in the div to use together with the columns & data we want to use
+    new agGrid.Grid(eGridDiv, gridOptions);
   });
 }
 
