@@ -17,6 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	return $request->user();
 });
 
+Auth::routes();
 
 Route::get('activity_data/total', 'Api\V1\ActivityDataController@getTotal');
 Route::get('activity_data/charts-data', 'Api\V1\ActivityDataController@getChartsData');
@@ -32,4 +33,6 @@ Route::resource('attendance', 'Api\V1\AttendanceController')->except([
 Route::resource('team-member', 'Api\V1\TeamMemberController')->except([
 	'edit'
 ]);
+
+
 

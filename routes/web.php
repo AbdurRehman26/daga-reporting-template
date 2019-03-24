@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/home', 'HomeController@dashboard')->name('home');
+Route::get('/', 'HomeController@dashboard')->name('/');
 Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 
 Route::get('/download', 'Api\V1\ActivityDataController@download')->name('download');

@@ -71,8 +71,32 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
     public function getChartsData($input)
     {
 
+     $builder = $this->model->groupBy('team_id');
 
-    }
+     if($input['type'] == 'all'){
+       $data = $builder->select('team_id' , \DB::raw('count(id) as count'))->get();
+   }
+
+
+   if($input['type'] == 'lep'){
+       $data = $builder->select('team_id' , \DB::raw('sum(lep) as count'))->get();
+   }
+
+
+   if($input['type'] == 'lepp'){
+       $data = $builder->select('team_id' , \DB::raw('sum(lepp) as count'))->get();
+   }
+
+
+   if($input['type'] == 'tin_pack'){
+       $data = $builder->select('team_id' , \DB::raw('sum(tin_pack) as count'))->get();
+   }
+
+   if($input['type'] == 'did_not_buy'){
+       $data = $builder->select('team_id' , \DB::raw('sum(did_not_buy) as count'))->get();
+   }
+   return $data;
+}
 
 
 }

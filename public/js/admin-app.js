@@ -115,7 +115,7 @@ module.exports = app;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(2);
-module.exports = __webpack_require__(15);
+module.exports = __webpack_require__(13);
 
 
 /***/ }),
@@ -130,11 +130,83 @@ __webpack_require__(9);
 $(document).ready(function () {
 
 	__webpack_require__(10);
-
 	__webpack_require__(11);
 	__webpack_require__(12);
-	__webpack_require__(13);
-	__webpack_require__(14);
+
+	var chart = AmCharts.makeChart("chartdiv", {
+		"type": "serial",
+		"theme": "none",
+		"dataProvider": [{
+			"country": "USA",
+			"visits": 2025
+		}, {
+			"country": "China",
+			"visits": 1882
+		}, {
+			"country": "Japan",
+			"visits": 1809
+		}, {
+			"country": "Germany",
+			"visits": 1322
+		}, {
+			"country": "UK",
+			"visits": 1122
+		}, {
+			"country": "France",
+			"visits": 1114
+		}, {
+			"country": "India",
+			"visits": 984
+		}, {
+			"country": "Spain",
+			"visits": 711
+		}, {
+			"country": "Netherlands",
+			"visits": 665
+		}, {
+			"country": "Russia",
+			"visits": 580
+		}, {
+			"country": "South Korea",
+			"visits": 443
+		}, {
+			"country": "Canada",
+			"visits": 441
+		}, {
+			"country": "Brazil",
+			"visits": 395
+		}],
+		"valueAxes": [{
+			"gridColor": "#FFFFFF",
+			"gridAlpha": 0.2,
+			"dashLength": 0
+		}],
+		"gridAboveGraphs": true,
+		"startDuration": 1,
+		"graphs": [{
+			"balloonText": "[[category]]: <b>[[value]]</b>",
+			"fillAlphas": 0.8,
+			"lineAlpha": 0.2,
+			"type": "column",
+			"valueField": "visits"
+		}],
+		"chartCursor": {
+			"categoryBalloonEnabled": false,
+			"cursorAlpha": 0,
+			"zoomable": false
+		},
+		"categoryField": "country",
+		"categoryAxis": {
+			"gridPosition": "start",
+			"gridAlpha": 0,
+			"tickPosition": "start",
+			"tickLength": 20
+		},
+		"export": {
+			"enabled": true
+		}
+
+	});
 });
 
 /***/ }),
@@ -30532,456 +30604,6 @@ c*f);a.getUTCMonth()>b+c*f&&a.setUTCDate(a.getUTCDate()-1);d||g||a.setUTCDate(a.
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports) {
-
-/*! jquery-locationpicker - v0.1.12 - 2015-01-05 */
-(function ($) {
-    function GMapContext(domElement, options) {
-        var _map = new google.maps.Map(domElement, options);
-        var _marker = new google.maps.Marker({
-            position: new google.maps.LatLng(16.19335, -52.92695),
-            map: _map,
-            title: "Drag Me",
-            draggable: options.draggable
-        });
-        return {
-            map: _map,
-            marker: _marker,
-            circle: null,
-            location: _marker.position,
-            radius: options.radius,
-            locationName: options.locationName,
-            addressComponents: {
-                formatted_address: null,
-                addressLine1: null,
-                addressLine2: null,
-                streetName: null,
-                streetNumber: null,
-                city: null,
-                district: null,
-                state: null,
-                stateOrProvince: null
-            },
-            settings: options.settings,
-            domContainer: domElement,
-            geodecoder: new google.maps.Geocoder()
-        };
-    }
-
-    var GmUtility = {
-        drawCircle: function drawCircle(gmapContext, center, radius, options) {
-            if (gmapContext.circle != null) {
-                gmapContext.circle.setMap(null);
-            }
-            if (radius > 0) {
-                radius *= 1;
-                options = $.extend({
-                    strokeColor: "#4a7938",
-                    strokeOpacity: .35,
-                    strokeWeight: 2,
-                    fillColor: "#7ad458",
-                    fillOpacity: .2
-                }, options);
-                options.map = gmapContext.map;
-                radius = radius / 20902231 * 6371000;
-                options.radius = radius;
-                options.center = center;
-                gmapContext.circle = new google.maps.Circle(options);
-                return gmapContext.circle;
-            }
-            return null;
-        },
-        setPosition: function setPosition(gMapContext, location, callback) {
-            gMapContext.location = location;
-            gMapContext.marker.setPosition(location);
-            gMapContext.map.panTo(location);
-            this.drawCircle(gMapContext, location, gMapContext.radius, {});
-            if (gMapContext.settings.enableReverseGeocode) {
-                gMapContext.geodecoder.geocode({
-                    latLng: gMapContext.location
-                }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
-                        gMapContext.locationName = results[0].formatted_address;
-                        gMapContext.addressComponents = GmUtility.address_component_from_google_geocode(results[0].address_components);
-                    }
-                    if (callback) {
-                        callback.call(this, gMapContext);
-                    }
-                });
-            } else {
-                if (callback) {
-                    callback.call(this, gMapContext);
-                }
-            }
-        },
-        locationFromLatLng: function locationFromLatLng(lnlg) {
-            return {
-                latitude: lnlg.lat(),
-                longitude: lnlg.lng()
-            };
-        },
-        address_component_from_google_geocode: function address_component_from_google_geocode(address_components) {
-            var result = {};
-            for (var i = address_components.length - 1; i >= 0; i--) {
-                var component = address_components[i];
-                if (component.types.indexOf("postal_code") >= 0) {
-                    result.postalCode = component.short_name;
-                } else if (component.types.indexOf("street_number") >= 0) {
-                    result.streetNumber = component.short_name;
-                } else if (component.types.indexOf("route") >= 0) {
-                    result.streetName = component.short_name;
-                } else if (component.types.indexOf("locality") >= 0) {
-                    result.city = component.short_name;
-                } else if (component.types.indexOf("sublocality") >= 0) {
-                    result.district = component.short_name;
-                } else if (component.types.indexOf("administrative_area_level_1") >= 0) {
-                    result.stateOrProvince = component.short_name;
-                } else if (component.types.indexOf("country") >= 0) {
-                    result.country = component.short_name;
-                }
-            }
-            result.addressLine1 = [result.streetNumber, result.streetName].join(" ").trim();
-            result.addressLine2 = "";
-            return result;
-        }
-    };
-
-    function isPluginApplied(domObj) {
-        return getContextForElement(domObj) != undefined;
-    }
-
-    function getContextForElement(domObj) {
-        return $(domObj).data("locationpicker");
-    }
-
-    function updateInputValues(inputBinding, gmapContext) {
-        if (!inputBinding) return;
-        var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-        if (inputBinding.latitudeInput) {
-            inputBinding.latitudeInput.val(currentLocation.latitude).change();
-        }
-        if (inputBinding.longitudeInput) {
-            inputBinding.longitudeInput.val(currentLocation.longitude).change();
-        }
-        if (inputBinding.radiusInput) {
-            inputBinding.radiusInput.val(gmapContext.radius).change();
-        }
-        if (inputBinding.locationNameInput) {
-            inputBinding.locationNameInput.val(gmapContext.locationName).change();
-        }
-    }
-
-    function setupInputListenersInput(inputBinding, gmapContext) {
-        if (inputBinding) {
-            if (inputBinding.radiusInput) {
-                inputBinding.radiusInput.on("change", function (e) {
-                    if (!e.originalEvent) {
-                        return;
-                    }
-                    gmapContext.radius = $(this).val();
-                    console.log('usama', gmapContext.location.lat(), gmapContext.location.lng());
-                    GmUtility.setPosition(gmapContext, gmapContext.location, function (context) {
-                        console.log('usama1', context.location.lat(), context.location.lng());
-                        context.settings.onchanged.apply(gmapContext.domContainer, [GmUtility.locationFromLatLng(context.location), context.radius, false]);
-                    });
-                });
-            }
-            if (inputBinding.locationNameInput && gmapContext.settings.enableAutocomplete) {
-                gmapContext.autocomplete = new google.maps.places.Autocomplete(inputBinding.locationNameInput.get(0));
-                google.maps.event.addListener(gmapContext.autocomplete, "place_changed", function () {
-                    var place = gmapContext.autocomplete.getPlace();
-                    if (!place.geometry) {
-                        gmapContext.settings.onlocationnotfound(place.name);
-                        return;
-                    }
-                    GmUtility.setPosition(gmapContext, place.geometry.location, function (context) {
-                        updateInputValues(inputBinding, context);
-                        context.settings.onchanged.apply(gmapContext.domContainer, [GmUtility.locationFromLatLng(context.location), context.radius, false]);
-                    });
-                });
-            }
-            if (inputBinding.latitudeInput) {
-                inputBinding.latitudeInput.on("change", function (e) {
-                    if (!e.originalEvent) {
-                        return;
-                    }
-                    GmUtility.setPosition(gmapContext, new google.maps.LatLng($(this).val(), gmapContext.location.lng()), function (context) {
-                        context.settings.onchanged.apply(gmapContext.domContainer, [GmUtility.locationFromLatLng(context.location), context.radius, false]);
-                    });
-                });
-            }
-            if (inputBinding.longitudeInput) {
-                inputBinding.longitudeInput.on("change", function (e) {
-                    if (!e.originalEvent) {
-                        return;
-                    }
-                    GmUtility.setPosition(gmapContext, new google.maps.LatLng(gmapContext.location.lat(), $(this).val()), function (context) {
-                        context.settings.onchanged.apply(gmapContext.domContainer, [GmUtility.locationFromLatLng(context.location), context.radius, false]);
-                    });
-                });
-            }
-        }
-    }
-
-    function autosize(gmapContext) {
-        google.maps.event.trigger(gmapContext.map, "resize");
-        setTimeout(function () {
-            gmapContext.map.setCenter(gmapContext.marker.position);
-        }, 300);
-    }
-
-    $.fn.locationpicker = function (options, params) {
-        if (typeof options == "string") {
-            var _targetDomElement = this.get(0);
-            if (!isPluginApplied(_targetDomElement)) return;
-            var gmapContext = getContextForElement(_targetDomElement);
-            switch (options) {
-                case "location":
-                    if (params == undefined) {
-                        var location = GmUtility.locationFromLatLng(gmapContext.location);
-                        location.radius = gmapContext.radius;
-                        location.name = gmapContext.locationName;
-                        return location;
-                    } else {
-                        if (params.radius) {
-                            gmapContext.radius = params.radius;
-                        }
-                        GmUtility.setPosition(gmapContext, new google.maps.LatLng(params.latitude, params.longitude), function (gmapContext) {
-                            updateInputValues(gmapContext.settings.inputBinding, gmapContext);
-                        });
-                    }
-                    break;
-
-                case "subscribe":
-                    if (params == undefined) {
-                        return null;
-                    } else {
-                        var event = params.event;
-                        var callback = params.callback;
-                        if (!event || !callback) {
-                            console.error('LocationPicker: Invalid arguments for method "subscribe"');
-                            return null;
-                        }
-                        google.maps.event.addListener(gmapContext.map, event, callback);
-                    }
-                    break;
-
-                case "map":
-                    if (params == undefined) {
-                        var locationObj = GmUtility.locationFromLatLng(gmapContext.location);
-                        locationObj.formattedAddress = gmapContext.locationName;
-                        locationObj.addressComponents = gmapContext.addressComponents;
-                        return {
-                            map: gmapContext.map,
-                            marker: gmapContext.marker,
-                            location: locationObj
-                        };
-                    } else {
-                        return null;
-                    }
-
-                case "autosize":
-                    autosize(gmapContext);
-
-                    // gmapContext.marker.setMap(null);
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            console.log(position.coords.latitude);
-                            gmapContext.marker.setMap(gmapContext.map);
-                            gmapContext.marker.setPosition({ lat: parseFloat(position.coords.latitude), lng: parseFloat(position.coords.longitude) });
-
-                            GmUtility.setPosition(gmapContext, gmapContext.marker.position, function (context) {
-                                var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-                                context.settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, true]);
-                                updateInputValues(gmapContext.settings.inputBinding, gmapContext);
-                            });
-                        });
-                    } else {
-                        console.log("Geolocation is not supported by this browser.");
-                    }
-
-                    // Sets the map on all markers in the array.
-                    gmapContext.map.addListener('click', function (event) {
-                        gmapContext.marker.setMap(gmapContext.map);
-                        gmapContext.marker.setPosition(event.latLng);
-
-                        GmUtility.setPosition(gmapContext, gmapContext.marker.position, function (context) {
-                            var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-                            context.settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, true]);
-                            updateInputValues(gmapContext.settings.inputBinding, gmapContext);
-                        });
-                    });
-
-                    google.maps.event.addListener(gmapContext.marker, "dragend", function (event) {
-                        GmUtility.setPosition(gmapContext, gmapContext.marker.position, function (context) {
-                            var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-                            context.settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, true]);
-                            updateInputValues(gmapContext.settings.inputBinding, gmapContext);
-                        });
-                    });
-
-                    gmapContext.autocomplete = new google.maps.places.Autocomplete(gmapContext.settings.inputBinding.locationNameInput.get(0));
-                    google.maps.event.addListener(gmapContext.autocomplete, "place_changed", function () {
-                        var place = gmapContext.autocomplete.getPlace();
-                        if (!place.geometry) {
-                            gmapContext.settings.onlocationnotfound(place.name);
-                            return;
-                        }
-                        gmapContext.marker.setMap(gmapContext.map);
-                        gmapContext.marker.setPosition(place.geometry.location);
-                        GmUtility.setPosition(gmapContext, place.geometry.location, function (context) {
-                            updateInputValues(gmapContext.settings.inputBinding, context);
-                            context.settings.onchanged.apply(gmapContext.domContainer, [GmUtility.locationFromLatLng(context.location), context.radius, false]);
-                        });
-                    });
-
-                    return this;
-            }
-            return null;
-        }
-        return this.each(function () {
-            var $target = $(this);
-            if (isPluginApplied(this)) return;
-            var settings = $.extend({}, $.fn.locationpicker.defaults, options);
-            var gmapContext = new GMapContext(this, {
-                zoom: settings.zoom,
-                center: new google.maps.LatLng(settings.location.latitude, settings.location.longitude),
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                mapTypeControl: false,
-                disableDoubleClickZoom: false,
-                scrollwheel: settings.scrollwheel,
-                streetViewControl: false,
-                radius: settings.radius,
-                locationName: settings.locationName,
-                settings: settings,
-                draggable: settings.draggable
-            });
-            $target.data("locationpicker", gmapContext);
-            google.maps.event.addListener(gmapContext.marker, "dragend", function (event) {
-                GmUtility.setPosition(gmapContext, gmapContext.marker.position, function (context) {
-                    var currentLocation = GmUtility.locationFromLatLng(gmapContext.location);
-                    context.settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, true]);
-                    updateInputValues(gmapContext.settings.inputBinding, gmapContext);
-                });
-            });
-            GmUtility.setPosition(gmapContext, new google.maps.LatLng(settings.location.latitude, settings.location.longitude), function (context) {
-                updateInputValues(settings.inputBinding, gmapContext);
-                setupInputListenersInput(settings.inputBinding, gmapContext);
-                context.settings.oninitialized($target);
-            });
-        });
-    };
-    $.fn.locationpicker.defaults = {
-        location: {
-            latitude: 40.7324319,
-            longitude: -73.82480799999996
-        },
-        locationName: "",
-        radius: 25,
-        zoom: 15,
-        scrollwheel: true,
-        inputBinding: {
-            latitudeInput: null,
-            longitudeInput: null,
-            radiusInput: null,
-            locationNameInput: null
-        },
-        enableAutocomplete: false,
-        enableReverseGeocode: true,
-        draggable: true,
-        onchanged: function onchanged(currentLocation, radius, isMarkerDropped) {
-            return true;
-            console.log('onchange');
-            if (this.id == 'share-modal-location-map') {
-                console.log(this.position);
-                console.log(currentLocation);
-                radius = parseInt(radius);
-                var latLong = { lat: parseFloat(currentLocation.latitude), lng: parseFloat(currentLocation.longitude) };
-                console.log(latLong);
-
-                var map = new google.maps.Map(document.getElementById('share-modal-location-map'), {
-                    zoom: 15,
-                    center: latLong,
-                    markerIcon: 'http://www.iconsdb.com/icons/preview/tropical-blue/map-marker-2-xl.png',
-                    enableAutocomplete: true
-                });
-
-                var marker = new google.maps.Marker({
-                    position: latLong,
-                    map: map,
-                    zIndex: 99999999,
-                    draggable: true
-
-                });
-
-                google.maps.event.addListener(marker, "dragend", function (event) {
-                    console.log('ondrag');
-                    var lat = event.latLng.lat();
-                    var lng = event.latLng.lng();
-                    var geocoder = new google.maps.Geocoder();
-                    var infowindow = new google.maps.InfoWindow();
-                    geocodeLatLng(geocoder, map, infowindow, lat, lng);
-
-                    // var gmapContext = $('#share-modal-location-map').data('locationpicker');
-                    // GmUtility.setPosition(gmapContext, gmapContext.marker.position, function (context) {
-                    //     var currentLocation = GmUtility.locationFromLatLng(event.latLng);
-                    //     context.settings.onchanged.apply(gmapContext.domContainer, [currentLocation, context.radius, true]);
-                    //     updateInputValues(gmapContext.settings.inputBinding, gmapContext);
-                    // });
-                });
-
-                var circle = new google.maps.Circle({
-                    map: map,
-                    radius: radius,
-                    fillColor: '#7ad458',
-                    strokeColor: "#4a7938",
-                    strokeOpacity: .35,
-                    strokeWeight: 2,
-                    fillOpacity: .2
-                });
-
-                circle.bindTo('center', marker, 'position');
-            }
-        },
-        onlocationnotfound: function onlocationnotfound(locationName) {},
-        oninitialized: function oninitialized(component) {}
-
-    };
-
-    function geocodeLatLng(geocoder, map, infowindow, lat, long) {
-        var latlng = { lat: parseFloat(lat), lng: parseFloat(long) };
-        console.log('i am here');
-        geocoder.geocode({ 'location': latlng }, function (results, status) {
-            if (status === 'OK') {
-                if (results[0]) {
-
-                    $('#share-modal-location-address').val(results[0].formatted_address);
-                } else {
-                    window.alert('No results found');
-                }
-            } else {
-                window.alert('Geocoder failed due to: ' + status);
-            }
-        });
-    }
-
-    function getAddress(lat, lng) {
-        var lat = parseFloat(lat);
-        var lng = parseFloat(lng);
-        var latlng = new google.maps.LatLng(lat, lng);
-        var geocoder = geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ 'latLng': latlng }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                if (results[1]) {
-                    $("#share-modal-location-address").val(results[1].formatted_address);
-                }
-            }
-        });
-    }
-})(jQuery);
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //Require Module
@@ -31012,84 +30634,7 @@ app.Dashboard = function () {
 module.exports = app.Dashboard;
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-//Require Module
-app = __webpack_require__(0);
-//Define Module
-app.Map = function () {
-	var config = app.Config;
-	var dataApiUrl = config.getApiUrl();
-	var routes = app.Routes;
-	var template = app.Template;
-
-	var map;
-	function initMap(city, data) {
-		var centerLat = 31.4858037;
-		var centerLng = 74.345896;
-
-		if (city == 2) {
-			centerLat = 33.6258;
-			centerLng = 73.0331;
-		}
-
-		map = new google.maps.Map(document.getElementById('map1'), {
-			zoom: 15,
-			center: new google.maps.LatLng(centerLat, centerLng),
-			mapTypeId: 'roadmap'
-		});
-
-		map2 = new google.maps.Map(document.getElementById('map2'), {
-			zoom: 15,
-			center: new google.maps.LatLng(centerLat, centerLng),
-			mapTypeId: 'roadmap'
-		});
-
-		var iconBase = 'data:image/png;base64,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';
-
-		var dataProvider = [];
-
-		for (key in data) {
-
-			var latLngValue = data[key]['location'].split(',');
-			var latValue = latLngValue[0] ? latLngValue[0].replace(" ") : 0;
-			var lngValue = latLngValue[1] ? latLngValue[1].replace("undefined") : 0;
-
-			latValue = parseFloat(latValue);
-			lngValue = parseFloat(lngValue);
-
-			dataProvider.push({
-				position: new google.maps.LatLng(latValue, lngValue)
-			});
-		}
-
-		// Create markers.
-		dataProvider.forEach(function (feature) {
-			var marker = new google.maps.Marker({
-				position: feature.position,
-				map: map
-			});
-		});
-
-		// Create markers.
-		dataProvider.forEach(function (feature) {
-			var marker = new google.maps.Marker({
-				position: feature.position,
-				map: map2
-			});
-		});
-	}
-
-	return {
-		initMap: initMap
-	};
-}();
-
-module.exports = app.Map;
-
-/***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //Require Module
@@ -31124,20 +30669,20 @@ function getGeneralValues() {
 function getChartsData() {
 
   var chartsType = [{
-    chartId: '',
-    url: 'activity_data/charts-data'
+    chartId: 'chart-1',
+    url: 'activity_data/charts-data?type=all'
   }, {
-    chartId: '',
-    url: 'activity_data/charts-data?lep=1'
+    chartId: 'chart-2',
+    url: 'activity_data/charts-data?type=lep'
   }, {
-    chartId: '',
-    url: 'activity_data/charts-data?lepp=1'
+    chartId: 'chart-3',
+    url: 'activity_data/charts-data?type=lepp'
   }, {
-    chartId: '',
-    url: 'activity_data/charts-data?tin_pack=1'
+    chartId: 'chart-4',
+    url: 'activity_data/charts-data?type=tin_pack'
   }, {
-    chartId: '',
-    url: 'activity_data/charts-data?did_not_buy=1'
+    chartId: 'chart-5',
+    url: 'activity_data/charts-data?type=did_not_buy'
   }];
 
   var query = '';
@@ -31148,12 +30693,15 @@ function getChartsData() {
 
     query = chartType.url;
 
-    app.Dashboard.generateGetCall(query).then(function (response) {});
+    app.Dashboard.generateGetCall(query).then(function (response) {
+
+      app.Chart.generateBarChart(chartType.chartId, response);
+    });
   });
 }
 
 /***/ }),
-/* 14 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -31167,672 +30715,89 @@ app.Chart = function () {
   var routes = app.Routes;
   var template = app.Template;
 
-  function generatePieChart(data, activity) {
+  var cities = {
+    1: 'Karachi',
+    2: 'Sindh',
+    3: 'Lahore',
+    4: 'Punjab',
+    5: 'Islamabad',
+    6: 'Peshaward'
+  };
+
+  function generateBarChart(chartId, data) {
     var _ref;
 
-    var tarangValue = 0;
-    var totalValue = 0;
-
+    console.log(data);
     var dataProvider = [];
 
-    for (key in data) {
-
-      if (data[key]['previous_usage'] == 'Tarang') {
-        tarangValue = data[key].count;
-      } else {
-        totalValue += data[key].count;
-      }
+    for (var key in data) {
+      var color = app.Chart.getColorValue(key);
 
       dataProvider.push({
-        "previous_usage": data[key]['previous_usage'],
-        "count": data[key].count
+        'country': cities[data[key].team_id],
+        'visits': data[key].count,
+        'color': color
       });
     }
 
-    var percentageValue = Math.round(tarangValue / totalValue * 100);
+    console.log(dataProvider, chartId);
 
-    AmCharts.makeChart(activity + "donut-chart1", {
-      "type": "pie",
+    var chart = AmCharts.makeChart(chartId, {
+      "type": "serial",
       "theme": "light",
-      "labelsEnabled": false,
+      "marginRight": 70,
       "dataProvider": dataProvider,
-      "balloonText": "[[value]]",
-      "valueField": "count",
-      "titleField": "previous_usage",
-      "allLabels": [{
-        "text": "",
-        "align": "center",
-        "bold": true,
-        "y": 150
-      }, {
-        "text": '',
-        "align": "center",
-        "bold": false,
-        "y": 180
+      "valueAxes": [{
+        "axisAlpha": 0,
+        "position": "left",
+        "title": "Summary"
       }],
-      "balloon": {
-        "drop": true,
-        "adjustBorderColor": false,
-        "color": "#FFFFFF",
-        "fontSize": 16
+      "startDuration": 1,
+      "graphs": [{
+        "balloonText": "<b>[[category]]: [[value]]</b>",
+        "fillColorsField": "color",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "type": "column",
+        "valueField": "visits"
+      }],
+      "chartCursor": {
+        "categoryBalloonEnabled": false,
+        "cursorAlpha": 0,
+        "zoomable": false
       },
-      "legend": {
-        "position": "absolute",
-        "maxColumns": 2,
-        "top": 20,
-        "align": "right"
+      "categoryField": "country",
+      "categoryAxis": {
+        "gridPosition": "start",
+        "labelRotation": 45
       },
       "export": {
         "enabled": true,
         "menu": [(_ref = {
           "format": "PNG",
           "class": "export-main",
-          "label": "Download",
-          "multiplier": 2,
-          'text': "Download"
-        }, _defineProperty(_ref, 'label', "Download"), _defineProperty(_ref, "content", ["Saved from:", window.location.href, {
+          "label": "Download"
+        }, _defineProperty(_ref, 'label', "Download"), _defineProperty(_ref, "multiplier", 2), _defineProperty(_ref, "content", ["Saved from:", window.location.href, {
           "image": "reference",
           "fit": [523.28, 769.89] // fit image to A4
         }]), _ref)]
-      }
-    });
-  }
-
-  function generateBarChart(data, activity) {
-    var _ref2;
-
-    var dataProvider = [];
-    for (key in data) {
-      if (key !== 'total_teams' && key !== 'conversion_value' && key !== 'conversion') {
-
-        var color = app.Chart.getColorValue(key);
-
-        dataProvider.push({
-          'country': key.replace('_', ' '),
-          'visits': data[key],
-          'color': color
-        });
-      }
-    }
-
-    var chart = AmCharts.makeChart(activity + "chartdiv", {
-      "type": "serial",
-      "theme": "light",
-      "marginRight": 70,
-      "dataProvider": dataProvider,
-      "valueAxes": [{
-        "axisAlpha": 0,
-        "position": "left",
-        "title": "Summary"
-      }],
-      "startDuration": 1,
-      "graphs": [{
-        "balloonText": "<b>[[category]]: [[value]]</b>",
-        "fillColorsField": "color",
-        "fillAlphas": 0.9,
-        "lineAlpha": 0.2,
-        "type": "column",
-        "valueField": "visits"
-      }],
-      "chartCursor": {
-        "categoryBalloonEnabled": false,
-        "cursorAlpha": 0,
-        "zoomable": false
-      },
-      "categoryField": "country",
-      "categoryAxis": {
-        "gridPosition": "start",
-        "labelRotation": 45
-      },
-      "export": {
-        "enabled": true,
-        "menu": [(_ref2 = {
-          "format": "PNG",
-          "class": "export-main",
-          "label": "Download"
-        }, _defineProperty(_ref2, 'label', "Download"), _defineProperty(_ref2, "multiplier", 2), _defineProperty(_ref2, "content", ["Saved from:", window.location.href, {
-          "image": "reference",
-          "fit": [523.28, 769.89] // fit image to A4
-        }]), _ref2)]
-      }
-
-    });
-  }
-
-  function generateGaugeChart(data, activity) {
-
-    var tarangValue = 0;
-    var totalValue = 0;
-
-    var dataProvider = [{
-      'conversion': 'Tarang',
-      'count': Math.round(data.conversion_value),
-      "innerRadius": "65%"
-
-    }, {
-      'conversion': 'Tarang2',
-      'count': 100 - Math.round(data.conversion_value),
-      "innerRadius": "65%"
-
-    }];
-
-    AmCharts.makeChart(activity + "gaugechart", {
-      "type": "pie",
-      "theme": "light",
-      "innerRadius": "60%",
-      "labelsEnabled": false,
-      "dataProvider": dataProvider,
-      "balloonText": "[[value]]",
-      "valueField": "count",
-      "titleField": "",
-      "fontSize": 18,
-      "allLabels": [{
-        "text": "conversion",
-        "align": "center",
-        "bold": true,
-        "y": 140
-      }, {
-        "text": Math.round(data.conversion_value) + " %",
-        "align": "center",
-        "bold": true,
-        "y": 160,
-        "radius": "20%"
-      }],
-      "balloon": {
-        "drop": true,
-        "adjustBorderColor": false,
-        "color": "#FFFFFF",
-        "fontSize": 16
-      },
-      "legend": {},
-      "export": {
-        "enabled": true,
-        "menu": [{
-          "format": "PNG",
-          "class": "export-main",
-          "label": "Download",
-          "multiplier": 2,
-          "content": ["Saved from:", window.location.href, {
-            "image": "reference",
-            "fit": [523.28, 769.89] // fit image to A4
-          }]
-        }]
-      }
-
-    });
-  }
-
-  function generateLahoreBarChart(data, activity) {
-    var dataProvider = [];
-    for (key in data) {
-      if (key !== 'total_teams' && key !== 'conversion_value' && key !== 'conversion') {
-        var color = app.Chart.getColorValue(key);
-
-        dataProvider.push({
-          'country': key.replace('_', ' '),
-          'visits': data[key],
-          'color': color
-        });
-      }
-    }
-
-    var chart = AmCharts.makeChart(activity + "chartdiv-lahore", {
-      "type": "serial",
-      "theme": "light",
-      "marginRight": 70,
-      "dataProvider": dataProvider,
-      "valueAxes": [{
-        "axisAlpha": 0,
-        "position": "left",
-        "title": "Summary"
-      }],
-      "startDuration": 1,
-      "graphs": [{
-        "balloonText": "<b>[[category]]: [[value]]</b>",
-        "fillColorsField": "color",
-        "fillAlphas": 0.9,
-        "lineAlpha": 0.2,
-        "type": "column",
-        "valueField": "visits"
-      }],
-      "chartCursor": {
-        "categoryBalloonEnabled": false,
-        "cursorAlpha": 0,
-        "zoomable": false
-      },
-      "categoryField": "country",
-      "categoryAxis": {
-        "gridPosition": "start",
-        "labelRotation": 45
-      },
-      "export": {
-        "enabled": true,
-        "menu": [{
-          "format": "PNG",
-          "class": "export-main",
-          "label": "Download",
-          "multiplier": 2,
-          "content": ["Saved from:", window.location.href, {
-            "image": "reference",
-            "fit": [523.28, 769.89] // fit image to A4
-          }]
-        }]
-      }
-
-    });
-  }
-
-  function generatePindiBarChart(data, activity) {
-    var dataProvider = [];
-    for (key in data) {
-      if (key !== 'total_teams' && key !== 'conversion_value' && key !== 'conversion') {
-        var color = app.Chart.getColorValue(key);
-
-        dataProvider.push({
-          'country': key.replace('_', ' '),
-          'visits': data[key],
-          'color': color
-        });
-      }
-    }
-
-    var chart = AmCharts.makeChart(activity + "chartdiv-pindi", {
-      "type": "serial",
-      "theme": "light",
-      "marginRight": 70,
-      "dataProvider": dataProvider,
-      "valueAxes": [{
-        "axisAlpha": 0,
-        "position": "left",
-        "title": "Summary"
-      }],
-      "startDuration": 1,
-      "graphs": [{
-        "balloonText": "<b>[[category]]: [[value]]</b>",
-        "fillColorsField": "color",
-        "fillAlphas": 0.9,
-        "lineAlpha": 0.2,
-        "type": "column",
-        "valueField": "visits"
-      }],
-      "chartCursor": {
-        "categoryBalloonEnabled": false,
-        "cursorAlpha": 0,
-        "zoomable": false
-      },
-      "categoryField": "country",
-      "categoryAxis": {
-        "gridPosition": "start",
-        "labelRotation": 45
-      },
-      "export": {
-        "enabled": true,
-        "menu": [{
-          "format": "PNG",
-          "class": "export-main",
-          "label": "Download",
-          "multiplier": 2,
-          "content": ["Saved from:", window.location.href, {
-            "image": "reference",
-            "fit": [523.28, 769.89] // fit image to A4
-          }]
-        }]
-      }
-
-    });
-  }
-
-  function generateLineChart(data, chartId, activity) {
-
-    var accumulatedValue = 0;
-    var accumulatedTarget = 0;
-
-    var targetDataProvider = [];
-
-    var thresholdValue = 0;
-
-    if (chartId == 'line-chart1') {
-      thresholdValue = 5616; // interceptions
-    }
-
-    if (chartId == 'line-chart2') {
-      thresholdValue = 2808; // sales
-    }
-
-    if (chartId == 'line-chart3') {
-      thresholdValue = 4493; // sampling
-    }
-
-    var dataProvider = [];
-
-    var startDate = data[0].created_at_date;
-    var endDate = data[data.length - 1].created_at_date;
-
-    for (key in data) {
-
-      if (data[key].created_at_date < '2018-12-14') {
-
-        if (chartId == 'line-chart1') {
-          if (data[key].created_at_date >= '2018-12-05') {
-            thresholdValue = 3744;
-          } else {
-            // interceptions
-            thresholdValue = 5616;
-          }
-        }
-
-        if (chartId == 'line-chart2') {
-
-          if (data[key].created_at_date >= '2018-12-05') {
-            thresholdValue = 1872;
-          } else {
-            // Sales
-            thresholdValue = 2808;
-          }
-        }
-
-        if (chartId == 'line-chart2') {
-
-          if (data[key].created_at_date >= '2018-12-05') {
-            thresholdValue = 2995;
-          } else {
-            // Sales
-            thresholdValue = 4493;
-          }
-        }
-      }
-
-      accumulatedValue += parseInt(data[key].count);
-      accumulatedTarget += thresholdValue;
-
-      if (data[key].created_at_date != '0000-00-00') {
-        dataProvider.push({
-          'date': data[key].created_at_date,
-          'value': accumulatedValue,
-          'target': accumulatedTarget
-
-        });
-      }
-    }
-
-    if (chartId == 'line-chart1') {
-
-      $('.daily-interception-target-value').html(accumulatedValue + '/' + accumulatedTarget);
-
-      if (activity == 'activity_2-') {
-
-        accumulatedTarget = 183456;
-
-        $('.daily-interception-target-value').html(accumulatedValue + '/' + accumulatedTarget);
-      }
-
-      var _dataProvider = [{
-        'conversion': 'Tarang',
-        'count': Math.round(accumulatedValue / accumulatedTarget * 100),
-        "innerRadius": "65%"
-
-      }, {
-        'conversion': '',
-        'count': 100 - Math.round(accumulatedValue / accumulatedTarget * 100),
-        "innerRadius": "65%"
-
-      }];
-
-      AmCharts.makeChart(activity + "gaugechart-daily-interception", {
-        "type": "pie",
-        "theme": "light",
-        "innerRadius": "60%",
-        "labelsEnabled": false,
-        "dataProvider": _dataProvider,
-        "balloonText": "[[value]]",
-        "valueField": "count",
-        "fontSize": 30,
-        "titleField": "",
-        "allLabels": [{
-          "text": "",
-          "align": "center",
-          "bold": true,
-          "y": 150
-        }, {
-          "text": Math.round(accumulatedValue / accumulatedTarget * 100) + " %",
-          "align": "center",
-          "bold": true,
-          "y": 130,
-          "radius": "20%"
-        }],
-        "balloon": {
-          "drop": true,
-          "adjustBorderColor": false,
-          "color": "#FFFFFF",
-          "fontSize": 16
-        },
-        "legend": {},
-        "export": {
-          "enabled": true,
-          "menu": [{
-            "format": "PNG",
-            "class": "export-main",
-            "label": "Download",
-            "multiplier": 2,
-            "content": ["Saved from:", window.location.href, {
-              "image": "reference",
-              "fit": [523.28, 769.89] // fit image to A4
-            }]
-          }]
-        }
-
-      });
-    }
-
-    if (chartId == 'line-chart2') {
-
-      $('.daily-sale-target-value').html(accumulatedValue + '/' + accumulatedTarget);
-
-      if (activity == 'activity_2-') {
-
-        accumulatedTarget = 91728;
-        $('.daily-sale-target-value').html(accumulatedValue + '/' + accumulatedTarget);
-      }
-
-      var _dataProvider2 = [{
-        'conversion': 'Tarang',
-        'count': Math.round(accumulatedValue / accumulatedTarget * 100),
-        "innerRadius": "65%"
-
-      }, {
-        'conversion': 'Tarang',
-        'count': 100 - Math.round(accumulatedValue / accumulatedTarget * 100),
-        "innerRadius": "65%"
-
-      }];
-
-      AmCharts.makeChart(activity + "gaugechart-daily-sale", {
-        "type": "pie",
-        "theme": "light",
-        "innerRadius": "60%",
-        "labelsEnabled": false,
-        "dataProvider": _dataProvider2,
-        "balloonText": "[[value]]",
-        "valueField": "count",
-        "titleField": "",
-        "fontSize": 30,
-        "allLabels": [{
-          "text": "",
-          "align": "center",
-          "bold": true,
-          "y": 50
-        }, {
-          "text": Math.round(accumulatedValue / accumulatedTarget * 100) + " %",
-          "align": "center",
-          "bold": true,
-          "y": 130,
-          "radius": "20%"
-        }],
-        "balloon": {
-          "drop": true,
-          "adjustBorderColor": false,
-          "color": "#FFFFFF",
-          "fontSize": 16
-        },
-        "legend": {},
-        "export": {
-          "enabled": true,
-          "menu": [{
-            "format": "PNG",
-            "class": "export-main",
-            "label": "Download",
-            "multiplier": 2,
-            "content": ["Saved from:", window.location.href, {
-              "image": "reference",
-              "fit": [523.28, 769.89] // fit image to A4
-            }]
-          }]
-        }
-
-      });
-    }
-
-    if (chartId == 'line-chart3') {
-
-      $('.daily-wet-sampling-target-value').html(accumulatedValue + '/' + accumulatedTarget);
-
-      if (activity == 'activity_2-') {
-
-        accumulatedTarget = 146765;
-
-        $('.daily-wet-sampling-target-value').html(accumulatedValue + '/' + accumulatedTarget);
-      }
-      var _dataProvider3 = [{
-        'conversion': 'Tarang',
-        'count': Math.round(accumulatedValue / accumulatedTarget * 100),
-        "innerRadius": "65%"
-
-      }, {
-        'conversion': 'Tarang',
-        'count': 100 - Math.round(accumulatedValue / accumulatedTarget * 100),
-        "innerRadius": "65%"
-
-      }];
-
-      AmCharts.makeChart(activity + "gaugechart-daily-wet-sampling", {
-        "type": "pie",
-        "theme": "light",
-        "innerRadius": "60%",
-        "labelsEnabled": false,
-        "dataProvider": _dataProvider3,
-        "balloonText": "[[value]]",
-        "valueField": "count",
-        "titleField": "",
-        "fontSize": 30,
-        "allLabels": [{
-          "text": "",
-          "align": "center",
-          "bold": true,
-          "y": 50
-        }, {
-          "text": Math.round(accumulatedValue / accumulatedTarget * 100) + " %",
-          "align": "center",
-          "bold": true,
-          "fontSize": 56,
-          "y": 130,
-          "radius": "20%"
-        }],
-        "balloon": {
-          "drop": true,
-          "adjustBorderColor": false,
-          "color": "#FFFFFF",
-          "fontSize": 56
-        },
-        "legend": {},
-        "export": {
-          "enabled": true,
-          "menu": [{
-            "format": "PNG",
-            "class": "export-main",
-            "label": "Download",
-            "multiplier": 2,
-            "content": ["Saved from:", window.location.href, {
-              "image": "reference",
-              "fit": [523.28, 769.89] // fit image to A4
-            }]
-          }]
-        }
-
-      });
-    }
-
-    var chart = AmCharts.makeChart(activity + chartId, {
-      "type": "serial",
-      "theme": "light",
-      "legend": {
-        "horizontalGap": 10,
-        "markerSize": 10,
-        "data": [{
-          "title": "Target",
-          "color": "#EB1C24"
-        }, {
-          "title": "Achieved",
-          "color": "#FDBB13"
-        }]
-      },
-
-      "dataProvider": dataProvider,
-      "valueAxes": [{
-        // stackType control the stacking behaviour of the graphs
-        // https://docs.amcharts.com/3/javascriptcharts/ValueAxis#stackType
-        "stackType": "none",
-        "position": "left"
-      }],
-      "graphs": [{
-        "title": "Target",
-        "valueField": "target",
-        "fillAlphas": 0.6,
-        "fillColors": "#EB1C24"
-      }, {
-        "title": "Achieved",
-        "valueField": "value",
-        "fillAlphas": 0.6,
-        "fillColors": "#FDBB13"
-      }],
-      "chartScrollbar": {},
-      "chartCursor": {},
-      "categoryField": "date",
-      "categoryAxis": {
-        "parseDates": true,
-        "minorGridEnabled": true
-      },
-      "export": {
-
-        "enabled": true,
-        "menu": [{
-          "format": "PNG",
-          "class": "export-main",
-          "label": "Download",
-          "multiplier": 2,
-          "content": ["Saved from:", window.location.href, {
-            "image": "reference",
-            "fit": [523.28, 769.89]
-
-          }]
-        }]
-
       }
 
     });
   }
 
   function getColorValue(key) {
-    if (key == 'total_interceptions') {
+    if (key == 0) {
       return '#EB1C24';
     }
-    if (key == 'total_wet_sampling') {
+    if (key == 1) {
       return '#FDBB13';
     }
-    if (key == 'total_sales') {
+    if (key == 2) {
       return '#762B8F';
     }
 
-    if (key == 'total_deals') {
+    if (key == 3) {
       return '#A6CE39';
     }
 
@@ -31840,21 +30805,15 @@ app.Chart = function () {
   }
 
   return {
-    generatePieChart: generatePieChart,
     generateBarChart: generateBarChart,
-    generateLahoreBarChart: generateLahoreBarChart,
-    generatePindiBarChart: generatePindiBarChart,
-    generateGaugeChart: generateGaugeChart,
-    getColorValue: getColorValue,
-    generateLineChart: generateLineChart
-
+    getColorValue: getColorValue
   };
 }();
 
 module.exports = app.Chart;
 
 /***/ }),
-/* 15 */
+/* 13 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

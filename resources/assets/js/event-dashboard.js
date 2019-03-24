@@ -43,24 +43,24 @@ function getChartsData() {
 
   let chartsType = [
   {
-    chartId : '',
-    url : 'activity_data/charts-data',
+    chartId : 'chart-1',
+    url : 'activity_data/charts-data?type=all',
   },
   {
-    chartId : '',
-    url : 'activity_data/charts-data?lep=1',
+    chartId : 'chart-2',
+    url : 'activity_data/charts-data?type=lep',
   },
   {
-    chartId : '',
-    url : 'activity_data/charts-data?lepp=1',
+    chartId : 'chart-3',
+    url : 'activity_data/charts-data?type=lepp',
   },
   {
-    chartId : '',
-    url : 'activity_data/charts-data?tin_pack=1',
+    chartId : 'chart-4',
+    url : 'activity_data/charts-data?type=tin_pack',
   },
   {
-    chartId : '',
-    url : 'activity_data/charts-data?did_not_buy=1',
+    chartId : 'chart-5',
+    url : 'activity_data/charts-data?type=did_not_buy',
   }
 
   ];
@@ -76,8 +76,7 @@ function getChartsData() {
 
     app.Dashboard.generateGetCall(query).then(response=>{
 
-
-
+      app.Chart.generateBarChart(chartType.chartId, response);
 
 
     });

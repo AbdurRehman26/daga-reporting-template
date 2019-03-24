@@ -117,7 +117,7 @@
               </div>
               <div class="box-body">
 
-                <div class="line-chart-big" id="chart-1"></div> 
+                <div class="chartdiv" id="chart-1"></div> 
 
               </div>
               <!-- /.box-body -->

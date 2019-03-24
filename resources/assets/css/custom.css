@@ -1,3 +1,9 @@
+#chartdiv {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}
+
 .layout-boxed {
 	background:rgba(236, 238, 243, 1.0);
 }
@@ -24,7 +30,7 @@
 	margin-left: 180px;
 }
 
-.donut-charts , #donut-chart1, #donut-chart2{
+.donut-charts , #chart-1, #chart-2, #chart-3, #chart-4, #chart-5{
 	width: 880px;
 	height: 380px;
 	float: right;

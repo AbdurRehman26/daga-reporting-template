@@ -8,8 +8,6 @@
     <link href="{{url(mix('css/app.css'))}}" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{{asset('images/favicon.png')}}" /> 
     <!-- map key -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdcUDKZOfYStkCC6AOz0utjI11D9LUgjM&callback=initMap"
-    async defer></script>
 
 
     <script src="{{url(mix('js/admin-app.js'))}}"></script>
@@ -17,11 +15,8 @@
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
 
     <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-    <script src="https://www.amcharts.com/lib/3/pie.js"></script>
     <script src="https://www.amcharts.com/lib/3/serial.js"></script>
-    <script src="https://www.amcharts.com/lib/3/gauge.js"></script>
-    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-
     <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
 
 </head>
