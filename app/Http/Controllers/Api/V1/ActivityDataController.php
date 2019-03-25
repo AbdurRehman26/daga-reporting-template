@@ -50,7 +50,7 @@ class ActivityDataController extends ApiResourceController{
 			public function getChartsData(Request $request)
 			{
 				$input = $this->input();
-				$data = $this->_repository->getTotal($input);
+				$data = $this->_repository->getChartsData($input);
 
 				return response()->json($data, 200);
 			}
