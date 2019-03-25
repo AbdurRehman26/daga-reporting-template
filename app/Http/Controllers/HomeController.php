@@ -30,4 +30,10 @@ class HomeController extends Controller
     {
         return view('agency-panel');
     }
+
+    public function attendance()
+    {
+        return view('attendance');
+    }
+
 }

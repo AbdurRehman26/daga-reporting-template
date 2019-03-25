@@ -40,5 +40,25 @@ class AttendanceRepository extends AbstractRepository implements RepositoryContr
         $this->builder = $model;
     }
 
+    
+        /**
+     *
+     * This method will fetch single model
+     * and will return output back to client as json
+     *
+     * @access public
+     * @return mixed
+     *
+     * @author Usaama Effendi <usaamaeffendi@gmail.com>
+     *
+     **/
+        public function findById($id, $refresh = false, $details = false, $encode = true) {
+           
+          $data = parent::findById($id, $refresh, $details, $encode);
 
-}
+          return $data;
+
+      }
+
+
+  }
