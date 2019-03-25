@@ -53,12 +53,23 @@ class AttendanceRepository extends AbstractRepository implements RepositoryContr
      *
      **/
         public function findById($id, $refresh = false, $details = false, $encode = true) {
-           
+         
           $data = parent::findById($id, $refresh, $details, $encode);
 
           return $data;
 
       }
+
+      public function findByAll($pagination = false, $perPage = 10, array $input = [] ) {
+
+          $this->builder = $this->model->orderBy('id' , 'desc');
+
+          $data = parent::findByAll($pagination, $perPage,$input);
+
+
+          return $data;
+      }
+
 
 
   }

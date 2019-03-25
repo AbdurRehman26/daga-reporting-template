@@ -73,6 +73,16 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
         }
 
 
+        public function findByAll($pagination = false, $perPage = 10, array $input = [] ) {
+
+          $this->builder = $this->model->orderBy('id' , 'desc');
+
+          $data = parent::findByAll($pagination, $perPage,$input);
+
+
+          return $data;
+        }
+
         public function getTotal($input)
         {
           $data = [];
