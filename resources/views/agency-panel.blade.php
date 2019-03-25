@@ -21,7 +21,7 @@
     <div class="tab-content">
       <div class="tab-pane active" id="activity_1">
 
-			<div id="myGrid" style="height: 800px;width:1200px; overflow: hidden;" class="ag-theme-balham"></div>
+			<div id="myGrid" style="height: 800px;width:1000px; overflow: hidden;" class="ag-theme-balham"></div>
 
       </div>
 

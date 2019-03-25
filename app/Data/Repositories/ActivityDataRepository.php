@@ -63,8 +63,17 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
             '6' => 'Peshaward'
           ];
 
-
           $data = parent::findById($id, $refresh, $details, $encode);
+
+
+          try {
+              
+              $data->date = Carbon::parse($data->date)->format('dd/mm/yyyy');
+
+
+          } catch (Exception $e) {
+              
+          }
 
           $data->team_id = $teams[$data->team_id];
 

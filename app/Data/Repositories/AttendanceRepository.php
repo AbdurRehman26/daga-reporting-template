@@ -53,8 +53,18 @@ class AttendanceRepository extends AbstractRepository implements RepositoryContr
      *
      **/
         public function findById($id, $refresh = false, $details = false, $encode = true) {
-         
+
           $data = parent::findById($id, $refresh, $details, $encode);
+
+          try {
+              
+              $data->date = Carbon::parse($data->date)->format('dd/mm/yyyy');
+
+
+          } catch (Exception $e) {
+              
+          }
+
 
           return $data;
 

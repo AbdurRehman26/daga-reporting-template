@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Data\Repositories\ActivityDataRepository;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+
 
 class ActivityDataController extends ApiResourceController{
 
@@ -45,7 +50,7 @@ class ActivityDataController extends ApiResourceController{
 			public function getChartsData(Request $request)
 			{
 				$input = $this->input();
-				$data = $this->_repository->getChartsData($input);
+				$data = $this->_repository->getTotal($input);
 
 				return response()->json($data, 200);
 			}
@@ -54,10 +59,48 @@ class ActivityDataController extends ApiResourceController{
 
 			public function download(Request $request)
 			{
-				$input = $this->input();
-				$data = $this->_repository->getChartsData($input);
 
-				return response()->json($data, 200);
+				$input = $this->input();
+				$input['pagination'] = false;
+				$data = $this->_repository->getTotal($input);
+
+				return Excel::download(new CollectionExport($data) , 'summary.csv');
+
+
+			}
+
+		}
+
+
+
+		class CollectionExport implements FromCollection, WithHeadings
+		{
+			use Exportable;
+			public $data;
+
+			public function __construct($data){
+				$this->data = $data;
+			}
+
+
+			public function collection()
+			{
+				$data = $this->data;
+				return collect([$data]);
+			}
+
+			public function headings(): array
+			{
+				return [
+					'Total Interceptions',
+					'Total CNICs',
+					'Total Contacts',
+					'Total Sales',
+					'Total LEP',
+					'Total LEPP',
+					'Total TIN PACK',
+					'Total DID NOT BUY',
+				];
 			}
 
 		}
