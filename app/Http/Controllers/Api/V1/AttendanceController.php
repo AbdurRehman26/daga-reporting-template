@@ -9,6 +9,8 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\FromArray;
 
 class AttendanceController extends ApiResourceController{
 
@@ -56,7 +58,7 @@ class AttendanceController extends ApiResourceController{
 		}
 
 
-		class CollectionExport implements FromCollection, WithHeadings
+		class CollectionExport implements FromArray, WithHeadings, WithMapping
 		{
 			use Exportable;
 			public $data;
@@ -66,11 +68,18 @@ class AttendanceController extends ApiResourceController{
 			}
 
 
-			public function collection()
+			public function array():array
 			{
 				$data = $this->data;
-				return collect([$data]);
+				return $data;
 			}
+
+			public function map($data): array
+			{
+				return (array) $data;
+
+			}
+
 
 			public function headings(): array
 			{

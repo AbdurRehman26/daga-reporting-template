@@ -9,6 +9,8 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\FromArray;
 
 class ActivityDataController extends ApiResourceController{
 
@@ -76,9 +78,7 @@ class ActivityDataController extends ApiResourceController{
 				$input['pagination'] = false;
 				$data = $this->_repository->findByAll($input['pagination']);
 				
-				$data= json_decode( json_encode($data['data']), true);
-
-				return Excel::download(new ActivityCollectionExport($data) , 'summary'.Carbon::now()->toDateTimeString().'.csv');
+				return Excel::download(new ActivityCollectionExport($data['data']) , 'summary'.Carbon::now()->toDateTimeString().'.csv');
 
 
 			}
@@ -121,7 +121,7 @@ class ActivityDataController extends ApiResourceController{
 		}
 
 
-		class ActivityCollectionExport implements FromCollection, WithHeadings
+		class ActivityCollectionExport implements FromArray, WithHeadings, WithMapping
 		{
 			use Exportable;
 			public $data;
@@ -131,35 +131,41 @@ class ActivityDataController extends ApiResourceController{
 			}
 
 
-			public function collection()
+			public function array():array
 			{
 				$data = $this->data;
-				return collect([$data]);
+				return $data;
 			}
+
+			public function map($data): array
+			{
+				return (array) $data;
+
+			}
+
 
 			public function headings(): array
 			{
 				return [
-					'Total Interceptions',
-					'Total CNICs',
-					'Total Contacts',
-					'Total Sales',
-					'Total LEP',
-					'Total LEPP',
-					'Total TIN PACK',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
-					'Total DID NOT BUY',
+					'Id',
+					'Team',
+					'BA ID',
+					'BA NAME',
+					'Customer Name',
+					'Customer Number',
+					'CNIC',
+					'Sale',
+					'LEP',
+					'LEPP',
+					'Tin Pack',
+					'Did Not Buy',
+					'Primary',
+					'Secondary',
+					'Time',
+					'Date',
+					'Secondary',
+					'Created At',
+					'Updated At'
 				];
 			}
 
