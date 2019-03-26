@@ -59,6 +59,7 @@ class AttendanceRepository extends AbstractRepository implements RepositoryContr
           try {
               
               $data->date = Carbon::parse($data->date)->format('d-m-Y');
+              $data->time = Carbon::parse($data->time)->format('H:i:s');
 
 
           } catch (Exception $e) {

@@ -163,6 +163,7 @@ class ActivityDataController extends ApiResourceController{
 					'Secondary',
 					'Time',
 					'Date',
+					'Location',
 					'Secondary',
 					'Created At',
 					'Updated At'
