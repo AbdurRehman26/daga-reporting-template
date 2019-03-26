@@ -68,7 +68,7 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
 
           try {
               
-              $data->date = Carbon::parse($data->date)->format('dd/mm/yyyy');
+              $data->date = Carbon::parse($data->date)->format('d-m-Y');
 
 
           } catch (Exception $e) {
