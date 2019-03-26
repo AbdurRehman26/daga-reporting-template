@@ -18,6 +18,8 @@ Route::get('/agency-panel', 'HomeController@agencyPanel')->name('agency-panel');
 Route::get('/agency-panel/attendance', 'HomeController@attendance')->name('attendance');
 
 Route::get('/download', 'Api\V1\ActivityDataController@download')->name('download');
+Route::get('/download/agency', 'Api\V1\ActivityDataController@downloadAgency')->name('download.agency');
+Route::get('/download/attendance', 'Api\V1\AttendanceController@downloadAttendance')->name('download.attendance');
 
 
 

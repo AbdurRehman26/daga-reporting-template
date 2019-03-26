@@ -86,7 +86,7 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
 
           $this->builder = $this->model->orderBy('id' , 'desc');
 
-          $data = parent::findByAll($pagination, $perPage,$input);
+          $data = parent::findByAll($pagination, $perPage, $input);
 
 
           return $data;
@@ -104,7 +104,8 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
           $total_lep = $this->model->count('lep');
           $total_lepp = $this->model->count('lepp');
           $total_tin_pack = $this->model->count('tin_pack');
-          $total_did_not_buy = $this->model->count('did_not_buy');;
+          $total_did_not_buy = $this->model->count('did_not_buy');
+          $productive_calls = ($total_lep+$total_lepp+$total_tin_pack)/$total_interception;
 
           $data ['total_interception'] = $total_interception;
           $data ['total_cnic'] = $total_cnic;
@@ -114,6 +115,7 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
           $data ['total_lepp'] = $total_lepp;
           $data ['total_tin_pack'] = $total_tin_pack;
           $data ['total_did_not_buy'] = $total_did_not_buy;
+          $data ['productive_calls'] = $productive_calls;
 
           return $data;
         }

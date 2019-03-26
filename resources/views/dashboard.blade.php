@@ -27,6 +27,17 @@
 
         <div class="row">
 
+
+            <div class="col-md-3">
+              <div class="small-box bg-aqua">
+                <div class="inner">
+                  <h3 class="kpi-widget-9"></h3>
+                  <p>Productive Calls</p>
+                </div>
+              </div>
+            </div>
+
+
           <div class="col-md-12 row">
 
             <div class="col-md-3">
