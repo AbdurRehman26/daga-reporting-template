@@ -75,7 +75,7 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
               
           }
 
-          $data->team_id = $teams[$data->team_id];
+          $data->team_id = $data->team_id ? $teams[$data->team_id] : '';
 
           return $data;
 

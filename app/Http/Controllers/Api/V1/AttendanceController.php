@@ -32,7 +32,7 @@ class AttendanceController extends ApiResourceController{
 			}
 
 			public function input($value=''){
-				$input = request()->only('ba_id' , 'ba_name', 'time', 'date', 'location', 'picture');
+				$input = request()->only('ba_id' , 'ba_name', 'time', 'pagination', 'date', 'location', 'picture');
 				return $input;
 			}
 
