@@ -14,7 +14,7 @@
       3 : 'Lahore',
       4 : 'Punjab',
       5 : 'Islamabad',
-      6 : 'Peshaward'
+      6 : 'Peshawar'
     }
 
 
