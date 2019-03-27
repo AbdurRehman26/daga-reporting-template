@@ -106,7 +106,7 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
           $total_lepp = $this->model->where('lepp', 1)->count();
           $total_tin_pack = $this->model->where('tin_pack', 1)->count();
           $total_did_not_buy = $this->model->where('did_not_buy', 1)->count();
-          $productive_calls = ($total_lep+$total_lepp+$total_tin_pack)/$total_interception;
+          $productive_calls = ($total_lep+$total_lepp+$total_tin_pack);
 
           $data ['total_interception'] = $total_interception;
           $data ['total_cnic'] = $total_cnic;
