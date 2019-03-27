@@ -150,7 +150,6 @@ class ActivityDataController extends ApiResourceController{
 					'Id',
 					'Team',
 					'BA ID',
-					'BA NAME',
 					'Customer Name',
 					'Customer Number',
 					'CNIC',
@@ -164,7 +163,6 @@ class ActivityDataController extends ApiResourceController{
 					'Time',
 					'Date',
 					'Location',
-					'Secondary',
 					'Created At',
 					'Updated At'
 				];
