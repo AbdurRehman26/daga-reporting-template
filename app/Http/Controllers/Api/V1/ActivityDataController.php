@@ -139,35 +139,48 @@ class ActivityDataController extends ApiResourceController{
 
 			public function map($data): array
 			{
-				return (array) $data;
+				$data = (array) $data;
+				if(request()->id){		
+					$data = array_diff_key($data, ['location' => "xy"]);
+				}
 
+				return $data;
 			}
 
 
 			public function headings(): array
 			{
-				return [
-					'Id',
-					'Team',
-					'BA ID',
-					'BA NAME',
-					'Customer Name',
-					'Customer Number',
-					'CNIC',
-					'Sale',
-					'LEP',
-					'LEPP',
-					'Tin Pack',
-					'Did Not Buy',
-					'Primary',
-					'Secondary',
-					'Time',
-					'Date',
-					'Location',
-					'Secondary',
-					'Created At',
-					'Updated At'
-				];
+
+				$params = ['Id',
+				'Team',
+				'BA ID',
+				'Customer Name',
+				'Customer Number',
+				'CNIC',
+				'Sale',
+				'LEP',
+				'LEPP',
+				'Tin Pack',
+				'Did Not Buy',
+				'Primary',
+				'Secondary',
+				'Time',
+				'Date'
+			];
+
+			if(!request()->id){		
+				$params[] = 'location';
 			}
 
-		}
+
+			$extraParams = ['Secondary',
+			'Created At',
+			'Updated At'
+		];
+
+		$params = array_merge($params, $extraParams);
+
+		return $params;
+	}
+
+}

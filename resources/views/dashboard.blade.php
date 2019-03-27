@@ -11,6 +11,9 @@
 
     <a  id="activity_2_download_summary" class="btn btn-success pull-right" href="{{ route('download') }}" >Download</a>
 
+    <a  id="activity_2_download_summary" style="margin-right : 20px;" class="btn btn-success pull-right" href="{{ route('download.agency' , ['id' => 1]) }}" >Download Data</a>
+
+
   </div>
 
 <section class="content">
