@@ -60,7 +60,7 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
             '3' => 'Lahore',
             '4' => 'Punjab',
             '5' => 'Islamabad',
-            '6' => 'Peshaward'
+            '6' => 'Peshawar'
           ];
 
           $data = parent::findById($id, $refresh, $details, $encode);
