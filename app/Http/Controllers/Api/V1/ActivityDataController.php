@@ -36,7 +36,7 @@ class ActivityDataController extends ApiResourceController{
 			public function input($value=''){
 				$input = request()->only('type', 'ba_id', 'team_id', 'customer_name', 'customer_number', 'cnic', 'sale', 'lep', 'lepp', 'tin_pack', 'did_not_buy', 'primary', 'secondary', 'time', 'date', 'location', 'pagination');
 
-				if($input['sale'] == 'no'){
+				if(!empty($input['sale']) &&  $input['sale'] == 'no'){
 					$input['lep'] = 0;
 				}
 
