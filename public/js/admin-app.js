@@ -30572,6 +30572,16 @@ $(document).ready(function () {
 
 function initApplication() {
 
+  $('#apply-search-btn').click(function () {
+
+    var date = $('.filter-date').val();
+    var city_id = $('.select-city').val();
+
+    getGeneralValues(date, city_id);
+
+    getChartsData(date, city_id);
+  });
+
   getGeneralValues();
 
   getChartsData();
@@ -30586,9 +30596,17 @@ function initApplication() {
   }
 }
 
-function getGeneralValues() {
+function getGeneralValues(date, city_id) {
 
   var query = 'activity_data/total?total_interceptions=true&total_wet_sampling=true&total_sales=true&total_deals=true&total_teams=true';
+
+  if (date) {
+    query += '&date=' + date;
+  }
+
+  if (city_id) {
+    query += '&city_id=' + city_id;
+  }
 
   app.Dashboard.generateGetCall(query).then(function (response) {
 
@@ -30600,7 +30618,7 @@ function getGeneralValues() {
   });
 }
 
-function getChartsData() {
+function getChartsData(date, city_id) {
 
   var chartsType = [{
     chartId: 'chart-1',
@@ -30626,6 +30644,14 @@ function getChartsData() {
     console.log(chartType, index);
 
     query = chartType.url;
+
+    if (date) {
+      query += '&date=' + date;
+    }
+
+    if (city_id) {
+      query += '&city_id=' + city_id;
+    }
 
     app.Dashboard.generateGetCall(query).then(function (response) {
 

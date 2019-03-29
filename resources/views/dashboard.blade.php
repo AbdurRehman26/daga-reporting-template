@@ -16,6 +16,49 @@
 
   </div>
 
+
+
+<div style="padding: 30px 30px; background: rgba(236, 238, 243, 1.0); z-index: 999999; font-size: 16px; font-weight: 600;">
+    
+
+          <div style="height:200px; padding: 20px 30px; background: white; z-index: 999999; font-size: 16px; font-weight: 600;">
+            <div class="row col-md-12">
+              <div class="col-md-6 form-group">
+
+                <label>Select date:</label>
+                <input type="date" class="filter-date form-control">
+                <label style="margin-top:20px;">Select city:</label>
+                <select class="select-city form-control">
+                  <option value="">All</option>
+                  <option value="1">Karachi</option>
+                  <option value="2">Sindh</option>
+                  <option value="3">Lahore</option>
+                  <option value="4">Punjab</option>
+                  <option value="5">Islamabad</option>
+                  <option value="6">Peshawar</option>
+                </select>
+              </div>
+
+              <div class="col-md-2 form-group">
+
+                <label></label>
+                <label></label>
+                <label></label>
+                <label></label>
+                <label></label>
+                <button id="apply-search-btn"  type="button" class="apply-city-search-button btn btn-success form-control">Apply</button>
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+
+
+  </div>
+
 <section class="content">
 
 

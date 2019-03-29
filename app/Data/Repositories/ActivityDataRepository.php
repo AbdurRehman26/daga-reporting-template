@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Kazmi\Data\Contracts\RepositoryContract;
 use Kazmi\Data\Repositories\AbstractRepository;
 use App\Data\Models\ActivityData;
+use App\Data\Models\TeamMember;
 use Illuminate\Support\Facades\Cache;
 
 class ActivityDataRepository extends AbstractRepository implements RepositoryContract
@@ -67,13 +68,13 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
 
 
           try {
-              
-              $data->date = Carbon::parse($data->date)->format('d-m-Y');
-              $data->time = Carbon::parse($data->time)->format('H:i:s');
+
+            $data->date = Carbon::parse($data->date)->format('d-m-Y');
+            $data->time = Carbon::parse($data->time)->format('H:i:s');
 
 
           } catch (Exception $e) {
-              
+
           }
 
           $data->team_id = $data->team_id ? $teams[$data->team_id] : '';
@@ -97,15 +98,45 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
         {
           $data = [];
 
+          if(empty($input['city_id'])){
+            $ba_ids = TeamMember::all()->pluck('id')->toArray();
+          }else{
+            $ba_ids = TeamMember::where('team_id', $input['city_id'])->pluck('id')->toArray();
+          }
 
-          $total_interception = $this->model->count();
-          $total_cnic = $this->model->whereNotNull('cnic')->count();
-          $total_contacts = $this->model->whereNotNull  ('customer_number')->count();
-          $total_sales = $this->model->where('sale' , 'yes')->count();
-          $total_lep = $this->model->where('lep' , 1)->count();
-          $total_lepp = $this->model->where('lepp', 1)->count();
-          $total_tin_pack = $this->model->where('tin_pack', 1)->count();
-          $total_did_not_buy = $this->model->where('did_not_buy', 1)->count();
+          $input['start_date'] = Date('2018-10-28');    
+          $input['end_date'] = Date('Y-m-d');
+
+          if(!empty($input['date'])){
+            $input['start_date'] = Date($input['date']);
+            $input['end_date'] = Date($input['date']);
+          }
+
+
+
+          $total_interception = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->count();
+
+          $total_cnic = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->whereNotNull('cnic')->count();
+
+
+          $total_contacts = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->whereNotNull  ('customer_number')->count();
+
+
+          $total_sales = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('sale' , 'yes')->count();
+
+
+          $total_lep = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('lep' , 1)->count();
+
+
+          $total_lepp = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('lepp', 1)->count();
+
+
+          $total_tin_pack = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('tin_pack', 1)->count();
+
+
+          $total_did_not_buy = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('did_not_buy', 1)->count();
+
+
           $productive_calls = ($total_lep+$total_lepp+$total_tin_pack);
 
           $data ['total_interception'] = $total_interception;
@@ -125,9 +156,24 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
         public function getChartsData($input)
         {
 
-         $builder = $this->model->groupBy('team_id');
+          if(empty($input['city_id'])){
+            $ba_ids = TeamMember::all()->pluck('id')->toArray();
+          }else{
+            $ba_ids = TeamMember::where('team_id', $input['city_id'])->pluck('id')->toArray();
+          }
 
-         if($input['type'] == 'all'){
+          $input['start_date'] = Date('2018-10-28');    
+          $input['end_date'] = Date('Y-m-d');
+
+          if(!empty($input['date'])){
+            $input['start_date'] = Date($input['date']);
+            $input['end_date'] = Date($input['date']);
+          }
+
+
+          $builder = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->groupBy('team_id');
+
+          if($input['type'] == 'all'){
            $data = $builder->select('team_id' , \DB::raw('count(id) as count'))->get();
          }
 
