@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Cache;
 
 class AttendanceRepository extends AbstractRepository implements RepositoryContract
 {
-    public $model;
-    CONST PAGINATION = true , PER_PAGE = 10;
+  public $model;
+  CONST PAGINATION = true , PER_PAGE = 10;
 
     /**
      *
@@ -36,8 +36,8 @@ class AttendanceRepository extends AbstractRepository implements RepositoryContr
 
     public function __construct(Attendance $model)
     {
-        $this->model = $model;
-        $this->builder = $model;
+      $this->model = $model;
+      $this->builder = $model;
     }
 
     
@@ -57,21 +57,21 @@ class AttendanceRepository extends AbstractRepository implements RepositoryContr
           $data = parent::findById($id, $refresh, $details, $encode);
 
           try {
-              
-              $data->date = Carbon::parse($data->date)->format('d-m-Y');
-              $data->time = Carbon::parse($data->time)->format('H:i:s');
+            
+            $data->date = Carbon::parse($data->date)->format('d-m-Y');
+            $data->time = Carbon::parse($data->time)->format('g:i A');
 
 
           } catch (Exception $e) {
-              
+            
           }
 
 
           return $data;
 
-      }
+        }
 
-      public function findByAll($pagination = false, $perPage = 10, array $input = [] ) {
+        public function findByAll($pagination = false, $perPage = 10, array $input = [] ) {
 
           $this->builder = $this->model->orderBy('id' , 'desc');
 
@@ -79,8 +79,8 @@ class AttendanceRepository extends AbstractRepository implements RepositoryContr
 
 
           return $data;
+        }
+
+
+
       }
-
-
-
-  }

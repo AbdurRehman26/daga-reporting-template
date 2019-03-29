@@ -143,7 +143,6 @@ function getActivityData(page) {
   {headerName: "Team", field: "team_id"},
   {headerName: "BA ID", field: "ba_id"},
   {headerName: "CNIC", field: "cnic"},
-  {headerName: "Ba Name", field: "ba_name"},
   {headerName: "Customer Name", field: "customer_name"},
   {headerName: "Customer Number", field: "customer_number"},
   {headerName: "Sale", field: "sale"},
