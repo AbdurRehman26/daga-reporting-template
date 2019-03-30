@@ -47,7 +47,7 @@ function initApplication() {
 
   }
 
-
+  $('.filter-date').daterangepicker();
 
 }
 

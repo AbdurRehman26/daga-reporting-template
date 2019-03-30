@@ -104,12 +104,14 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
             $ba_ids = TeamMember::where('team_id', $input['city_id'])->pluck('id')->toArray();
           }
 
-          $input['start_date'] = Date('2018-10-28');    
-          $input['end_date'] = Date('Y-m-d');
 
-          if(!empty($input['date'])){
+          if(!empty($input['start_date'])){
             $input['start_date'] = Date($input['date']);
             $input['end_date'] = Date($input['date']);
+          }else{
+            $input['start_date'] = Date('2018-10-28');    
+            $input['end_date'] = Date('Y-m-d');
+
           }
 
 
@@ -162,13 +164,15 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
             $ba_ids = TeamMember::where('team_id', $input['city_id'])->pluck('id')->toArray();
           }
 
-          $input['start_date'] = Date('2018-10-28');    
-          $input['end_date'] = Date('Y-m-d');
-
-          if(!empty($input['date'])){
+          if(!empty($input['start_date'])){
             $input['start_date'] = Date($input['date']);
             $input['end_date'] = Date($input['date']);
+          }else{
+            $input['start_date'] = Date('2018-10-28');    
+            $input['end_date'] = Date('Y-m-d');
+
           }
+
 
 
           $builder = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->groupBy('team_id');

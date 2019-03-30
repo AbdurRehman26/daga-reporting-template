@@ -30594,6 +30594,8 @@ function initApplication() {
 
     $('.left-bar-link').hide();
   }
+
+  $('.filter-date').daterangepicker();
 }
 
 function getGeneralValues(date, city_id) {

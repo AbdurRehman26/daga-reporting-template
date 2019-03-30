@@ -26,7 +26,9 @@
               <div class="col-md-6 form-group">
 
                 <label>Select date:</label>
-                <input type="date" class="filter-date form-control">
+                <input type="text" class="filter-date form-control" />
+
+                
                 <label style="margin-top:20px;">Select city:</label>
                 <select class="select-city form-control">
                   <option value="">All</option>
@@ -37,6 +39,8 @@
                   <option value="5">Islamabad</option>
                   <option value="6">Peshawar</option>
                 </select>
+
+                
               </div>
 
               <div class="col-md-2 form-group">
