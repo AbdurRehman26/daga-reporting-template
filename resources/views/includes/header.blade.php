@@ -3,7 +3,7 @@
   <a href="/" class="logo">
     
     <!-- mini logo for sidebar mini 50x50 pixels -->
-    <img style="height:45px;" src="/img/logo.png" class="user-image" alt="User Image">
+    <img style="height:45px;" src="https://pictait.com/images/bulls_eye_logo.png" class="user-image" alt="User Image">
     <img  style="height:50px;" src="/img/app_icon.png" class="user-image" alt="User Image">
     
   </a>
