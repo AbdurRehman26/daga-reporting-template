@@ -11,6 +11,8 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\FromArray;
+use App\Data\Models\TeamMember;
+
 
 class ActivityDataController extends ApiResourceController{
 
@@ -38,10 +40,29 @@ class ActivityDataController extends ApiResourceController{
 
 				if(!empty($input['date'])){	
 					$dateValues  = str_replace(' ', '', explode('-', $input['date']));
-					
+
 					$input['start_date'] = $dateValues[0];
 					$input['end_date'] = $dateValues[1];
 				}
+
+
+
+				if(!empty($input['ba_id'])){
+
+					if(empty($input['team_id'])){
+
+						$teamMember = TeamMember::find($input['ba_id']);
+					
+						$input['team_id'] = $teamMember['team_id'];
+
+
+					}
+
+
+
+				}
+
+
 
 
 
