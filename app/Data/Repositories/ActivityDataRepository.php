@@ -106,14 +106,13 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
 
 
           if(!empty($input['start_date'])){
-            $input['start_date'] = Date($input['date']);
-            $input['end_date'] = Date($input['date']);
+            $input['start_date'] = Date($input['start_date']);
+            $input['end_date'] = Date($input['end_date']);
           }else{
             $input['start_date'] = Date('2018-10-28');    
             $input['end_date'] = Date('Y-m-d');
 
           }
-
 
 
           $total_interception = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->count();
@@ -164,9 +163,10 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
             $ba_ids = TeamMember::where('team_id', $input['city_id'])->pluck('id')->toArray();
           }
 
+
           if(!empty($input['start_date'])){
-            $input['start_date'] = Date($input['date']);
-            $input['end_date'] = Date($input['date']);
+            $input['start_date'] = Date($input['start_date']);
+            $input['end_date'] = Date($input['end_date']);
           }else{
             $input['start_date'] = Date('2018-10-28');    
             $input['end_date'] = Date('Y-m-d');

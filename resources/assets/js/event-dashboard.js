@@ -47,7 +47,11 @@ function initApplication() {
 
   }
 
-  $('.filter-date').daterangepicker();
+  $('.filter-date').daterangepicker({
+    locale: {
+      format: 'YYYY-MM-DD'
+    }
+  });
 
 }
 

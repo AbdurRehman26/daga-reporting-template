@@ -39,13 +39,11 @@ class ActivityDataController extends ApiResourceController{
 				$input = request()->only( 'city_id', 'type', 'ba_id', 'team_id', 'customer_name', 'customer_number', 'cnic', 'sale', 'lep', 'lepp', 'tin_pack', 'did_not_buy', 'primary', 'secondary', 'time', 'date', 'location', 'pagination');
 
 				if(!empty($input['date'])){	
-					$dateValues  = str_replace(' ', '', explode('-', $input['date']));
+					$dateValues  = str_replace(' ', '', explode(' - ', $input['date']));
 
 					$input['start_date'] = $dateValues[0];
 					$input['end_date'] = $dateValues[1];
 				}
-
-
 
 				if(!empty($input['ba_id'])){
 
@@ -54,11 +52,7 @@ class ActivityDataController extends ApiResourceController{
 						$teamMember = TeamMember::find($input['ba_id']);
 					
 						$input['team_id'] = $teamMember['team_id'];
-
-
 					}
-
-
 
 				}
 

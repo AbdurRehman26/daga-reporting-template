@@ -30595,7 +30595,11 @@ function initApplication() {
     $('.left-bar-link').hide();
   }
 
-  $('.filter-date').daterangepicker();
+  $('.filter-date').daterangepicker({
+    locale: {
+      format: 'YYYY-MM-DD'
+    }
+  });
 }
 
 function getGeneralValues(date, city_id) {
