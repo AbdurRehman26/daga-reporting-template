@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/testing-admin', 'Api\V1\ActivityDataController@uploadFile');
 
 Route::get('/home', 'HomeController@dashboard')->name('home');
 Route::get('/', 'HomeController@dashboard')->name('/');

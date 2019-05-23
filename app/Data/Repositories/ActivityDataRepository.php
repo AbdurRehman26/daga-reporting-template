@@ -118,29 +118,29 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
           $input['end_date'] = Carbon::parse($input['end_date'])->toDateTimeString();
 
 
-          $total_interception = $this->model->whereIn('ba_id', $ba_ids)->count();
+          $total_interception = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->count();
 
 
 
-          $total_cnic = $this->model->whereIn('ba_id', $ba_ids)->whereNotNull('cnic')->count();
+          $total_cnic = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->whereNotNull('cnic')->count();
 
 
-          $total_contacts = $this->model->whereIn('ba_id', $ba_ids)->whereNotNull  ('customer_number')->count();
+          $total_contacts = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->whereNotNull  ('customer_number')->count();
 
 
-          $total_sales = $this->model->whereIn('ba_id', $ba_ids)->where('sale' , 'yes')->count();
+          $total_sales = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('sale' , 'yes')->count();
 
 
-          $total_lep = $this->model->whereIn('ba_id', $ba_ids)->where('lep' , 1)->count();
+          $total_lep = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('lep' , 1)->count();
 
 
-          $total_lepp = $this->model->whereIn('ba_id', $ba_ids)->where('lepp', 1)->count();
+          $total_lepp = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('lepp', 1)->count();
 
 
-          $total_tin_pack = $this->model->whereIn('ba_id', $ba_ids)->where('tin_pack', 1)->count();
+          $total_tin_pack = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('tin_pack', 1)->count();
 
 
-          $total_did_not_buy = $this->model->whereIn('ba_id', $ba_ids)->where('did_not_buy', 1)->count();
+          $total_did_not_buy = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('did_not_buy', 1)->count();
 
 
           $productive_calls = ($total_lep+$total_lepp+$total_tin_pack);
@@ -180,7 +180,7 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
 
 
 
-          $builder = $this->model->whereIn('ba_id', $ba_ids)->groupBy('team_id');
+          $builder = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->groupBy('team_id');
 
           if($input['type'] == 'all'){
            $data = $builder->select('team_id' , \DB::raw('count(id) as count'))->get();

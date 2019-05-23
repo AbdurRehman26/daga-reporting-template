@@ -50,7 +50,7 @@ class ActivityDataController extends ApiResourceController{
 					if(empty($input['team_id'])){
 
 						$teamMember = TeamMember::find($input['ba_id']);
-					
+
 						$input['team_id'] = $teamMember['team_id'];
 					}
 
@@ -112,104 +112,118 @@ class ActivityDataController extends ApiResourceController{
 
 			}
 
-		}
 
 
 
-		class CollectionExport implements FromCollection, WithHeadings
-		{
-			use Exportable;
-			public $data;
-
-			public function __construct($data){
-				$this->data = $data;
+			public function uploadFile(Request $request){
+				$this->_repository->uploadFile();
 			}
 
 
-			public function collection()
-			{
-				$data = $this->data;
-				return collect([$data]);
-			}
+
+}
 
 
-			public function headings(): array
-			{
-				return [
-					'Total Interceptions',
-					'Total CNICs',
-					'Total Contacts',
-					'Total Sales',
-					'Total LEP',
-					'Total LEPP',
-					'Total TIN PACK',
-					'Total DID NOT BUY',
-				];
-			}
 
-		}
+class CollectionExport implements FromCollection, WithHeadings
+{
+	use Exportable;
+	public $data;
 
-
-		class ActivityCollectionExport implements FromArray, WithHeadings, WithMapping
-		{
-			use Exportable;
-			public $data;
-
-			public function __construct($data){
-				$this->data = $data;
-			}
-
-
-			public function array():array
-			{
-				$data = $this->data;
-				return $data;
-			}
-
-			public function map($data): array
-			{
-				$data = (array) $data;
-				if(request()->id){		
-					$data = array_diff_key($data, ['location' => "xy"]);
-				}
-
-				return $data;
-			}
-
-
-			public function headings(): array
-			{
-
-				$params = ['Id',
-				'Team',
-				'BA ID',
-				'Customer Name',
-				'Customer Number',
-				'CNIC',
-				'Sale',
-				'LEP',
-				'LEPP',
-				'Tin Pack',
-				'Did Not Buy',
-				'Primary',
-				'Secondary',
-				'Time',
-				'Date'
-			];
-
-			if(!request()->id){		
-				$params[] = 'location';
-			}
-
-
-			$extraParams = ['Secondary',
-			'Created At',
-			'Updated At'
-		];
-
-		$params = array_merge($params, $extraParams);
-
-		return $params;
+	public function __construct($data){
+		$this->data = $data;
 	}
+
+
+	public function collection()
+	{
+		$data = $this->data;
+		return collect([$data]);
+	}
+
+
+	public function headings(): array
+	{
+		return [
+			'Total Interceptions',
+			'Total CNICs',
+			'Total Contacts',
+			'Total Sales',
+			'Total LEP',
+			'Total LEPP',
+			'Total TIN PACK',
+			'Total DID NOT BUY',
+		];
+	}
+
+}
+
+
+class ActivityCollectionExport implements FromArray, WithHeadings, WithMapping
+{
+	use Exportable;
+	public $data;
+
+	public function __construct($data){
+		$this->data = $data;
+	}
+
+
+	public function array():array
+	{
+		$data = $this->data;
+		return $data;
+	}
+
+	public function map($data): array
+	{
+		$data = (array) $data;
+		if(request()->id){		
+			$data = array_diff_key($data, ['location' => "xy"]);
+		}
+
+		return $data;
+	}
+
+
+	public function headings(): array
+	{
+
+		$params = ['Id',
+		'Team',
+		'BA ID',
+		'Customer Name',
+		'Customer Number',
+		'CNIC',
+		'Sale',
+		'LEP',
+		'LEPP',
+		'Tin Pack',
+		'Did Not Buy',
+		'Primary',
+		'Secondary',
+		'Time',
+		'Date'
+	];
+
+	if(!request()->id){		
+		$params[] = 'location';
+	}
+
+
+	$extraParams = ['Secondary',
+	'Created At',
+	'Updated At'
+];
+
+$params = array_merge($params, $extraParams);
+
+return $params;
+}
+
+
+
+
+
 
 }
