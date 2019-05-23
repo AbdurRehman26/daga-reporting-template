@@ -104,7 +104,6 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
             $ba_ids = TeamMember::where('team_id', $input['city_id'])->pluck('id')->toArray();
           }
 
-
           if(!empty($input['start_date'])){
             $input['start_date'] = Date($input['start_date']);
             $input['end_date'] = Date($input['end_date']);
@@ -115,27 +114,33 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
           }
 
 
-          $total_interception = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->count();
-
-          $total_cnic = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->whereNotNull('cnic')->count();
-
-
-          $total_contacts = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->whereNotNull  ('customer_number')->count();
+          $input['start_date'] = Carbon::parse($input['start_date'])->toDateTimeString();
+          $input['end_date'] = Carbon::parse($input['end_date'])->toDateTimeString();
 
 
-          $total_sales = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('sale' , 'yes')->count();
+          $total_interception = $this->model->whereIn('ba_id', $ba_ids)->count();
 
 
-          $total_lep = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('lep' , 1)->count();
+
+          $total_cnic = $this->model->whereIn('ba_id', $ba_ids)->whereNotNull('cnic')->count();
 
 
-          $total_lepp = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('lepp', 1)->count();
+          $total_contacts = $this->model->whereIn('ba_id', $ba_ids)->whereNotNull  ('customer_number')->count();
 
 
-          $total_tin_pack = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('tin_pack', 1)->count();
+          $total_sales = $this->model->whereIn('ba_id', $ba_ids)->where('sale' , 'yes')->count();
 
 
-          $total_did_not_buy = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->where('did_not_buy', 1)->count();
+          $total_lep = $this->model->whereIn('ba_id', $ba_ids)->where('lep' , 1)->count();
+
+
+          $total_lepp = $this->model->whereIn('ba_id', $ba_ids)->where('lepp', 1)->count();
+
+
+          $total_tin_pack = $this->model->whereIn('ba_id', $ba_ids)->where('tin_pack', 1)->count();
+
+
+          $total_did_not_buy = $this->model->whereIn('ba_id', $ba_ids)->where('did_not_buy', 1)->count();
 
 
           $productive_calls = ($total_lep+$total_lepp+$total_tin_pack);
@@ -175,7 +180,7 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
 
 
 
-          $builder = $this->model->whereDate('created_at' , '>=' , $input['start_date'])->whereDate('created_at' , '<=' , $input['end_date'])->whereIn('ba_id', $ba_ids)->groupBy('team_id');
+          $builder = $this->model->whereIn('ba_id', $ba_ids)->groupBy('team_id');
 
           if($input['type'] == 'all'){
            $data = $builder->select('team_id' , \DB::raw('count(id) as count'))->get();
@@ -202,5 +207,94 @@ class ActivityDataRepository extends AbstractRepository implements RepositoryCon
          return $data;
        }
 
+       public function uploadFile()
+       {
 
-     }
+
+        $teams = [
+          'Karachi' => '1',
+          'Sindh' => '2',
+          'Lahore' => '3',
+          'Punjab' => '4',
+          'Islamabad' => '5',
+          'Peshawar' => '6'
+        ];
+
+          // Import CSV to Database
+        $filepath = public_path('Final_summaryMay22_2019.csv');
+
+        $file = fopen($filepath,"r");
+
+        $importData_arr = array();
+        $i = 0;
+        while (($filedata = fgetcsv($file, 10000, ",")) !== FALSE) {
+          $num = count($filedata );
+             // Skip first row (Remove below comment if you want to skip the first row)
+             /*if($i == 0){
+                $i++;
+                continue; 
+              }*/
+              for ($c=0; $c < $num; $c++) {
+                $importData_arr[$i][] = $filedata [$c];
+              }
+              $i++;
+            }
+
+            array_shift($importData_arr);
+
+
+            foreach ($importData_arr as $key => $value) {
+
+
+              try {
+                $value[14] = $value[14] ? Carbon::createFromFormat('d-m-y', $value[14])->toDateString() : null;  
+              } catch (\Exception $e) {
+
+
+
+              if($value[0] == 732){
+                $value[14] = Carbon::parse($value[14])->toDateString();
+              }
+
+              }
+            
+
+
+              $value[16] = str_replace('-19', '-2019', $value[16]);
+              $value[17] = str_replace('-19', '-2019', $value[17]);
+              
+              $addingData = [
+                'team_id' => $teams[$value[1]] ? $teams[$value[1]] : '', 
+                'ba_id' => $value[2],
+                'customer_name' => $value[3],
+                'customer_number' => $value[4],
+                'cnic' => $value[5],
+                'sale' => $value[6],
+                'lep' => $value[7] ? 1 : 0,
+                'lepp' => $value[8] ? 1 : 0,
+                'tin_pack' => $value[9] ? 1 : 0,
+                'did_not_buy' => $value[10] ? 1 : 0,
+                'primary' => $value[11],
+                'secondary' => $value[12],
+                'time' => $value[13] ? Carbon::parse($value[13])->toTimeString() : null,
+                'date' => $value[14],
+                'location' => $value[15],
+                'created_at' => Carbon::parse($value[16])->toDateTimeString(),
+                'updated_at' => Carbon::parse($value[17])->toDateTimeString(),
+              ];
+
+
+            
+              $this->model->insert($addingData);
+            }
+
+
+            dd(1);
+            fclose($file);
+
+
+
+          }
+
+
+        }
